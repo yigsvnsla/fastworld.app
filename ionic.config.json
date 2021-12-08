@@ -1,0 +1,7 @@
+{
+  "name": "fastworld.app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
