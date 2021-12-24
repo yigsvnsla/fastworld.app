@@ -1,17 +1,46 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { RouteReuseStrategy } from '@angular/router';
-
+import { LocalStorageService } from './services/local-storage.service';
+import { RouteReuseStrategy, RouterModule } from '@angular/router';
+import { ConectionsService } from './services/conections.service';
+import { ComponentsModule } from './components/components.module';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-
-import { AppComponent } from './app.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { BrowserModule } from '@angular/platform-browser';
+import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
-
+import { GoogleMapsModule } from '@angular/google-maps';
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CookieService } from 'ngx-cookie-service';
+import { AppComponent } from './app.component';
+import { CurrencyPipe } from '@angular/common';
+import { SocketIoModule } from 'ngx-socket-io';
+import { NgModule } from '@angular/core';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  imports: [
+    IonicModule.forRoot(), 
+    BrowserModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    RouterModule,
+    ComponentsModule,
+    HttpClientModule,
+    GoogleMapsModule,
+    SocketIoModule.forRoot({ url: 'https://api.fastworld.app', options: {autoConnect: false}}),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the app is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
+  ],
+  providers: [
+    { provide: RouteReuseStrategy, 
+      useClass: IonicRouteStrategy 
+    },
+    CookieService,CurrencyPipe
+  ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

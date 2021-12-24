@@ -1,0 +1,52 @@
+<ion-content>
+  <ion-card class="ion-no-padding">
+     <ion-header>
+        <ion-toolbar>
+          <ion-title>Confirmacion Generada</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-card-header class="ion-text-center">
+        <ion-card-subtitle>¿No sabes donde esta tu cliente?</ion-card-subtitle>
+        <ion-card-title>Generar Solicitud</ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="ion-text-center">
+        <div class="body">
+          <ion-grid fixed>
+            <ion-card-subtitle class="ion-padding">Con esta opcion va a generar una enlace que debe dar a su cliente para que pueda enviar su ubicacion para la entrega</ion-card-subtitle>
+            <ion-row style="display: flex; justify-content: center; align-items: center;">
+              <ion-col size="12">
+                <ion-img style="height: 180px; width: auto;" [src]="'../../../../../../assets/svg/undraw_my_location_re_r52x.svg'"></ion-img>
+              </ion-col>
+              <ion-col size="9">
+                <ion-item>
+                  <ion-label position="stacked">
+                    <p>Enlace</p>
+                  </ion-label>
+                  <ion-input readonly="true" type="url" [value]="url"></ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col size="3">
+                <ion-fab-button (click)="copy(); buttonContinue.disabled = false">
+                  <ion-icon name="documents"></ion-icon>
+                </ion-fab-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+      </ion-card-content>
+      <ion-footer>
+        <ion-toolbar class="ion-text-center">
+          <ion-button 
+            #buttonContinue
+            (click)="onExit(true)" 
+            [disabled]="true" 
+            routerDirection="root" 
+            [routerLink]="'/menu/cliente/mis-encomiendas'" 
+            shape="round"
+          >
+            <ion-label >continuar</ion-label>
+          </ion-button>
+        </ion-toolbar>
+      </ion-footer>
+  </ion-card>
+</ion-content>

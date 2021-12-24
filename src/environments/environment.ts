@@ -3,7 +3,13 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  api:'https://api.fastworld.app',
+  cookieTag:'userFastworld',
+  formuleConst:{
+    arranque : 1.5,
+    kilometraje: 0.15
+  }
 };
 
 /*

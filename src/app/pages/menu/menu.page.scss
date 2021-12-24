@@ -1,0 +1,28 @@
+.active-link{
+    --ion-text-color: var(--ion-color-orange);
+    font-weight: bold;
+    ion-icon {
+        color: var(--ion-color-orange);
+        font-weight: bold;
+    }
+} 
+
+p{
+    color:var(--ion-color-orange)
+}
+
+ion-button{
+    --background:var(--ion-color-orange);
+    ion-label{
+        color: var(--ion-color-dark)
+    }
+    ion-icon{
+        color: var(--ion-color-dark)
+    }
+}
+
+img {
+    width: 100%;
+    height: 100%;
+    opacity: 50%;
+}

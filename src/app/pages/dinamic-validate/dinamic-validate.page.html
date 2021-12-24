@@ -1,0 +1,57 @@
+<ion-content>
+  <div class="body">
+    <ion-card *ngIf="template">
+      <ion-card-header class="ion-text-center ion-padding ion-margin">
+        <ion-card-subtitle>Fast World</ion-card-subtitle>
+        <ion-card-title>Usted a Solicitado una Encomienda</ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="ion-no-padding">
+        <ion-grid fixed>
+          <ion-row>
+            <ion-col size="6">
+              <ion-item class="ion-text-center">
+                <ion-label>
+                  <p>Nombre y Apellidos</p>
+                  <h2>{{user.name ||'sin nombre'}}</h2>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+            <ion-col size="6">
+              <ion-item class="ion-text-center">
+                <ion-label>
+                  <p>Telefono</p>
+                  <h2>{{user.phone || 'sin telefono'}}</h2>
+                </ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12">
+              <ion-item >
+                <ion-label position="stacked">Informacion Adicional</ion-label>
+                <ion-textarea [value]="this.position.indications" (ionChange)="addDesc($event)" placeholder="Indicaciones de Entrega "></ion-textarea>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+      <ion-card-header class="ion-text-center ion-padding ion-margin">
+        <ion-card-subtitle>Para confirmar la entrega es necesario que nos envie su ubicacion</ion-card-subtitle>
+        <ion-button style="--background:var(--custom-color-orange)" class="ion-margin" (click)="onClick()" expand="block" shape="round">
+          <ion-label>Enviar mi Ubicación</ion-label>
+          <ion-icon slot="start" name="location"></ion-icon>
+        </ion-button>
+      </ion-card-header>
+    </ion-card>
+
+    <ion-card *ngIf="!template">
+      <ion-card-header>
+        <ion-card-subtitle>Gracias por confiar en nosotros 🖐</ion-card-subtitle>
+        <ion-card-title>Su ubicacion a sido enviada con exito</ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="ion-text-center">
+          <ion-label> Ya puede cerrar esta Pagina 🙂</ion-label>
+        </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

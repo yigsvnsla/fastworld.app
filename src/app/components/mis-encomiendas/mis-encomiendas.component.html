@@ -1,0 +1,155 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Mis Encomiendas</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button menu="menu-cliente"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  
+  <ion-fab  (click)="goTo()" vertical="top" horizontal="end" edge slot="fixed">
+    <ion-fab-button color="orange">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <div class="arrEmpty" *ngIf="packagesList.length <= 0">
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col style="display: flex; justify-content: center;  align-items: center;"  size="12">
+          <ion-img [src]="'../../../../../assets/svg/undraw_empty_re_opql.svg'"></ion-img>
+        </ion-col>
+        <ion-col size="12">
+          <ion-card>
+            <ion-card-header class="ion-text-center">
+              <ion-card-subtitle>Pulsa el boton de agregar para agendar</ion-card-subtitle>
+              <ion-card-title>No tienes Encomiendas</ion-card-title>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <ng-container *ngIf="packagesList.length > 0">
+    <ion-card *ngFor=" let item of this.packagesList; let i = index ">
+      <ion-card-header>
+        <ion-item>
+          <ion-label>
+            <p>Tipo de Encomienda</p>
+            <ion-card-title>{{item.type}}</ion-card-title>
+          </ion-label>
+          <ion-chip id="chip-popover" color="orange"  outline="true">
+            <ion-label>{{item.id}}</ion-label>
+            <ion-icon name="cube"></ion-icon>
+          </ion-chip>
+          <ion-popover 
+            side="top" 
+            alignment="end" 
+            reference="trigger" 
+            trigger="chip-popover" 
+            [dismissOnSelect]="true"
+            *ngIf="this.role == 'conductor' "
+          >
+            <ng-template>
+              <ion-content>
+                <ion-item-group>
+                  <ion-item [button]="true" [detail]="false" (click)="transfer(i)" >
+                    <ion-label>Traspasar</ion-label>
+                    <ion-icon slot="start" name="share-social"></ion-icon>
+                  </ion-item>
+                  <ion-item [button]="true" [detail]="false"  (click)="delivered(i)" >
+                    <ion-label>Entregar</ion-label>
+                    <ion-icon slot="start" name="checkmark"></ion-icon>
+                  </ion-item>
+                  <ion-item [button]="true" [detail]="false" (click)="report(i)" >
+                    <ion-label>Reportar</ion-label>
+                    <ion-icon slot="start" name="alert"></ion-icon>
+                  </ion-item>
+                  <ion-item [button]="true" [detail]="false" [href]="'https://www.google.com/maps/dir/' + item.location.start.location.lat + ',' + item.location.start.location.lng + '/' + item.location.goal.location.lat + ',' + item.location.goal.location.lng "  target="_blank" rel="noreferrer external">
+                    <ion-label>Abrir Mapa</ion-label>
+                    <ion-icon slot="start" name="map"></ion-icon>
+                  </ion-item>          
+                </ion-item-group>
+              </ion-content>
+            </ng-template>
+          </ion-popover>
+        </ion-item>
+        <ion-card-subtitle>
+          <p>
+            {{item.created_at | date:'short'}}
+            <br>
+            Tiempo de Retiro: {{this.formatDistanceStrict(item.timeout,item.created_at)}}
+          </p>
+        </ion-card-subtitle>
+      
+    </ion-card-header>
+    <ion-card-header class="ion-no-padding">
+      <ion-accordion-group >
+        <ion-accordion>
+          <ion-item class="ion-text-center" slot="header">
+            <ion-label>Información</ion-label>
+            <ion-icon slot="start" name="search"></ion-icon> 
+          </ion-item>
+          <ion-item-group slot="content">
+            <ion-item-divider>
+              <ion-label>Información de Retiro</ion-label>
+            </ion-item-divider>
+            <ion-item>
+              <ion-label>
+                <p>Remitente {{item.client.id}}</p>
+                <h4>{{item.client.name}} {{item.client.lastname}}</h4>
+              </ion-label>
+              <ion-icon slot="start" name="person"></ion-icon>
+            </ion-item>
+            <ion-item button [href]="'https://maps.google.com/?q=' + item.location.start.location.lat + ',' + item.location.start.location.lng" target="_blank" rel="noreferrer external">
+              <ion-label class="ion-text-wrap">
+                <p>Dirección de Retiro</p>
+                <h4 >{{ item.location.start.address}}</h4>
+              </ion-label>
+              <ion-icon slot="start" name="map"></ion-icon>
+            </ion-item>
+            <ion-item >
+              <ion-label class="ion-text-wrap">
+                <p>Indicaciones de Retiro</p>
+                <h4>{{ item.location.start.indications ? item.location.start.indications : 'Sin Indicaciones'}}</h4>
+              </ion-label>
+              <ion-icon slot="start" name="walk"></ion-icon>
+
+            </ion-item>
+            <ng-container *ngIf="item.location.hasOwnProperty('goal')">
+              <ion-item-divider>
+                <ion-label>Indicaciones de Entrega</ion-label>
+              </ion-item-divider>
+              <ion-item>
+                <ion-label>
+                  <p>Destinatario</p>
+                  <h4>{{item.user_name}}</h4>
+                </ion-label>
+                <ion-icon slot="start" name="person"></ion-icon>
+              </ion-item>
+              <ion-item button [href]="'https://maps.google.com/?q=' + item.location.goal.location.lat + ',' + item.location.goal.location.lng" target="_blank" rel="noreferrer external">
+                <ion-label class="ion-text-wrap">
+                  <p>Dirección de Retiro</p>
+                  <h4 >{{ item.location.goal.address}}</h4>
+                </ion-label>
+                <ion-icon slot="start" name="map"></ion-icon>
+              </ion-item>
+              <ion-item >
+                <ion-label class="ion-text-wrap">
+                  <p>Indicaciones de Retiro</p>
+                  <h4>{{ item.location.goal.indications ? item.location.goal.indications : 'Sin Indicaciones'}}</h4>
+                </ion-label>
+                <ion-icon slot="start" name="walk"></ion-icon>
+              </ion-item>
+            </ng-container>
+          </ion-item-group>
+        </ion-accordion>
+      </ion-accordion-group>
+    </ion-card-header>
+  </ion-card>
+</ng-container>
+
+  
+</ion-content>

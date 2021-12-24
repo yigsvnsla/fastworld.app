@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Historial</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button menu="menu-cliente"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+  <ion-content>
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content>
+      </ion-refresher-content>
+    </ion-refresher>
+    
+    <div class="arrEmpty" *ngIf="list.length <= 0">
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col style="display: flex; justify-content: center;  align-items: center;"  size="12">
+            <ion-img [src]="'../../../../../assets/svg/undraw_empty_re_opql.svg'"></ion-img>
+          </ion-col>
+          <ion-col size="12">
+            <ion-card>
+              <ion-card-header class="ion-text-center">
+                <ion-card-subtitle>Pulsa el boton de agregar para agendar</ion-card-subtitle>
+                <ion-card-title>No tienes Encomiendas</ion-card-title>
+              </ion-card-header>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-fab routerLink="/cliente/encomienda" vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button>
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+    </div>
+  
+    <ion-grid *ngIf="list.length > 0" class="ion-no-padding" >
+      <ion-list>
+      <ion-row  *ngFor="let i of list" button (click)="openModal(i)">
+        <ion-col size="7" >
+          <ion-item class="ion-text-nowrap" lines="none" >
+            <ion-label>
+              <p>Encomienda #{{i.id}}</p>
+              <h6>{{i.location.start.address || 'Sin Ubicacion'}}</h6>
+              <h6>{{i.location.hasOwnProperty('goal')? i.location.goal.address : "Sin Ubicacion"}}</h6>
+            </ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col size="5">
+          <ion-item class="ion-text-right" lines="none">
+            <ion-label>
+              <p>{{i.created_at | date:'shortDate' }}</p>
+              <h6>{{i.type}}</h6>
+              <h6>{{i.price > 0 ? i.price : 'Transferencia'}}</h6>
+            </ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-list>
+    </ion-grid>
+  
+  </ion-content>

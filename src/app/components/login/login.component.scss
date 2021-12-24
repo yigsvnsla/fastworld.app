@@ -1,0 +1,22 @@
+
+#body{
+    height: 100%;
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+ion-img{
+    height: 80%;
+    width: 80%;
+}
+
+@media only screen and (max-width:576px) {
+    ion-img, #col-img{
+        display: none !important;
+    }
+}
+
+a{
+    color:var(--ion-color-orange)
+}

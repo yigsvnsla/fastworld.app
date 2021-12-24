@@ -24,3 +24,73 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    box-shadow: 0 0 0 30px var(--ion-item-background, var(--ion-background-color, #fff)) inset !important;
+}
+input:-webkit-autofill{
+    box-shadow: 0 0 0 30px var(--ion-item-background, var(--ion-background-color, #fff)) inset !important;
+    -webkit-text-fill-color: var(--ion-item-color, var(--ion-text-color, #000)) !important;
+}
+
+ion-label{
+    z-index: 10;
+}
+
+ // custom Alerts 
+.alert-warn {
+    .alert-wrapper{
+        .alert-head{
+            background-color: var(--custom-color-warn)
+        }
+        .alert-button{
+            color: var(--ion-color-warning);
+        }
+    }
+}
+
+.alert-danger {
+    .alert-wrapper{
+        .alert-head{
+            background-color: var(--custom-color-danger)
+        }
+        .alert-button{
+            color: var(--ion-color-danger);
+        }
+    }
+}
+
+.alert-success {
+    .alert-wrapper{
+        .alert-head{
+            background-color: var(--custom-color-success)
+        }
+        .alert-button{
+            color: var(--ion-color-success);
+        }
+    }
+}
+
+
+
+//custom Colors
+
+.ion-color-orange {
+    --ion-color-base: var(--ion-color-orange);
+    --ion-color-base-rgb: var(--ion-color-orange-rgb);
+    --ion-color-contrast: var(--ion-color-orange-contrast);
+    --ion-color-contrast-rgb: var(--ion-color-orange-contrast-rgb);
+    --ion-color-shade: var(--ion-color-orange-shade);
+    --ion-color-tint: var(--ion-color-orange-tint);
+  }
+
+//custom modals
+
+ion-modal.ubication-modal {
+    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+    --backdrop-opacity: var(--ion-backdrop-opacity, 0.32);
+    --width: 100%;
+    --height: 100%;
+  }

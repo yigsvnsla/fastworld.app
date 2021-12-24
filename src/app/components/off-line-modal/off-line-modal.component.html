@@ -1,0 +1,31 @@
+<ion-content>
+    <div class="body">
+        <ion-card>
+            <ion-card-content>
+                <ion-grid fixed>
+                    <ion-row>
+                        <ion-col style="display: flex; justify-content: center; align-items: center;" size="12">
+                            <img [src]="image">
+                        </ion-col>
+                        <ion-col size="12">
+                            <h1 class="ion-text-center">
+                                Ooops! Verifica tu conexion a Internet
+                            </h1>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col size="12">
+                            <ion-card-header class="ion-text-center">
+                                <ion-card-title>Una vez restablecido la conexion ingrese nuevamente</ion-card-title>
+                                <ion-button href="./auth" (click)="onClick()" expand="block" fill="clear" shape="round">
+                                    <ion-label>Reconectar</ion-label>
+                                </ion-button>
+                            </ion-card-header>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-card-content>
+
+        </ion-card>
+    </div>
+</ion-content>

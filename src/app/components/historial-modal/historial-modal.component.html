@@ -1,0 +1,212 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="onExit()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Encomienda #{{data.id}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button id="chip-popover">
+        <ion-icon slot="icon-only" name="menu"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-popover 
+      side="top" 
+      alignment="end" 
+      reference="trigger" 
+      trigger="chip-popover" 
+      [dismissOnSelect]="true"
+    >
+    <ng-template>
+      <ion-content>
+        <ion-item-group>
+          <ion-item [button]="true" [detail]="false" (click)="deleteItem()" >
+            <ion-label>Eliminar</ion-label>
+            <ion-icon color="orange" slot="start" name="trash"></ion-icon>
+          </ion-item>
+          <ion-item *ngIf="data.location.hasOwnProperty('goal')" [button]="true" [detail]="false" [href]="'https://www.google.com/maps/dir/' + data.location.start.location.lat + ',' + data.location.start.location.lng + '/' + data.location.goal.location.lat + ',' + data.location.goal.location.lng "  target="_blank" rel="noreferrer external">
+            <ion-label>Abrir Mapa</ion-label>
+            <ion-icon color="orange" slot="start" name="map"></ion-icon>
+          </ion-item>          
+        </ion-item-group>
+      </ion-content>
+    </ng-template>
+  </ion-popover>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+    <ion-item-group>
+      <ion-item-divider>
+        <ion-label>Informacion de la Encomienda</ion-label>
+      </ion-item-divider>
+      <ion-grid  class="ion-no-padding">
+        <ion-row>
+          <ion-col size="6">
+            <ion-item>
+              <ion-label>
+                <p>Fecha de Envio</p>
+                <h4>{{data.created_at | date:'short'}}</h4>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item>
+              <ion-label>
+                <p>Fecha de Entrega</p>
+                <h4>{{data.updated_at | date:'short'}}</h4>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item>
+              <ion-label>
+                <p>Tipo de Encomienda</p>
+                <h2>{{data.type}}</h2>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item>
+              <ion-label>
+                <p>Estado</p>
+                <h2>{{data.status | uppercase}}</h2>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item>
+              <ion-label>
+                <p>Costo de ruta</p>
+                <h2>{{data.price_route > '0' ? formatPrice(data.price_route) : 'Costo Cubierto'}}</h2>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item>
+              <ion-label>
+                <p>Contra-Entrega</p>
+                <h2>{{data.price > '0' ? formatPrice(data.price) : 'Transferencia'}}</h2>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item-group>
+
+    <ion-item-group *ngIf="data.driver != '' ">
+      <ion-item-divider>
+        <ion-label>Conductor #{{data.driver.id}}</ion-label>
+      </ion-item-divider>
+      <ion-grid fixed class="ion-no-padding">
+        <ion-row>
+          <ion-col size="7">
+            <ion-item lines="none">
+              <ion-label>
+                <p>Nombre</p>
+                <h4>{{data.driver.name}} {{data.driver.lastname}}</h4>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="5">
+            <ion-item lines="none">
+              <ion-label>
+                <p>Telefono</p>
+                <h4>{{data.driver.phone}}</h4>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item-group>
+    
+    <ion-item-group>
+      <ion-item-divider>
+        <ion-label>Remitente #{{data.client.id}}</ion-label>
+      </ion-item-divider>
+      <ion-grid fixed class="ion-no-padding">
+        <ion-row>
+          <ion-col size="7">
+            <ion-item lines="none">
+              <ion-label>
+                <p>Nombre</p>
+                <h4>{{data.client.name}} {{data.client.lastname}}</h4>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="5">
+            <ion-item lines="none">
+              <ion-label>
+                <p>Telefono</p>
+                <h4>{{data.client.phone}}</h4>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-item lines="none"> 
+        <ion-label class="ion-text-wrap">
+          <p>Direccion</p>
+          <h4>{{data.location.start.address}}</h4>
+        </ion-label>
+        <ion-buttons slot="end">
+          <ion-button  [href]="'https://maps.google.com/?q=' + data.location.start.location.lat + ',' + data.location.start.location.lng" target="_blank" rel="noreferrer external">
+            <ion-icon slot="icon-only" name="map"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+      <ion-item>
+        <ion-label class="ion-text-wrap">
+          <p>Indicaciones de Retiro</p>
+          <h4>{{data.location.start.indications ? data.location.start.indications : 'Sin Indicaciones'}}</h4>
+        </ion-label>
+      </ion-item>
+    </ion-item-group>
+
+    <ion-item-group *ngIf="data.location.hasOwnProperty('goal')">
+      <ion-item-divider>
+        <ion-label>Destinatario</ion-label>
+      </ion-item-divider>
+      <ion-grid fixed class="ion-no-padding">
+        <ion-row>
+          <ion-col size="7">
+            <ion-item lines="none">
+              <ion-label>
+                <p>Nombre</p>
+                <h4>{{data.user_name}}</h4>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="5">
+            <ion-item lines="none">
+              <ion-label>
+                <p>Telefono</p>
+                <h4>{{data.user_phone}}</h4>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-item lines="none"> 
+        <ion-label class="ion-text-wrap">
+          <p>Direccion</p>
+          <h4>{{data.location.goal.address}}</h4>
+        </ion-label>
+        <ion-buttons slot="end">
+          <ion-button  [href]="'https://maps.google.com/?q=' + data.location.goal.location.lat + ',' + data.location.goal.location.lng" target="_blank" rel="noreferrer external">
+            <ion-icon slot="icon-only" name="map"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+      <ion-item>
+        <ion-label class="ion-text-wrap">
+          <p>Indicaciones de Entrega</p>
+          <h4>{{data.location.goal.indications ? data.location.goal.indications : 'Sin Indicaciones'}}</h4>
+        </ion-label>
+      </ion-item>
+    </ion-item-group>
+
+   
+  </ion-list>
+</ion-content>
