@@ -79,7 +79,24 @@ export class ConectionsService {
   }
 
   async put(path: string, data) {
-    return <any>this.httpClient.put(`${environment.api}/${path}`, data, {headers: await this.headers()}).toPromise();
+    return new Promise<any>((resolve, reject) => {
+      this.toolsService.showLoading()
+        .then(async loading=>{
+          this.httpClient.put<any>(`${environment.api}/${path}`, data, {headers: await this.headers()})
+          .toPromise()
+          .then(res=>{
+            resolve(res)
+          })
+          .catch(error=>{
+            reject(error)
+            console.error('conectionService',error)
+          })
+          .finally(()=>{
+            loading.dismiss()
+          })
+        })
+          
+    })
   }
 
   async delete(path: string) {
@@ -176,7 +193,7 @@ export class ConectionsService {
 
   
 
-  async guest(data:{token:string,request?:any}) {
+  async guest(data:{token:string,location?:any,price_route?:string}) {
     return new Promise<any>((resolve, reject) => {
       this.toolsService.showLoading()
         .then(async loading=>{

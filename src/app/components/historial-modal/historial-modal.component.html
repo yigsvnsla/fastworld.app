@@ -95,8 +95,8 @@
       </ion-grid>
     </ion-item-group>
 
-    <ion-item-group *ngIf="data.driver != '' ">
-      <ion-item-divider>
+    <ion-item-group *ngIf="data.driver != '' && data.driver != null ">
+      <ion-item-divider >
         <ion-label>Conductor #{{data.driver.id}}</ion-label>
       </ion-item-divider>
       <ion-grid fixed class="ion-no-padding">

@@ -85,8 +85,8 @@ export class MisEncomiendasComponent implements OnInit {
       cssClass: 'alert-success',
       inputs:[
         {
-          name: 'companion-code',
-          id: 'companion-code',
+          name: 'code',
+          id: 'code',
           type: 'text',
           placeholder: 'Codigo del Compañero'
         },
@@ -98,8 +98,25 @@ export class MisEncomiendasComponent implements OnInit {
           cssClass: 'secondary',
         }, {
           text: 'Confirmar',
-          handler: async () => {
-
+          handler: async (val) => {
+            this.conections.post('products/send',{driver:(await this.localStorage.get(environment.cookieTag)).document.dni,product:val})
+              .then(response=>{
+                console.log(response);
+              })
+              .catch(err=>{
+                this.tools.showAlert({
+                  cssClass:'alert-warm',
+                  header:'Alerta ⚠',
+                  subHeader:'este compañero no existe porfavor intenta de nuevo 🤷‍♂️',
+                  buttons:[{
+                    text:'ok',
+                    role:'success',
+                    handler:async ()=>{
+                      this.transfer(index)
+                    }
+                  }]
+                })
+              })
           }
         }
       ]

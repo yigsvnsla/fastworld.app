@@ -25,6 +25,8 @@ export class HistorialModalComponent implements OnInit {
   }
 
   async ngOnInit() {
+    console.log(this.data);
+    
   }
 
   onExit(){

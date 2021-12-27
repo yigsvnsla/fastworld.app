@@ -116,7 +116,7 @@
     
     export interface Ubication {
         address?:   string;
-        location?:  Position | google.maps.LatLng | google.maps.LatLngLiteral;
+        location?:  Position ;
         indications?: string;
     }
 

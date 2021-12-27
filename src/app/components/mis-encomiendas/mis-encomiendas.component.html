@@ -118,7 +118,7 @@
               <ion-icon slot="start" name="walk"></ion-icon>
 
             </ion-item>
-            <ng-container *ngIf="item.location.hasOwnProperty('goal')">
+            <ng-container *ngIf="item.location.hasOwnProperty('goal') && item.location.goal != undefined ">
               <ion-item-divider>
                 <ion-label>Indicaciones de Entrega</ion-label>
               </ion-item-divider>
