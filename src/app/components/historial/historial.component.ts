@@ -5,6 +5,7 @@ import { ConectionsService } from './../../services/conections.service';
 import { Component, OnInit } from '@angular/core';
 import { Products } from 'src/app/interfaces/interfaces';
 import { HistorialModalComponent } from '../historial-modal/historial-modal.component';
+import { formatCurrency } from '@angular/common';
 
 @Component({
   selector: 'app-historial',
@@ -27,13 +28,14 @@ export class HistorialComponent implements OnInit {
     this.load((await this.localStorage.get(environment.cookieTag)).role)
   }
 
-  openModal(item:Products){
+  async openModal(item:Products){
     this.tools.showModal({
       component:HistorialModalComponent,
       backdropDismiss:false,
       keyboardClose:true,
       componentProps:{
-        data:item
+        data:item,
+        role:(await this.localStorage.get(environment.cookieTag)).role
       }
     })
   }
@@ -58,4 +60,9 @@ export class HistorialComponent implements OnInit {
         (event as CustomEvent).detail.complete()
       })
   } 
+
+
+  formatPrice(value: number | string){
+    return formatCurrency( typeof value == 'string' ? Number(value) : value, 'en-us', '$')
+  }
 }

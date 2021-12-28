@@ -15,7 +15,7 @@ import { ModalController } from '@ionic/angular';
 export class HistorialModalComponent implements OnInit {
 
   @Input() data : any 
-
+  @Input() role: string
 
   constructor(
     private modal:ModalController,

@@ -99,6 +99,7 @@
         updated_at?:  Date;
         timeout?:     Date;
         price_route?: number;
+        distance?: string
     }
     
     export interface Client {

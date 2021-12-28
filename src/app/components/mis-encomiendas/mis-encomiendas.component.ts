@@ -8,6 +8,7 @@ import { Products } from './../../interfaces/interfaces';
 import { Component, OnInit } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { es } from 'date-fns/locale';
+import { formatCurrency } from '@angular/common';
 
 @Component({
   selector: 'app-mis-encomiendas',
@@ -99,7 +100,9 @@ export class MisEncomiendasComponent implements OnInit {
         }, {
           text: 'Confirmar',
           handler: async (val) => {
-            this.conections.post('products/send',{driver:(await this.localStorage.get(environment.cookieTag)).document.dni,product:val})
+            console.log({driver:val.code, product:index.toString()});
+            
+            this.conections.post('products/send',{driver:val.code, product:index.toString()})
               .then(response=>{
                 console.log(response);
               })
@@ -130,8 +133,8 @@ export class MisEncomiendasComponent implements OnInit {
       cssClass: 'alert-success',
       inputs:[
         {
-          name: 'paragraph',
-          id: 'paragraph',
+          name: 'text',
+          id: 'text',
           type: 'textarea',
           placeholder: 'Describe lo sucedido aqui.'
         },
@@ -143,8 +146,8 @@ export class MisEncomiendasComponent implements OnInit {
           cssClass: 'secondary',
         }, {
           text: 'Confirmar',
-          handler: async () => await this.conections
-            .put(`products/${index}`, {status:'entregado'})
+          handler: async (val) => await this.conections
+            .put(`products/${index}`, {status:'entregado', message:val.text})
             .then( response => {
               if(response.id){
                 this.packagesList = [...this.packagesList.filter( element => {
@@ -164,8 +167,8 @@ export class MisEncomiendasComponent implements OnInit {
       subHeader:'Si hay un inconvenites con el envio puedes reportalo 😉',
       inputs:[
         {
-          name: 'paragraph',
-          id: 'paragraph',
+          name: 'text',
+          id: 'text',
           type: 'textarea',
           placeholder: 'Describe lo sucedido aqui.'
         },
@@ -177,8 +180,8 @@ export class MisEncomiendasComponent implements OnInit {
         }, {
           text: 'Reportar',
           role: 'success',
-          handler: async () => await this.conections
-            .put(`products/${index}`, {status:'rechazado'})
+          handler: async (val) => await this.conections
+            .put(`products/${index}`, {status:'rechazado', message:val.text})
             .then( response => {
               if(response.id){
                 this.packagesList = [...this.packagesList.filter( element => {
@@ -192,6 +195,10 @@ export class MisEncomiendasComponent implements OnInit {
 
   async goTo(){
     this.router.navigateByUrl(`/menu/${(await this.localStorage.get(environment.cookieTag)).role}/encomienda`)
+  }
+
+  formatPrice(value: number | string){
+    return formatCurrency( typeof value == 'string' ? Number(value) : value, 'en-us', '$')
   }
 
 }

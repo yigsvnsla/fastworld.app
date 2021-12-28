@@ -38,10 +38,13 @@
     <ion-grid *ngIf="list.length > 0" class="ion-no-padding" >
       <ion-list>
       <ion-row  *ngFor="let i of list" button (click)="openModal(i)">
+        <ion-item-divider>
+          <ion-label>Encomienda #{{i.id}}</ion-label>
+        </ion-item-divider>
         <ion-col size="7" >
           <ion-item class="ion-text-nowrap" lines="none" >
             <ion-label>
-              <p>Encomienda #{{i.id}}</p>
+              <p>{{i.status |uppercase}}</p>
               <h6>{{i.location.start.address || 'Sin Ubicacion'}}</h6>
               <h6>{{i.location.hasOwnProperty('goal')? i.location.goal.address : "Sin Ubicacion"}}</h6>
             </ion-label>
@@ -52,7 +55,7 @@
             <ion-label>
               <p>{{i.created_at | date:'shortDate' }}</p>
               <h6>{{i.type}}</h6>
-              <h6>{{i.price > 0 ? i.price : 'Transferencia'}}</h6>
+              <h6>{{i.price > 0 ? formatPrice(i.price): 'Transferencia'}}</h6>
             </ion-label>
           </ion-item>
         </ion-col>

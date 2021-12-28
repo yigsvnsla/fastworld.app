@@ -77,11 +77,11 @@ export class DeliveryEncomiendasComponent implements OnInit {
       // Dependiendo del status que devuelve el backend, se debe mostrar su correspondiente aviso
       switch (response.status) {
         // Code 200, "Usuario autorizado para obtener la encomienda"
-        case "200":
+        case 200:
           this.packagesList.splice(i, 1);
           break;
         // Code 403, "Usuario no autorizado para obtener la encomienda, debido a limite alcanzado"
-        case "403":
+        case 403:
           this.tools.showAlert({
             backdropDismiss:false,
             header:'Alerta ⚠',

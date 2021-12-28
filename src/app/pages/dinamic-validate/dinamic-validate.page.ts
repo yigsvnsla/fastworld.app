@@ -64,16 +64,6 @@ export class DinamicValidatePage implements OnInit {
         return result
       })
       .then(result => {
-        if ( typeof this.package.client.membership == 'object'){
-          this.conections
-          .guest({ 
-            token: this.activeRoute.snapshot.paramMap.get('token'), 
-            location: this.position, 
-          })
-        }
-        if (typeof this.package.client.membership == 'string') {
-          // si el cliente no tiene membrecia,
-          //tomar la ubicacion de inicio desde la variable global y proceder hacer el calculo
           this.mapDirectionsService
             .route({
               origin: result.geometry.location,
@@ -83,15 +73,29 @@ export class DinamicValidatePage implements OnInit {
             })
             .subscribe(({ result, status }) => {
               if (status == google.maps.DirectionsStatus.OK) {
-                this.conections
+                if (typeof this.package.client.membership == 'string') {
+                  // si el cliente no tiene membrecia,
+                  //tomar la ubicacion de inicio desde la variable global y proceder hacer el calculo
+                  this.conections
                   .guest({ 
                     token: this.activeRoute.snapshot.paramMap.get('token'), 
                     location: this.position, 
-                    price_route: (Math.round(Number(result.routes[0].legs[0].distance.text.replace(/km/, '').replace(/,/, '.').trim())) * environment.formuleConst.kilometraje + environment.formuleConst.arranque).toString()  
+                    price_route: (Math.round(Number(result.routes[0].legs[0].distance.text.replace(/km/, '').replace(/,/, '.').trim())) * environment.formuleConst.kilometraje + environment.formuleConst.arranque).toString(),
+                    distance: result.routes[0].legs[0].distance.text 
                   })
+                }
+
+                if ( typeof this.package.client.membership == 'object'){
+                  this.conections
+                  .guest({ 
+                    token: this.activeRoute.snapshot.paramMap.get('token'), 
+                    location: this.position, 
+                    distance: result.routes[0].legs[0].distance.text 
+                  })
+                }
               }
             })
-        }
+        
       })
   }
 

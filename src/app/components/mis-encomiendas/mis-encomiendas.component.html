@@ -8,7 +8,7 @@
 </ion-header>
 <ion-content>
   
-  <ion-fab  (click)="goTo()" vertical="top" horizontal="end" edge slot="fixed">
+  <ion-fab *ngIf="this.packagesList.length <= 0" (click)="goTo()" vertical="end" horizontal="end" slot="fixed">
     <ion-fab-button color="orange">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
@@ -40,7 +40,7 @@
             <p>Tipo de Encomienda</p>
             <ion-card-title>{{item.type}}</ion-card-title>
           </ion-label>
-          <ion-chip id="chip-popover" color="orange"  outline="true">
+          <ion-chip [id]="i" color="orange"  outline="true">
             <ion-label>{{item.id}}</ion-label>
             <ion-icon name="cube"></ion-icon>
           </ion-chip>
@@ -48,22 +48,23 @@
             side="top" 
             alignment="end" 
             reference="trigger" 
-            trigger="chip-popover" 
+            [trigger]="i" 
             [dismissOnSelect]="true"
             *ngIf="this.role == 'conductor' "
           >
             <ng-template>
               <ion-content>
                 <ion-item-group>
-                  <ion-item [button]="true" [detail]="false" (click)="transfer(i)" >
+                  <ion-item [button]="true" [detail]="false"  >
+                    <!-- (click)="transfer(item.id)" -->
                     <ion-label>Traspasar</ion-label>
                     <ion-icon slot="start" name="share-social"></ion-icon>
                   </ion-item>
-                  <ion-item [button]="true" [detail]="false"  (click)="delivered(i)" >
+                  <ion-item [button]="true" [detail]="false"  (click)="delivered(item.id)" >
                     <ion-label>Entregar</ion-label>
                     <ion-icon slot="start" name="checkmark"></ion-icon>
                   </ion-item>
-                  <ion-item [button]="true" [detail]="false" (click)="report(i)" >
+                  <ion-item [button]="true" [detail]="false" (click)="report(item.id)" >
                     <ion-label>Reportar</ion-label>
                     <ion-icon slot="start" name="alert"></ion-icon>
                   </ion-item>
@@ -83,8 +84,29 @@
             Tiempo de Retiro: {{this.formatDistanceStrict(item.timeout,item.created_at)}}
           </p>
         </ion-card-subtitle>
-      
     </ion-card-header>
+    <ion-card-content class="ion-no-padding">
+      <ion-grid >
+        <ion-row>
+          <ion-col size="6">
+            <ion-item>
+              <ion-label>
+                <p>Costo de ruta {{item.distance}}</p>
+                <h2>{{item.price_route > 0 ? formatPrice(item.price_route) : 'Costo Cubierto'}}</h2>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="6">
+            <ion-item>
+              <ion-label>
+                <p>{{item.price > 0 ? 'Contra-Entrega' : 'Metodo de pago'}}</p>
+                <h2>{{item.price > 0 ? formatPrice(item.price) : 'Transferencia'}}</h2>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
     <ion-card-header class="ion-no-padding">
       <ion-accordion-group >
         <ion-accordion>

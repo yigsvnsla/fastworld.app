@@ -74,8 +74,8 @@ export class GenerarEncomiendaComponent implements OnInit {
           location: [null, [Validators.required]],
           indications: ['']
         }),
-
-      })
+      }),
+      distance:['']
     })
 
     // añadiendo informacion del cliente desde el localStorageService
@@ -212,6 +212,9 @@ export class GenerarEncomiendaComponent implements OnInit {
                 .subscribe(({ result, status }) => {
                   if (status == google.maps.DirectionsStatus.OK) {
                     this.kilometerRef = result.routes[0].legs[0].distance.text
+                    this.formPackage
+                      .get('distance')
+                      .setValue(result.routes[0].legs[0].distance.text)
                     this.formPackage
                       .get('price_route') // cambiar el input de strapi para que acepte numeros, y no una cadena de texto
                       .setValue((Math.round(Number(result.routes[0].legs[0].distance.text.replace(/km/, '').replace(/,/, '.').trim())) * environment.formuleConst.kilometraje + environment.formuleConst.arranque).toString())

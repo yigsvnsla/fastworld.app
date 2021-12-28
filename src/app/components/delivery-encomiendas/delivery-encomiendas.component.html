@@ -42,7 +42,7 @@
             <p>Tipo de Encomienda</p>
             <ion-card-title>{{item.type}}</ion-card-title>
           </ion-label>
-          <ion-chip id="chip-popover" color="orange"  outline="true">
+          <ion-chip [id]="i" color="orange"  outline="true">
             <ion-label>{{item.id}}</ion-label>
             <ion-icon name="cube"></ion-icon>
           </ion-chip>
@@ -50,7 +50,7 @@
             side="top" 
             alignment="end" 
             reference="trigger" 
-            trigger="chip-popover" 
+            [trigger]="i" 
             [dismissOnSelect]="true"
           >
             <ng-template>
