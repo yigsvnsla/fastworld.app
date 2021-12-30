@@ -82,7 +82,7 @@ export class GenerarEncomiendaComponent implements OnInit {
     this.membership = (await this.localStorage.get(environment.cookieTag)).membership;
     this.formPackage
       .get('client')
-      .setValue((await this.localStorage.get(environment.cookieTag)).email)    
+      .setValue((await this.localStorage.get(environment.cookieTag)).email)
 
 
 
@@ -142,12 +142,12 @@ export class GenerarEncomiendaComponent implements OnInit {
             role: 'success',
             handler: async () => {
               console.log(this.formPackage.value);
-              
+
               this.conection
                 .post('products', this.formPackage.value)
                 .then(response => {
                   console.log(response);
-                  
+
                   this.tools
                     .showModal({
                       component: ShareUrlModalComponent,
