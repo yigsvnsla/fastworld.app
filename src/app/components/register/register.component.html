@@ -10,9 +10,9 @@
 </ion-header>
 <ion-content>
   <ion-grid
-    fixed 
+    fixed
     class="ion-text-center"
-    *ngIf="this.formRegister.get('role').value == '' " 
+    *ngIf="this.formRegister.get('role').value == '' "
     style="display: flex; height: 100%; align-items: center;justify-content: center;"
     >
     <ion-row class="ion-align-self-center">
@@ -40,7 +40,7 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <form 
+  <form
     (ngSubmit)="onSubmit(this.formRegister)"
     *ngIf="this.formRegister.get('role').value != '' "
     [formGroup]="this.formRegister" class="ion-text-center"
@@ -106,12 +106,12 @@
               </ion-item-divider>
               <ion-item button (click)="fileDni.click();">
                 <ion-label position="stacked">Imagen Documento</ion-label>
-                <input id="dniRef" #fileDni type="file" accept="image/*" (change)="imgHandler($event)">
+                <input formGroupName="image_dni" id="dniRef" #fileDni type="file" accept="image/*" (change)="imgHandler($event)">
                 <h6>{{ "Seleccione un archivo."}}</h6>
               </ion-item>
               <ion-item button (click)="fileLicence.click()">
                 <ion-label position="stacked">Imagen Licencia</ion-label>
-                <input id="licenceRef" #fileLicence type="file" accept="image/*" (change)="imgHandler($event)">
+                <input formGroupName="image_license" id="licenceRef" #fileLicence type="file" accept="image/*" (change)="imgHandler($event)">
                 <h6>{{ "Seleccione un archivo."}}</h6>
               </ion-item>
             </ion-item-group>

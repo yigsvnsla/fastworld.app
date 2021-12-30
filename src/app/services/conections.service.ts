@@ -26,10 +26,10 @@ export class ConectionsService {
 
   }
 
-  headers = async (content?: any)=>{    
+  headers = async (content?: any)=>{
     return {
-      'Content-Type': content ? content : 'application/json',
-      'Authorization': `Bearer ${this.cookie.get(environment.cookieTag)}`
+      /* 'Content-Type': content ? content : 'application/json',
+      'Authorization': `Bearer ${this.cookie.get(environment.cookieTag)}` */
     }
   }
 
@@ -95,7 +95,7 @@ export class ConectionsService {
             loading.dismiss()
           })
         })
-          
+
     })
   }
 
@@ -166,13 +166,13 @@ export class ConectionsService {
                 this.cookie.set(environment.cookieTag, { jwt: res.jwt, email:res.email });
                 this.httpClient.get<User>(`${environment.api}/clients/${res.email}`, {headers: await this.headers()})
                   .toPromise()
-                  .then((data)=>{                    
+                  .then((data)=>{
                     this.localStorageService
                       .set(environment.cookieTag, data)
                       .then(()=>{
                         this.router.navigateByUrl(`/menu/${data.role}`)
                       });
-                    
+
                   })
               }
             })
@@ -180,7 +180,7 @@ export class ConectionsService {
               alert.dismiss()
             })
     })
-  
+
   }
 
   async logOut() {
@@ -191,7 +191,7 @@ export class ConectionsService {
     this.router.navigateByUrl('auth');
   }
 
-  
+
 
   async guest(data:{token:string,distance?:string,location?:any,price_route?:string}) {
     return new Promise<any>((resolve, reject) => {
@@ -224,7 +224,7 @@ export class ConectionsService {
       .subscribe(async net=>{
         if(net){
           console.log('dispositivo fisico conectado a internet');
-          // mejorar deteccion de estado de conexion a internet 
+          // mejorar deteccion de estado de conexion a internet
 
               // this.httpClient.get<any>(`${environment.api}/products`, {
               //   headers: await this.headers(),
@@ -239,12 +239,12 @@ export class ConectionsService {
               //       switch (response.status) {
               //         case 200:
               //           console.log('servidor encendido');
-              //           console.log(response.status); 
-                                                    
+              //           console.log(response.status);
+
               //           break;
               //         case 404:
               //           console.error('404 not found');
-              //           console.log(response.status); 
+              //           console.log(response.status);
               //           break
               //         default:
               //           break;
@@ -252,7 +252,7 @@ export class ConectionsService {
               //     },
               //     err=>{
               //       console.error('error ping',err);
-              //       // console.log(err.status); 
+              //       // console.log(err.status);
 
               //     }
               //   )

@@ -29,27 +29,40 @@ export class RegisterComponent implements OnInit {
         city: ['',[Validators.required]],
         address: ['',[Validators.required]],
         vehicle: this.formBuilder.group({
-          type: [null,[Validators.required]], 
+          type: [null,[Validators.required]],
           enroller: [null,[Validators.required]],
           maker: [null,[Validators.required]],
           model: [null,[Validators.required]],
           year: [null,[Validators.required, Validators.maxLength(4), Validators.minLength(4)]],
           color: [null,[Validators.required]]
-        })
-      })
+        }),
+        image_dni: [<File>{ name: '' }],
+        image_license: [<File>{ name: '' }]
+      }),
     })
   }
 
   onSubmit(form:FormGroup){
-    console.log(form.value);
-    
+    const {document, role} = form.value
+    console.log(form.value)
+    let dni = document['image_dni'];
+    let license = document['image_license']
+    let request: FormData = new FormData();
+    request.append('data', JSON.stringify(form.value))
+    request.append( 'files.dni_photo', dni, new Date().getTime().toString() );
+    if (role == 'conductor') {
+      request.append('files.license_driver', license, new Date().getTime().toString() );
+    }
+    console.log(request);
   }
+
+
 
   public async imgHandler(event: Event) {
     // si el evento tiene un archivo y si esta en el indice
     if (event.target['files'] && event.target['files'][0]) {
       // formControl mediante la toma del id del target busca y establece el valor del archivo
-   
+
       //   this.formControl.controls['documents']['controls'][
     //     event.target['id']
     //   ].setValue(event.target['files'][0]);
