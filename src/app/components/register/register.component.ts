@@ -62,16 +62,7 @@ export class RegisterComponent implements OnInit {
     // si el evento tiene un archivo y si esta en el indice
     if (event.target['files'] && event.target['files'][0]) {
       // formControl mediante la toma del id del target busca y establece el valor del archivo
-
-      //   this.formControl.controls['documents']['controls'][
-    //     event.target['id']
-    //   ].setValue(event.target['files'][0]);
-    //   //frozamos a el elemento del DOM a pintar el nuevo valor del archivo mediante el evento generado por la target
-    //   event['path'][6]['children'][event.target['id']]['children'][2].src =
-    //     await this.imgReader(
-    //       this.formControl.controls['documents']['controls'][event.target['id']]
-    //         .value
-    //     );
+      this.formRegister.get('document').get(event.target['id']).setValue(event.target['files'][0])
     }
   }
 
