@@ -58,34 +58,38 @@ export class GenerarEncomiendaComponent implements OnInit {
   }
 
   async ngOnInit() {
-    // Creando instancia de el formulario de la encomienda
-    this.formPackage = this.formBuilder.group({
-      type: ['', [Validators.required]],
-      price: [0, [Validators.required]],
-      timeout: ['', [Validators.required]],
-      // ajustar patron regex para validar el input "UserName" Validators.pattern(/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/g)
-      user_name: ['', [Validators.required,]],
-      user_phone: ['', [Validators.required, Validators.pattern(/^[0-9]*$/g)]],
-      client: ['', [Validators.required]],
-      price_route: [0],
-      location: this.formBuilder.group({
-        start: this.formBuilder.group({
-          address: ['', [Validators.required]],
-          location: [null, [Validators.required]],
-          indications: ['']
-        }),
-      }),
-      distance:['']
-    })
-
-    // añadiendo informacion del cliente desde el localStorageService
-    this.membership = (await this.localStorage.get(environment.cookieTag)).membership;
-    this.formPackage
-      .get('client')
-      .setValue((await this.localStorage.get(environment.cookieTag)).email)    
 
 
+  }
 
+  async ionViewWillEnter() {
+        // Creando instancia de el formulario de la encomienda
+        this.formPackage = this.formBuilder.group({
+          type: ['', [Validators.required]],
+          price: [0, [Validators.required]],
+          timeout: ['', [Validators.required]],
+          // ajustar patron regex para validar el input "UserName" Validators.pattern(/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/g)
+          user_name: ['', [Validators.required,]],
+          user_phone: ['', [Validators.required, Validators.pattern(/^[0-9]*$/g)]],
+          client: ['', [Validators.required]],
+          price_route: [0],
+          location: this.formBuilder.group({
+            start: this.formBuilder.group({
+              address: ['', [Validators.required]],
+              location: [null, [Validators.required]],
+              indications: ['']
+            }),
+          }),
+          distance:['']
+        })
+    
+        // añadiendo informacion del cliente desde el localStorageService
+        this.membership = (await this.localStorage.get(environment.cookieTag)).membership;
+        this.formPackage
+          .get('client')
+          .setValue((await this.localStorage.get(environment.cookieTag)).email)    
+    
+    
   }
 
   async onSubmit(form: FormGroup) {
