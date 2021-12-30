@@ -146,12 +146,12 @@ export class GenerarEncomiendaComponent implements OnInit {
             role: 'success',
             handler: async () => {
               console.log(this.formPackage.value);
-              
+
               this.conection
                 .post('products', this.formPackage.value)
                 .then(response => {
                   console.log(response);
-                  
+
                   this.tools
                     .showModal({
                       component: ShareUrlModalComponent,
