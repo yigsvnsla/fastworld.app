@@ -56,8 +56,6 @@ export class RegisterComponent implements OnInit {
     console.log(request);
   }
 
-
-
   public async imgHandler(event: Event) {
     // si el evento tiene un archivo y si esta en el indice
     if (event.target['files'] && event.target['files'][0]) {
