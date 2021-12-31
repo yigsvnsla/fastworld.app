@@ -30,7 +30,7 @@ export class RegisterComponent implements OnInit {
         dni: ['',[Validators.required,Validators.minLength(8), Validators.maxLength(9)]],
         city: ['',[Validators.required]],
         address: ['',[Validators.required]],
-        vehicle: this.formBuilder.group({
+        vehicles: this.formBuilder.group({
           type: [null,[Validators.required]],
           enroller: [null,[Validators.required]],
           maker: [null,[Validators.required]],
@@ -41,7 +41,7 @@ export class RegisterComponent implements OnInit {
         image_dni: [<File>{ name: '' }],
         image_license: [<File>{ name: '' }]
       }),
-    })
+    })    
   }
 
   async onSubmit(form:FormGroup){
@@ -57,6 +57,7 @@ export class RegisterComponent implements OnInit {
 
 
     console.log(request);
+    console.log(this.formRegister.value);
     
     await this.conection.auth(request);
   }
