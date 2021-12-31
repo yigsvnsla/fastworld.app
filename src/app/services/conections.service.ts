@@ -162,20 +162,20 @@ export class ConectionsService {
                   ]
                 })
               } else if (res.status == '1015') {
+
+                // Code here...
+
+                
               } else {
                 this.cookie.set(environment.cookieTag, { jwt: res.jwt, email:res.email });
                 this.httpClient.get<User>(`${environment.api}/clients/${res.email}`, {headers: await this.headers()})
                   .toPromise()
                   .then((data)=>{
-                    if(data['role'] == 'cliente'){
-                      this.localStorageService
+                    this.localStorageService
                       .set(environment.cookieTag, data)
                       .then(()=>{
                         this.router.navigateByUrl(`/menu/${data.role}`)
                       });
-                    }else{
-                      // Maneja cuando el registro sea conductor
-                    }
                   })
               }
             })
