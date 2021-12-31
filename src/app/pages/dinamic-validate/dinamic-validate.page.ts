@@ -48,10 +48,10 @@ export class DinamicValidatePage implements OnInit {
     this.conections
       .guest({ token: this.activeRoute.snapshot.paramMap.get('token') })
       .then(response => {
-        this.package = response
+        const { product, client} = response
+        this.package = {name: product['user_name'], phone: product['user_phone'], product, client}
+        console.log(response)
       });
-
-
 
   }
 
@@ -67,26 +67,26 @@ export class DinamicValidatePage implements OnInit {
           this.mapDirectionsService
             .route({
               origin: result.geometry.location,
-              destination: this.package.package.location.start.location, // tomar ubicacion desde el response del guest
+              destination: this.package.product.location.start.location, // tomar ubicacion desde el response del guest
               travelMode: google.maps.TravelMode.DRIVING,
               unitSystem: google.maps.UnitSystem.METRIC
             })
-            .subscribe(({ result, status }) => {
+            .subscribe(async ({ result, status }) => {
               if (status == google.maps.DirectionsStatus.OK) {
-                if (typeof this.package.client.membership == 'string') {
+                if (this.package.client.membership == null) {
                   // si el cliente no tiene membrecia,
                   //tomar la ubicacion de inicio desde la variable global y proceder hacer el calculo
-                  this.conections
+                 console.log(await this.conections
                   .guest({ 
                     token: this.activeRoute.snapshot.paramMap.get('token'), 
                     location: this.position, 
                     price_route: (Math.round(Number(result.routes[0].legs[0].distance.text.replace(/km/, '').replace(/,/, '.').trim())) * environment.formuleConst.kilometraje + environment.formuleConst.arranque).toString(),
                     distance: result.routes[0].legs[0].distance.text 
-                  })
+                  }))
                 }
 
-                if ( typeof this.package.client.membership == 'object'){
-                  this.conections
+                if ( typeof this.package.client.membership == 'object' && this.package.client.membership != null){
+                  await this.conections
                   .guest({ 
                     token: this.activeRoute.snapshot.paramMap.get('token'), 
                     location: this.position, 
