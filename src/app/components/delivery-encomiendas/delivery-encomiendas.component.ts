@@ -74,6 +74,7 @@ export class DeliveryEncomiendasComponent implements OnInit {
       product: item.id
     })
     .then(response=>{
+      console.log(response)
       // Dependiendo del status que devuelve el backend, se debe mostrar su correspondiente aviso
       switch (response.status) {
         // Code 200, "Usuario autorizado para obtener la encomienda"
