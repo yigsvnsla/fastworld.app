@@ -125,9 +125,8 @@ export class ConectionsService {
         this.httpClient.post<Auth>(`${environment.api}/clients/auth`, data)
           .toPromise()
           .then(async (res) => {
-
-            console.log(res);
-            switch (res.status) {
+            console.log(res)
+            switch (res.status.toString()) {
               case '404':
                 this.toolsService.showAlert({
                   header: 'Correo o Contraseña Invalidos 🚫',

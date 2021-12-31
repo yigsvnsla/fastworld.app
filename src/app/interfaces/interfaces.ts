@@ -81,7 +81,7 @@
     export interface Auth {
         email?: string,
         jwt?: string,
-        status?:string,
+        status?:number,
         message?: string
       }
 
@@ -101,7 +101,7 @@
         price_route?: number;
         distance?: string
     }
-    
+
     export interface Client {
         id?:       number;
         name?:     string;
@@ -109,12 +109,12 @@
         email?:    string;
         phone?:    string;
     }
-    
+
     export interface ProductsLocation {
         goal?:  Ubication;
         start?: Ubication;
     }
-    
+
     export interface Ubication {
         address?:   string;
         location?:  Position ;
@@ -126,4 +126,3 @@
         lng?: number;
         accuracy?:string
     }
-    
