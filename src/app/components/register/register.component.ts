@@ -54,6 +54,10 @@ export class RegisterComponent implements OnInit {
     if (role == 'conductor') {
       request.append('files.license_driver', license, new Date().getTime().toString() );
     }
+
+
+    console.log(request);
+    
     await this.conection.auth(request);
   }
 

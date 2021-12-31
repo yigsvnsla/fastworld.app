@@ -7,7 +7,7 @@ import { CookiesService } from './cookies.service';
 import { Router } from '@angular/router';
 import { Auth, User } from '../interfaces/interfaces'
 import { Socket } from 'ngx-socket-io';
-import { fromEvent, interval, merge, Observable, Observer} from 'rxjs';
+import { fromEvent, interval, merge, Observable, Observer } from 'rxjs';
 import { first, map, retry } from "rxjs/operators";
 import { OffLineModalComponent } from '../components/off-line-modal/off-line-modal.component';
 @Injectable({
@@ -17,16 +17,16 @@ export class ConectionsService {
 
   constructor(
     private socket: Socket,
-    private httpClient:HttpClient,
-    private cookie : CookiesService,
-    private toolsService:ToolsService,
-    private localStorageService:LocalStorageService,
-    private router:Router,
+    private httpClient: HttpClient,
+    private cookie: CookiesService,
+    private toolsService: ToolsService,
+    private localStorageService: LocalStorageService,
+    private router: Router,
   ) {
 
   }
 
-  headers = async (content?: any)=>{
+  headers = async (content?: any) => {
     return {
       /* 'Content-Type': content ? content : 'application/json',
       'Authorization': `Bearer ${this.cookie.get(environment.cookieTag)}` */
@@ -39,39 +39,39 @@ export class ConectionsService {
   async get(path: string) {
     return new Promise<any>((resolve, reject) => {
       this.toolsService.showLoading()
-        .then(async loading=>{
+        .then(async loading => {
           this.httpClient.get<any>(`${environment.api}/${path}`, {
             headers: await this.headers(),
           })
             .toPromise()
-            .then(res=>{
+            .then(res => {
               resolve(res)
             })
-            .catch(error=>{
+            .catch(error => {
               reject(error)
-              console.error('conectionService',error)
+              console.error('conectionService', error)
             })
-            .finally(()=>{
+            .finally(() => {
               loading.dismiss()
             })
         })
     })
   }
 
-  async post(path: string, data:any) {
+  async post(path: string, data: any) {
     return new Promise<any>((resolve, reject) => {
       this.toolsService.showLoading()
-        .then(async loading=>{
-          this.httpClient.post(`${environment.api}/${path}`, data, {headers: await this.headers()})
+        .then(async loading => {
+          this.httpClient.post(`${environment.api}/${path}`, data, { headers: await this.headers() })
             .toPromise()
-            .then(res=>{
+            .then(res => {
               resolve(res)
             })
-            .catch(error=>{
+            .catch(error => {
               reject(error)
-              console.error('conectionService',error)
+              console.error('conectionService', error)
             })
-            .finally(()=>{
+            .finally(() => {
               loading.dismiss()
             })
         })
@@ -81,19 +81,19 @@ export class ConectionsService {
   async put(path: string, data) {
     return new Promise<any>((resolve, reject) => {
       this.toolsService.showLoading()
-        .then(async loading=>{
-          this.httpClient.put<any>(`${environment.api}/${path}`, data, {headers: await this.headers()})
-          .toPromise()
-          .then(res=>{
-            resolve(res)
-          })
-          .catch(error=>{
-            reject(error)
-            console.error('conectionService',error)
-          })
-          .finally(()=>{
-            loading.dismiss()
-          })
+        .then(async loading => {
+          this.httpClient.put<any>(`${environment.api}/${path}`, data, { headers: await this.headers() })
+            .toPromise()
+            .then(res => {
+              resolve(res)
+            })
+            .catch(error => {
+              reject(error)
+              console.error('conectionService', error)
+            })
+            .finally(() => {
+              loading.dismiss()
+            })
         })
 
     })
@@ -102,92 +102,107 @@ export class ConectionsService {
   async delete(path: string) {
     return new Promise<any>((resolve, reject) => {
       this.toolsService.showLoading()
-        .then(async loading=>{
+        .then(async loading => {
           this.httpClient.delete<any>(`${environment.api}/${path}`, { headers: await this.headers() })
             .toPromise()
-            .then(res=>{
+            .then(res => {
               resolve(res)
             })
-            .catch(error=>{
+            .catch(error => {
               reject(error)
-              console.error('conectionService',error)
+              console.error('conectionService', error)
             })
-            .finally(()=>{
+            .finally(() => {
               loading.dismiss()
             })
         })
     })
   }
 
-  async auth(data:any) {
-      this.toolsService.showLoading()
-        .then(alert=>{
-          this.httpClient.post<Auth>(`${environment.api}/clients/auth`, data)
-            .toPromise()
-            .then(async (res)=>{
-              if (res.status == '404'){
+  async auth(data: any) {
+    this.toolsService.showLoading()
+      .then(alert => {
+        this.httpClient.post<Auth>(`${environment.api}/clients/auth`, data)
+          .toPromise()
+          .then(async (res) => {
+
+            console.log(res);
+            switch (res.status) {
+              case '404':
                 this.toolsService.showAlert({
-                  header:'Correo o Contraseña Invalidos 🚫',
-                  subHeader:`Error ${res['status']}`,
-                  cssClass:'alert-danger',
-                  buttons:[
+                  header: 'Correo o Contraseña Invalidos 🚫',
+                  subHeader: `Error ${res['status']}`,
+                  cssClass: 'alert-danger',
+                  buttons: [{ text: 'ok', role: 'success' }]
+                })
+                break;
+              case '1005':
+                this.toolsService.showAlert({
+                  header: 'En Proceso 🕔',
+                  subHeader: `Estan verificado tu cuenta`,
+                  cssClass: 'alert-warn',
+                  buttons: [
                     {
-                      text:'ok',
-                      role:'success'
+                      text: 'ok',
+                      role: 'success'
                     }
                   ]
                 })
-              } else if (res.status == '1005') {
+                break;
+              case '1006':
                 this.toolsService.showAlert({
-                  header:'En Proceso 🕔',
-                  subHeader:`Estan verificado tu cuenta`,
-                  cssClass:'alert-warn',
-                  buttons:[
+                  header: 'Bloqueado 🚫',
+                  subHeader: `Has sido reportado, por favor comunicate con nosotros`,
+                  cssClass: 'alert-danger',
+                  buttons: [
                     {
-                      text:'ok',
-                      role:'success'
+                      text: 'ok',
+                      role: 'success'
                     }
                   ]
                 })
-              } else if (res.status == '1006') {
+                break;
+              case '1015':
                 this.toolsService.showAlert({
-                  header:'Bloqueado 🚫',
-                  subHeader:`Has sido reportado, por favor comunicate con nosotros`,
-                  cssClass:'alert-danger',
-                  buttons:[
+                  header: 'Registro con exito ✔',
+                  subHeader: `Tu cuenta comenzara un proceso de verificacion, te estaremos contactando`,
+                  cssClass: 'alert-success',
+                  buttons: [
                     {
-                      text:'ok',
-                      role:'success'
+                      text: 'ok',
+                      role: 'success'
                     }
                   ]
                 })
-              } else if (res.status == '1015') {
-              } else {
-                this.cookie.set(environment.cookieTag, { jwt: res.jwt, email:res.email });
-                this.httpClient.get<User>(`${environment.api}/clients/${res.email}`, {headers: await this.headers()})
+                break;
+
+              default:
+                this.cookie.set(environment.cookieTag, { jwt: res.jwt, email: res.email });
+                this.httpClient.get<User>(`${environment.api}/clients/${res.email}`, { headers: await this.headers() })
                   .toPromise()
-                  .then((data)=>{
-                    if(data['role'] == 'cliente'){
+                  .then((data) => {
+                    if (data['role'] == 'cliente') {
                       this.localStorageService
-                      .set(environment.cookieTag, data)
-                      .then(()=>{
-                        this.router.navigateByUrl(`/menu/${data.role}`)
-                      });
-                    }else{
+                        .set(environment.cookieTag, data)
+                        .then(() => {
+                          this.router.navigateByUrl(`/menu/${data.role}`)
+                        });
+                    } else {
                       // Maneja cuando el registro sea conductor
                     }
                   })
-              }
-            })
-            .finally(()=>{
-              alert.dismiss()
-            })
-    })
+                break;
+            }
+          })
+          .finally(() => {
+            alert.dismiss()
+          })
+      })
 
   }
 
   async logOut() {
-    this.socket.emit('quit', { email: (await this.localStorageService.get(environment.cookieTag)).email});
+    this.socket.emit('quit', { email: (await this.localStorageService.get(environment.cookieTag)).email });
     await this.localStorageService.remove(environment.cookieTag);
     this.cookie.remove(environment.cookieTag);
     this.socket.disconnect();
@@ -196,20 +211,20 @@ export class ConectionsService {
 
 
 
-  async guest(data:{token:string,distance?:string,location?:any,price_route?:string}) {
+  async guest(data: { token: string, distance?: string, location?: any, price_route?: string }) {
     return new Promise<any>((resolve, reject) => {
       this.toolsService.showLoading()
-        .then(async loading=>{
+        .then(async loading => {
           this.httpClient.post(`${environment.api}/products/guest`, data)
             .toPromise()
-            .then(res=>{
+            .then(res => {
               resolve(res)
             })
-            .catch(error=>{
+            .catch(error => {
               reject(error)
-              console.error('conectionService',error)
+              console.error('conectionService', error)
             })
-            .finally(()=>{
+            .finally(() => {
               loading.dismiss()
             })
         })
@@ -218,49 +233,49 @@ export class ConectionsService {
   }
 
   //TEMPORAL POST GUEST
-  async guestPost(path, data){
+  async guestPost(path, data) {
     return <any>this.httpClient.post(`${environment.api}/${path}`, data).toPromise();
   }
 
-  isOnline(){
+  isOnline() {
     this.getWindowInternet()
-      .subscribe(async net=>{
-        if(net){
+      .subscribe(async net => {
+        if (net) {
           console.log('dispositivo fisico conectado a internet');
           // mejorar deteccion de estado de conexion a internet
 
-              // this.httpClient.get<any>(`${environment.api}/products`, {
-              //   headers: await this.headers(),
-              //   observe:'response',
-              // })
-              //   .pipe(
-              //     retry(3),
-              //     first()
-              //   )
-              //   .subscribe(
-              //     response=>{
-              //       switch (response.status) {
-              //         case 200:
-              //           console.log('servidor encendido');
-              //           console.log(response.status);
+          // this.httpClient.get<any>(`${environment.api}/products`, {
+          //   headers: await this.headers(),
+          //   observe:'response',
+          // })
+          //   .pipe(
+          //     retry(3),
+          //     first()
+          //   )
+          //   .subscribe(
+          //     response=>{
+          //       switch (response.status) {
+          //         case 200:
+          //           console.log('servidor encendido');
+          //           console.log(response.status);
 
-              //           break;
-              //         case 404:
-              //           console.error('404 not found');
-              //           console.log(response.status);
-              //           break
-              //         default:
-              //           break;
-              //       }
-              //     },
-              //     err=>{
-              //       console.error('error ping',err);
-              //       // console.log(err.status);
+          //           break;
+          //         case 404:
+          //           console.error('404 not found');
+          //           console.log(response.status);
+          //           break
+          //         default:
+          //           break;
+          //       }
+          //     },
+          //     err=>{
+          //       console.error('error ping',err);
+          //       // console.log(err.status);
 
-              //     }
-              //   )
+          //     }
+          //   )
 
-        }else{
+        } else {
           console.log('dispositivo fisico sin internet');
           await this.toolsService.showModal({
             component: OffLineModalComponent,
