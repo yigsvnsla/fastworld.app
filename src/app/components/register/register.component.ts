@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
+import { ConectionsService } from './../../services/conections.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -12,7 +13,8 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private location:Location
+    private location:Location,
+    private conection: ConectionsService
   ) { }
 
   ngOnInit() {
@@ -42,18 +44,17 @@ export class RegisterComponent implements OnInit {
     })
   }
 
-  onSubmit(form:FormGroup){
+  async onSubmit(form:FormGroup){
     const {document, role} = form.value
-    console.log(form.value)
     let dni = document['image_dni'];
     let license = document['image_license']
     let request: FormData = new FormData();
     request.append('data', JSON.stringify(form.value))
-    request.append( 'files.dni_photo', dni, new Date().getTime().toString() );
+    request.append('files.dni_photo', dni, new Date().getTime().toString() );
     if (role == 'conductor') {
       request.append('files.license_driver', license, new Date().getTime().toString() );
     }
-    console.log(request);
+    await this.conection.auth(request);
   }
 
   public async imgHandler(event: Event) {

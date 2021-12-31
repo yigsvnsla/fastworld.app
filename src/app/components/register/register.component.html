@@ -107,12 +107,12 @@
               <ion-item button (click)="fileDni.click();">
                 <ion-label position="stacked">Imagen Documento</ion-label>
                 <input formGroupName="image_dni" id="image_dni" #fileDni type="file" accept="image/*" (change)="imgHandler($event)">
-                <h6>{{ this.formRegister.get('document').get("image_dni").value.name || "Seleccione un archivo."}}</h6>
+                <!-- <h6>{{ this.formRegister.get('document').get("image_dni").value.name || "Seleccione un archivo."}}</h6> -->
               </ion-item>
               <ion-item button (click)="fileLicence.click()" *ngIf="this.formRegister.get('role').value == 'conductor'">
                 <ion-label position="stacked">Imagen Licencia</ion-label>
                 <input formGroupName="image_license" id="image_license" #fileLicence type="file" accept="image/*" (change)="imgHandler($event)">
-                <h6>{{ this.formRegister.get('document').get("image_license")['name'].value.name || "Seleccione un archivo."}}</h6>
+                <!-- <h6>{{ this.formRegister.get('document').get("image_license")['name'].value.name || "Seleccione un archivo."}}</h6> -->
               </ion-item>
             </ion-item-group>
           </ion-col>

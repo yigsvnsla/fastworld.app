@@ -167,12 +167,15 @@ export class ConectionsService {
                 this.httpClient.get<User>(`${environment.api}/clients/${res.email}`, {headers: await this.headers()})
                   .toPromise()
                   .then((data)=>{
-                    this.localStorageService
+                    if(data['role'] == 'cliente'){
+                      this.localStorageService
                       .set(environment.cookieTag, data)
                       .then(()=>{
                         this.router.navigateByUrl(`/menu/${data.role}`)
                       });
-
+                    }else{
+                      // Maneja cuando el registro sea conductor
+                    }
                   })
               }
             })
