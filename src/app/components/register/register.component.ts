@@ -54,11 +54,6 @@ export class RegisterComponent implements OnInit {
     if (role == 'conductor') {
       request.append('files.license_driver', license, new Date().getTime().toString() );
     }
-
-
-    console.log(request);
-    console.log(this.formRegister.value);
-    
     await this.conection.auth(request);
   }
 
@@ -78,7 +73,30 @@ export class RegisterComponent implements OnInit {
     if (this.formRegister.get('role').value == ''){
       this.location.back();
     }else{
-      this.formRegister.get('role').setValue('')
+      this.formRegister = this.formBuilder.group({
+        status: "pendiente",
+        role: ['',[Validators.required]],
+        name: ['',[Validators.required]],
+        lastname: ['',[Validators.required]],
+        phone: ['',[Validators.required]],
+        email: ['',[Validators.required]],
+        pwd: ['',[Validators.required]],
+        document: this.formBuilder.group({
+          dni: ['',[Validators.required,Validators.minLength(8), Validators.maxLength(9)]],
+          city: ['',[Validators.required]],
+          address: ['',[Validators.required]],
+          vehicles: this.formBuilder.group({
+            type: [null,[Validators.required]],
+            enroller: [null,[Validators.required]],
+            maker: [null,[Validators.required]],
+            model: [null,[Validators.required]],
+            year: [null,[Validators.required, Validators.maxLength(4), Validators.minLength(4)]],
+            color: [null,[Validators.required]]
+          }),
+          image_dni: [<File>{ name: '' }],
+          image_license: [<File>{ name: '' }]
+        }),
+      })  
     }
   }
 }

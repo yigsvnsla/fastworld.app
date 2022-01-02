@@ -16,8 +16,8 @@ export class MenuPage implements OnInit {
   public user : User
   public listMenu: any[]
 
-  public formatDistanceStrict = (iso)=>{
-    return formatDistanceStrict(parseISO(iso), new Date(Date.now()) ,{locale:es})
+  public formatDistanceStrict = (IsoStart , IsoExpire)=>{
+    return IsoStart && IsoExpire? formatDistanceStrict(parseISO(IsoStart), parseISO(IsoExpire) ,{ unit: 'day' ,locale:es}) : ''
   }
 
   constructor(
@@ -35,11 +35,11 @@ export class MenuPage implements OnInit {
       name:'',
       lastname:'',
       email:'',
-      membership:{
+      memberships:{
         id:0,
         type:'',
         start:'',
-        end:''
+        expire:''
       },
       document:null,
       phone:'',
@@ -51,7 +51,7 @@ export class MenuPage implements OnInit {
   ionViewDidEnter() {
     this.localStorage
     .get(environment.cookieTag)
-    .then(response=>{
+    .then(response=>{      
       this.user = response;
       switch (this.user.role) {
         case 'cliente':

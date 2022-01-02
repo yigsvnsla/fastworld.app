@@ -55,8 +55,8 @@
             <ng-template>
               <ion-content>
                 <ion-item-group>
-                  <ion-item [button]="true" [detail]="false"  >
-                    <!-- (click)="transfer(item.id)" -->
+                  <ion-item [button]="true" [detail]="false"  (click)="transfer(item.id)">
+                    
                     <ion-label>Traspasar</ion-label>
                     <ion-icon slot="start" name="share-social"></ion-icon>
                   </ion-item>
@@ -81,7 +81,7 @@
           <p>
             {{item.created_at | date:'short'}}
             <br>
-            Tiempo de Retiro: {{this.formatDistanceStrict(item.timeout,item.created_at)}}
+            Tiempo de Retiro: {{this.formatDistanceStrict(item.timeout)}}
           </p>
         </ion-card-subtitle>
     </ion-card-header>
@@ -115,22 +115,63 @@
             <ion-icon slot="start" name="search"></ion-icon> 
           </ion-item>
           <ion-item-group slot="content">
+            <ng-container *ngIf="item.driver != null">
+              <ion-item-divider>
+                <ion-label>Informacion del conductor #{{item.driver.id}}</ion-label>
+              </ion-item-divider>
+              <ion-grid class="ion-no-padding">
+                <ion-row>
+                  <ion-col sizeMd="6" sizeXs="12">            <ion-item>
+                    <ion-label>
+                      <p>Nombre</p>
+                      <h4>{{item.driver.name}} {{item.driver.lastname}}</h4>
+                    </ion-label>
+                    <ion-icon slot="start" name="person"></ion-icon>
+                  </ion-item>
+                  </ion-col>
+                  <ion-col sizeMd="6" sizeXs="12">
+                    <ion-item href="tel:{{item.driver.phone}}" >
+                      <ion-label>
+                        <p>Telefono</p>
+                        <h4>{{item.driver.phone}}</h4>
+                      </ion-label>
+                      <ion-icon slot="start" name="call"></ion-icon>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ng-container>
             <ion-item-divider>
               <ion-label>Información de Retiro</ion-label>
             </ion-item-divider>
-            <ion-item>
-              <ion-label>
-                <p>Remitente {{item.client.id}}</p>
-                <h4>{{item.client.name}} {{item.client.lastname}}</h4>
-              </ion-label>
-              <ion-icon slot="start" name="person"></ion-icon>
-            </ion-item>
+            <ion-grid class="ion-no-padding">
+              <ion-row>
+                <ion-col sizeMd="6" sizeXs="12">
+                  <ion-item >
+                  <ion-label>
+                    <p>Remitente {{item.client.id}}</p>
+                    <h4>{{item.client.name}} {{item.client.lastname}}</h4>
+                  </ion-label>
+                  <ion-icon slot="start" name="person"></ion-icon>
+                </ion-item>
+                </ion-col>
+                <ion-col sizeMd="6" sizeXs="12">            <ion-item href="tel:{{item.client.phone}}">
+                  <ion-label>
+                    <p>Telefono</p>
+                    <h4>{{item.client.phone}}</h4>
+                  </ion-label>
+                  <ion-icon slot="start" name="call"></ion-icon>
+                </ion-item>
+              </ion-col>
+              </ion-row>
+            </ion-grid>
             <ion-item button [href]="'https://maps.google.com/?q=' + item.location.start.location.lat + ',' + item.location.start.location.lng" target="_blank" rel="noreferrer external">
               <ion-label class="ion-text-wrap">
                 <p>Dirección de Retiro</p>
                 <h4 >{{ item.location.start.address}}</h4>
               </ion-label>
               <ion-icon slot="start" name="map"></ion-icon>
+              <ion-icon slot="end" name="location"></ion-icon>
             </ion-item>
             <ion-item >
               <ion-label class="ion-text-wrap">
@@ -144,23 +185,40 @@
               <ion-item-divider>
                 <ion-label>Indicaciones de Entrega</ion-label>
               </ion-item-divider>
-              <ion-item>
-                <ion-label>
-                  <p>Destinatario</p>
-                  <h4>{{item.user_name}}</h4>
-                </ion-label>
-                <ion-icon slot="start" name="person"></ion-icon>
-              </ion-item>
+              <ion-grid class="ion-no-padding">
+                <ion-row >
+                  <ion-col sizeMd="6" sizeXs="12">
+                    <ion-item>
+                      <ion-label>
+                        <p>Destinatario</p>
+                        <h4>{{item.user_name}}</h4>
+                      </ion-label>
+                      <ion-icon slot="start" name="person"></ion-icon>
+                    </ion-item>
+                  </ion-col>
+                  <ion-col sizeMd="6" sizeXs="12">
+                    <ion-item href="tel:{{item.user_phone}}">
+                      <ion-label>
+                        <p>Destinatario</p>
+                        <h4>{{item.user_phone}}</h4>
+                      </ion-label>
+                      <ion-icon slot="start" name="call"></ion-icon>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
               <ion-item button [href]="'https://maps.google.com/?q=' + item.location.goal.location.lat + ',' + item.location.goal.location.lng" target="_blank" rel="noreferrer external">
                 <ion-label class="ion-text-wrap">
-                  <p>Dirección de Retiro</p>
+                  <p>Dirección de Entrega</p>
                   <h4 >{{ item.location.goal.address}}</h4>
                 </ion-label>
                 <ion-icon slot="start" name="map"></ion-icon>
+                <ion-icon slot="end" name="location"></ion-icon>
+
               </ion-item>
               <ion-item >
                 <ion-label class="ion-text-wrap">
-                  <p>Indicaciones de Retiro</p>
+                  <p>Indicaciones de Entrega</p>
                   <h4>{{ item.location.goal.indications ? item.location.goal.indications : 'Sin Indicaciones'}}</h4>
                 </ion-label>
                 <ion-icon slot="start" name="walk"></ion-icon>

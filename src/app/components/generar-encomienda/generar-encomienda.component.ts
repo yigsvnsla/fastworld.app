@@ -9,7 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonDatetime } from '@ionic/angular';
 import { formatCurrency, Location } from '@angular/common';
-import { Membership } from 'src/app/interfaces/interfaces';
+import { Memberships } from 'src/app/interfaces/interfaces';
 import { MapDirectionsService } from '@angular/google-maps';
 import { Router } from '@angular/router';
 
@@ -29,7 +29,7 @@ export class GenerarEncomiendaComponent implements OnInit {
   public categoryList: any[];
   public timeOutList: any[];
   public formattedAmount: string;
-  public membership: Membership | string;
+  public memberships: Memberships | string;
 
   public kilometerRef
   constructor(
@@ -51,45 +51,26 @@ export class GenerarEncomiendaComponent implements OnInit {
       'Ropa',
       'Tecnología',
     ]
-    this.membership = ""
     this.timeOutList = [30, 45, 60]
     this.timeNow = new Date(Date.now())
 
   }
 
   async ngOnInit() {
-    // Creando instancia de el formulario de la encomienda
-    this.formPackage = this.formBuilder.group({
-      type: ['', [Validators.required]],
-      price: [0, [Validators.required]],
-      timeout: ['', [Validators.required]],
-      // ajustar patron regex para validar el input "UserName" Validators.pattern(/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/g)
-      user_name: ['', [Validators.required,]],
-      user_phone: ['', [Validators.required, Validators.pattern(/^[0-9]*$/g)]],
-      client: ['', [Validators.required]],
-      price_route: [0],
-      location: this.formBuilder.group({
-        start: this.formBuilder.group({
-          address: ['', [Validators.required]],
-          location: [null, [Validators.required]],
-          indications: ['']
-        }),
-      }),
-      distance:['']
-    })
 
-    // añadiendo informacion del cliente desde el localStorageService
-    this.membership = (await this.localStorage.get(environment.cookieTag)).membership;
-    this.formPackage
-      .get('client')
-      .setValue((await this.localStorage.get(environment.cookieTag)).email)
+    this.instance()
 
+    console.log(this.tools.typeOf(this.memberships,'object'));
+  }
 
+  ionViewWillEnter() {
 
+    
+
+    this.instance()  
   }
 
   async onSubmit(form: FormGroup) {
-    console.log(form.value);
     await this.conection.post('products', form.value).then(Response=> console.log(Response))
     await this.router.navigateByUrl('/menu/cliente/mis-encomiendas')
   }
@@ -214,9 +195,13 @@ export class GenerarEncomiendaComponent implements OnInit {
                     this.formPackage
                       .get('distance')
                       .setValue(result.routes[0].legs[0].distance.text)
-                    this.formPackage
-                      .get('price_route') // cambiar el input de strapi para que acepte numeros, y no una cadena de texto
-                      .setValue((Math.round(Number(result.routes[0].legs[0].distance.text.replace(/km/, '').replace(/,/, '.').trim())) * environment.formuleConst.kilometraje + environment.formuleConst.arranque).toString())
+
+                      if (this.memberships == null){
+                        this.formPackage
+                          .get('price_route') // cambiar el input de strapi para que acepte numeros, y no una cadena de texto
+                          .setValue((Math.round(Number(result.routes[0].legs[0].distance.text.replace(/km/, '').replace(/,/, '.').trim())) * environment.formuleConst.kilometraje + environment.formuleConst.arranque).toString())
+                      } 
+                        
                   }
                 })
               break;
@@ -252,6 +237,36 @@ export class GenerarEncomiendaComponent implements OnInit {
       .get(origin).patchValue({
         indications: (event as CustomEvent).detail.value
       })
+  }
+
+   private async instance(){
+        // Creando instancia de el formulario de la encomienda
+        this.formPackage = this.formBuilder.group({
+          type: ['', [Validators.required]],
+          price: [0, [Validators.required]],
+          timeout: ['', [Validators.required]],
+          // ajustar patron regex para validar el input "UserName" Validators.pattern(/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/g)
+          user_name: ['', [Validators.required,]],
+          user_phone: ['', [Validators.required, Validators.minLength(10),Validators.maxLength(10),Validators.pattern(/^[0-9]*$/g)]], //
+          client: ['', [Validators.required]],
+          price_route: [0],
+          location: this.formBuilder.group({
+            start: this.formBuilder.group({
+              address: ['', [Validators.required]],
+              location: [null, [Validators.required]],
+              indications: ['']
+            }),
+          }),
+          distance:['']
+        })
+    
+        // añadiendo informacion del cliente desde el localStorageService
+        this.memberships = (await this.localStorage.get(environment.cookieTag)).memberships;
+        this.formPackage
+          .get('client')
+          .setValue((await this.localStorage.get(environment.cookieTag)).email)
+    
+    
   }
 
 }

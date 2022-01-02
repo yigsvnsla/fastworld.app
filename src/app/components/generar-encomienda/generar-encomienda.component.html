@@ -183,13 +183,13 @@
           </ion-button>
         </ion-card-header>
       </ion-card>
-      <ng-container *ngIf="this.tools.typeOf(this.membership,'string')" >
+      <ng-container  >
         <ion-item-divider>
           <ion-label>Costo de Ruta </ion-label>
         </ion-item-divider>
         <ion-grid  class="ion-no-padding" fixed>
           <ion-row>
-            <ion-col sizeXs="6">
+            <ion-col >
               <ion-item>
                 <ion-label>
                   <p>Distancia</p>
@@ -198,7 +198,7 @@
                 <ion-icon slot="start" name="send"></ion-icon>
               </ion-item>
             </ion-col>
-            <ion-col size="6">
+            <ion-col size="6" *ngIf="this.memberships == null">
               <ion-item>
                 <ion-label>
                   <p>Precio</p>

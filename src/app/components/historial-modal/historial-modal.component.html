@@ -110,7 +110,7 @@
             </ion-item>
           </ion-col>
           <ion-col size="5">
-            <ion-item lines="none">
+            <ion-item lines="none" href="tel:{{data.driver.phone}}">
               <ion-label>
                 <p>Telefono</p>
                 <h4>{{data.driver.phone}}</h4>
@@ -136,7 +136,7 @@
             </ion-item>
           </ion-col>
           <ion-col size="5">
-            <ion-item lines="none">
+            <ion-item lines="none" href="tel:{{data.client.phone}}">
               <ion-label>
                 <p>Telefono</p>
                 <h4>{{data.client.phone}}</h4>
@@ -179,7 +179,7 @@
             </ion-item>
           </ion-col>
           <ion-col size="5">
-            <ion-item lines="none">
+            <ion-item lines="none" href="tel:{{data.user_phone}}">
               <ion-label>
                 <p>Telefono</p>
                 <h4>{{data.user_phone}}</h4>
@@ -207,7 +207,7 @@
       </ion-item>
     </ion-item-group>
 
-    <ion-item-group *ngif="this.role == 'conductor'">
+    <ion-item-group >
       <ion-item-divider>
         <ion-label>Mensage de Entrega</ion-label>
       </ion-item-divider>

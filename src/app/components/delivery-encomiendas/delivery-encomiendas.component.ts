@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { formatDistanceStrict, parseISO } from 'date-fns';
+import { formatDistanceStrict, formatDistanceToNow, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { Socket } from 'ngx-socket-io';
 import { Products } from 'src/app/interfaces/interfaces';
@@ -17,8 +17,8 @@ import { environment } from 'src/environments/environment';
 export class DeliveryEncomiendasComponent implements OnInit {
 
   public packagesList: Products[]
-  public formatDistanceStrict = (iso,base) =>{
-    return formatDistanceStrict(parseISO(iso),parseISO(base),{locale:es})
+  public formatDistanceStrict = (iso) =>{
+    return formatDistanceToNow(parseISO(iso), { addSuffix: true , locale:es})
   }
 
   constructor(
@@ -79,7 +79,9 @@ export class DeliveryEncomiendasComponent implements OnInit {
       switch (response.status) {
         // Code 200, "Usuario autorizado para obtener la encomienda"
         case 200:
-          this.packagesList.splice(i, 1);
+          this.packagesList = [...this.packagesList.filter( element => {
+            return item.id != element['id'];
+          })]
           break;
         // Code 403, "Usuario no autorizado para obtener la encomienda, debido a limite alcanzado"
         case 403:

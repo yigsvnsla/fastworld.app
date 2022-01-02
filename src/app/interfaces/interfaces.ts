@@ -59,14 +59,15 @@
         license_driver?: any;
     }
 
-    export interface Membership {
+    export interface Memberships {
         id: number;
         type: string;
         start:string
-        end: string;
+        expire: string;
     }
 
     export interface User {
+        id?:number
         name: string;
         lastname: string;
         phone: string;
@@ -75,7 +76,7 @@
         email: string;
         birthday?: any;
         document: Document;
-        membership: Membership;
+        memberships: Memberships;
     }
 
     export interface Auth {

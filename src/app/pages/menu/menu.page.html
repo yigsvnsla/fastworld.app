@@ -14,20 +14,20 @@
       <ion-item-group>
         <ion-item>
           <ion-label>
-            <p>{{this.user.role | lowercase}}</p>
+            <p>{{this.user.role | lowercase}} #{{this.user.id}}</p>
             <h4>{{ this.user.name }} {{this.user.lastname}}</h4>
           </ion-label>
           <ion-avatar slot="start">
             <img [src]="'../../assets/svg/userPreset.svg'" />
           </ion-avatar>
         </ion-item>
-        <ion-grid class="ion-no-padding" *ngIf="this.tools.typeOf(this.user.membership , 'object' )">
+        <ion-grid class="ion-no-padding" *ngIf="this.user.memberships !== null">
           <ion-row>
             <ion-col size="6">
               <ion-item>
                 <ion-label>
                   <p>Membresia</p>
-                  <h4>{{this.user.membership.type}}</h4>
+                  <h4>{{this.user.memberships.type}}</h4>
                 </ion-label>
               </ion-item>
             </ion-col>
@@ -35,8 +35,7 @@
               <ion-item>
                 <ion-label>
                   <p>Expiración</p>
-                  <!-- <h4>{{formatDistanceStrict(this.user.membership.end)}}</h4> -->
-                  <h4>{{this.user.membership.end | date:'d/M/yyyy'}}</h4>
+                  <h4>{{formatDistanceStrict(this.user.memberships.start, this.user.memberships.expire ) || ''}}</h4>
                 </ion-label>
               </ion-item>
             </ion-col>

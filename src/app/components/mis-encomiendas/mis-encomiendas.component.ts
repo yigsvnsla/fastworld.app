@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { formatDistanceStrict, parseISO } from 'date-fns';
+import { formatDistanceStrict, formatDistanceToNow, parseISO } from 'date-fns';
 import { ToolsService } from './../../services/tools.service';
 import { environment } from './../../../environments/environment';
 import { LocalStorageService } from './../../services/local-storage.service';
@@ -19,8 +19,9 @@ export class MisEncomiendasComponent implements OnInit {
 
   public role : string
   public packagesList: Products[]
-  public formatDistanceStrict = (iso,base) =>{
-    return formatDistanceStrict(parseISO(iso),parseISO(base),{locale:es})
+  public formatDistanceStrict = (iso) =>{
+    // return formatDistanceStrict(parseISO(iso),,{locale:es})
+    return formatDistanceToNow(parseISO(iso), { addSuffix: true , locale:es})
   }
 
 
@@ -181,14 +182,14 @@ export class MisEncomiendasComponent implements OnInit {
           text: 'Reportar',
           role: 'success',
           handler: async (val) => await this.conections
-            .put(`products/${index}`, {status:'rechazado', message:val.text})
-            .then( response => {
-              if(response.id){
-                this.packagesList = [...this.packagesList.filter( element => {
-                  return response.id!= element['id'];
-                })]
-              }
-            })
+          .put(`products/${index}`, {status:'reportado', message:val.text})
+          .then( response => {
+            if(response.id){
+              this.packagesList = [...this.packagesList.filter( element => {
+                return response.id!= element['id'];
+              })]
+            }
+          })
         }]
     })
   }
@@ -199,6 +200,10 @@ export class MisEncomiendasComponent implements OnInit {
 
   formatPrice(value: number | string){
     return formatCurrency( typeof value == 'string' ? Number(value) : value, 'en-us', '$')
+  }
+
+  test(str){
+    return str.split('').slice(1,10).toString().replace(/,/g,'')
   }
 
 }

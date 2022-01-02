@@ -126,67 +126,74 @@ export class ConectionsService {
           .toPromise()
           .then(async (res) => {
             console.log(res)
-            switch (res.status.toString()) {
-              case '404':
-                this.toolsService.showAlert({
-                  header: 'Correo o Contraseña Invalidos 🚫',
-                  subHeader: `Error ${res['status']}`,
-                  cssClass: 'alert-danger',
-                  buttons: [{ text: 'ok', role: 'success' }]
-                })
-                break;
-              case '1005':
-                this.toolsService.showAlert({
-                  header: 'En Proceso 🕔',
-                  subHeader: `Estan verificado tu cuenta`,
-                  cssClass: 'alert-warn',
-                  buttons: [
-                    {
-                      text: 'ok',
-                      role: 'success'
-                    }
-                  ]
-                })
-                break;
-              case '1006':
-                this.toolsService.showAlert({
-                  header: 'Bloqueado 🚫',
-                  subHeader: `Has sido reportado, por favor comunicate con nosotros`,
-                  cssClass: 'alert-danger',
-                  buttons: [
-                    {
-                      text: 'ok',
-                      role: 'success'
-                    }
-                  ]
-                })
-                break;
-              case '1015':
-                this.toolsService.showAlert({
-                  header: 'Registro con exito ✔',
-                  subHeader: `Tu cuenta comenzara un proceso de verificacion, te estaremos contactando`,
-                  cssClass: 'alert-success',
-                  buttons: [
-                    {
-                      text: 'ok',
-                      role: 'success'
-                    }
-                  ]
-                })
-                break;
-
-              default:
-                this.cookie.set(environment.cookieTag, { jwt: res.jwt, email: res.email });
-                this.httpClient.get<User>(`${environment.api}/clients/${res.email}`, { headers: await this.headers() })
-                  .toPromise()
-                  .then((data) => {
-                    this.localStorageService
-                        .set(environment.cookieTag, data)
-                        .then(() => {
-                          this.router.navigateByUrl(`/menu/${data.role}`)
-                        });
+            if (res.status){
+              switch (res.status.toString()) {
+                case '404':
+                  this.toolsService.showAlert({
+                    header: 'Correo o Contraseña Invalidos 🚫',
+                    subHeader: `Error ${res['status']}`,
+                    cssClass: 'alert-danger',
+                    buttons: [{ text: 'ok', role: 'success' }]
                   })
-                break;
+                  break;
+                case '1005':
+                  this.toolsService.showAlert({
+                    header: 'En Proceso 🕔',
+                    subHeader: `Estan verificado tu cuenta`,
+                    cssClass: 'alert-warn',
+                    buttons: [
+                      {
+                        text: 'ok',
+                        role: 'success'
+                      }
+                    ]
+                  })
+                  break;
+                case '1006':
+                  this.toolsService.showAlert({
+                    header: 'Bloqueado 🚫',
+                    subHeader: `Has sido reportado, por favor comunicate con nosotros`,
+                    cssClass: 'alert-danger',
+                    buttons: [
+                      {
+                        text: 'ok',
+                        role: 'success'
+                      }
+                    ]
+                  })
+                  break;
+                case '1015':
+                  this.toolsService.showAlert({
+                    header: 'Registro con exito ✔',
+                    subHeader: `Tu cuenta comenzara un proceso de verificacion, te estaremos contactando`,
+                    cssClass: 'alert-success',
+                    buttons: [
+                      {
+                        text: 'ok',
+                        role: 'success',
+                        handler:()=>{
+                          this.router.navigateByUrl('auth/ingresar')
+                        }
+                      }
+                    ]
+                  })
+                  break;
+                default:
+                  console.error(`status: ${res.status} not handled`);
+                  break;
+              }
+            }else{
+              
+              this.cookie.set(environment.cookieTag, { jwt: res.jwt, email: res.email });
+              this.httpClient.get<User>(`${environment.api}/clients?email_eq=${res.email}`, { headers: await this.headers() })
+                .toPromise()
+                .then((data) => {                  
+                  this.localStorageService
+                      .set(environment.cookieTag, data[0])
+                      .then(() => {
+                        this.router.navigateByUrl(`/menu/${data[0].role}`)
+                      });
+                })
             }
           })
           .finally(() => {

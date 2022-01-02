@@ -34,7 +34,7 @@
           <p>
             {{item.created_at | date:'short'}}
             <br>
-            Tiempo de Retiro: {{this.formatDistanceStrict(item.timeout,item.created_at)}}
+            Tiempo de Retiro: {{this.formatDistanceStrict(item.timeout)}}
           </p>
         </ion-card-subtitle>
         <ion-item>
@@ -94,7 +94,7 @@
                 </ion-item-divider>
                 <ion-item button [href]="'https://maps.google.com/?q=' + item.location.goal.location.lat + ',' + item.location.goal.location.lng" target="_blank" rel="noreferrer external">
                   <ion-label class="ion-text-wrap">
-                    <p>Dirección de Retiro</p>
+                    <p>Dirección de Entrega</p>
                     <h4 >{{ item.location.goal.address}}</h4>
                   </ion-label>
                   <ion-icon slot="start" name="map"></ion-icon>
