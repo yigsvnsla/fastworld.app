@@ -104,8 +104,23 @@ export class MisEncomiendasComponent implements OnInit {
             console.log({driver:val.code, product:index.toString()});
             
             this.conections.post('products/send',{driver:val.code, product:index.toString()})
-              .then(response=>{
-                console.log(response);
+              .then(async response=>{
+                if(response['status'] != 200){
+                  this.tools.showAlert({
+                  cssClass:'alert-warm',
+                  header:'Alerta ⚠',
+                  subHeader:response['message'],
+                  buttons:[{
+                    text:'ok',
+                    role:'success',
+                    handler:async ()=>{
+                      this.transfer(index)
+                    }
+                  }]
+                })
+                }else{
+                  await this.getData();
+                }
               })
               .catch(err=>{
                 this.tools.showAlert({
