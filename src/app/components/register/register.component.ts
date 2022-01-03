@@ -27,7 +27,7 @@ export class RegisterComponent implements OnInit {
       email: ['',[Validators.required]],
       pwd: ['',[Validators.required]],
       document: this.formBuilder.group({
-        dni: ['',[Validators.required,Validators.minLength(8), Validators.maxLength(9)]],
+        dni: ['',[Validators.required,Validators.minLength(10), Validators.maxLength(13)]],
         city: ['',[Validators.required]],
         address: ['',[Validators.required]],
         vehicles: this.formBuilder.group({
