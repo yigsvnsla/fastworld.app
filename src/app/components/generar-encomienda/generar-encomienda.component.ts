@@ -247,7 +247,7 @@ export class GenerarEncomiendaComponent implements OnInit {
           timeout: ['', [Validators.required]],
           // ajustar patron regex para validar el input "UserName" Validators.pattern(/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/g)
           user_name: ['', [Validators.required,]],
-          user_phone: ['', [Validators.required, Validators.minLength(9),Validators.maxLength(10),Validators.pattern(/^[0-9]*$/g)]], //
+          user_phone: ['', [Validators.required,Validators.pattern(/^[0-9]{10}/g)]], //
           client: ['', [Validators.required]],
           price_route: [0],
           location: this.formBuilder.group({
