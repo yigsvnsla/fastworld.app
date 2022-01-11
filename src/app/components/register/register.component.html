@@ -62,7 +62,7 @@
             </ion-item>
             <ion-item>
               <ion-label position="stacked">Telefono</ion-label>
-              <ion-input formControlName="phone" autocomplete="tel" type="tel" placeholder="Numero de Telefono"></ion-input>
+              <ion-input (ionBlur)="postFormat(this.formRegister.get('phone')) " formControlName="phone" autocomplete="tel" type="tel" placeholder="Numero de Telefono"></ion-input>
               <ion-icon slot="start" name="call"></ion-icon>
             </ion-item>
             <ion-item>

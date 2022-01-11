@@ -14,16 +14,18 @@
     <div style="position: absolute; width: 100%; z-index: 1;">
       <ion-searchbar 
         #searchBar
-        [value]="this.addressSearch" 
         class="ion-no-padding" 
         placeholder="Dirección" 
         type="search" 
-        (ionChange)="onSearchChange($event)" 
-        [debounce]="250" 
+        (ionInput)="onSearchChange(searchBar.value)" 
+        (keyup.enter)="firstSelect()"
       ></ion-searchbar>
-      <ion-item-group>  
-        <ng-container *ngFor="let item of autocompleteItems" >
-          <ion-item button *ngIf="item.formatted_address != this.searchBar.value" (click)="selectAddress(item)">
+      <ion-item-group>   
+        <ng-container  *ngFor="let item of autocompleteItems; let i = index " >
+          <ion-item 
+            [id]="i"
+            button 
+            (click)="selectAddress(item)">
             <ion-label>
               <p>{{item.formatted_address}}</p>
             </ion-label>

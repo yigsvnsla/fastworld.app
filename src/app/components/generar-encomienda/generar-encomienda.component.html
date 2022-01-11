@@ -26,11 +26,8 @@
           <ion-item-group slot="content">
             <ion-item 
               button 
-              (click)="
-                category.value = item; 
-                groupCategory.value = undefined;
-                this.formPackage.get('type').setValue(item)" 
-                *ngFor="let item of categoryList"
+              *ngFor="let item of categoryList"
+              (click)=" category.value = item; groupCategory.value = undefined; this.formPackage.get('type').setValue(item)" 
               >
               <ion-label>{{ item }}</ion-label>
               <ion-icon slot="start" name="add"></ion-icon>
@@ -139,6 +136,7 @@
           formControlName="user_phone"
           type="tel"
           placeholder="(099) 999-99-99"
+          (ionBlur)="postFormat(this.formPackage.get('user_phone'))"
         ></ion-input>
       </ion-item>
       <ion-item-divider>
@@ -187,7 +185,7 @@
         <ion-item-divider>
           <ion-label>Costo de Ruta </ion-label>
         </ion-item-divider>
-        <ion-grid  class="ion-no-padding" fixed>
+        <ion-grid  class="ion-no-padding">
           <ion-row>
             <ion-col >
               <ion-item>
@@ -237,7 +235,7 @@
       </ion-item>
     </ion-item-group>
 
-    <ion-button color="orange" [disabled]="!this.formPackage.valid" class="ion-margin" type="submit" expand="block" fill="outline" shape="round">
+    <ion-button color="orange"  class="ion-margin" type="submit" expand="block" fill="outline" shape="round">
       <ion-label>Generar Encomienda</ion-label>
       <ion-icon slot="end" name="bag"></ion-icon>
     </ion-button>

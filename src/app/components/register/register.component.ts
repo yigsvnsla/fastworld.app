@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { ConectionsService } from './../../services/conections.service';
+import { format, isValidPhoneNumber } from 'libphonenumber-js';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -23,7 +24,18 @@ export class RegisterComponent implements OnInit {
       role: ['',[Validators.required]],
       name: ['',[Validators.required]],
       lastname: ['',[Validators.required]],
-      phone: ['',[Validators.required]],
+      phone: ['',[Validators.required ,  
+        (user_phone:FormControl)=>{
+        if(user_phone.value != '' ){
+            if (user_phone.value.match(/ /g)) user_phone.patchValue(user_phone.value.replace(/ /g,''))
+            if (user_phone.value.match(/^\+/) != null) {
+              return isValidPhoneNumber(user_phone.value)? null : {user_phone:true};
+            }
+            if (RegExp(/[0-9]/g).test(user_phone.value)){
+              return user_phone.value.length == 10 ? null : {user_phone:true}                 
+            } 
+        }
+      }]],
       email: ['',[Validators.required]],
       pwd: ['',[Validators.required]],
       document: this.formBuilder.group({
@@ -42,6 +54,13 @@ export class RegisterComponent implements OnInit {
         image_license: [<File>{ name: '' }]
       }),
     })    
+  }
+
+  postFormat(control:AbstractControl){
+    if (RegExp(/[0-9]/g).test(control.value) && control.value.length == 10 ){
+      control.patchValue(format(control.value,'EC','INTERNATIONAL').replace(/ /g,''))  
+    } 
+
   }
 
   async onSubmit(form:FormGroup){

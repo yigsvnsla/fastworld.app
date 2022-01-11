@@ -5,14 +5,14 @@ import { environment } from './../../../environments/environment';
 import { LocalStorageService } from './../../services/local-storage.service';
 import { ToolsService } from './../../services/tools.service';
 import { add, parseISO } from 'date-fns';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonDatetime } from '@ionic/angular';
 import { formatCurrency, Location } from '@angular/common';
 import { Memberships } from 'src/app/interfaces/interfaces';
 import { MapDirectionsService } from '@angular/google-maps';
 import { Router } from '@angular/router';
-
+import { parsePhoneNumber , isValidPhoneNumber, format} from 'libphonenumber-js'
 @Component({
   selector: 'app-generar-encomienda',
   templateUrl: './generar-encomienda.component.html',
@@ -60,7 +60,6 @@ export class GenerarEncomiendaComponent implements OnInit {
 
     this.instance()
 
-    console.log(this.tools.typeOf(this.memberships,'object'));
   }
 
   ionViewWillEnter() {
@@ -71,8 +70,9 @@ export class GenerarEncomiendaComponent implements OnInit {
   }
 
   async onSubmit(form: FormGroup) {
-    await this.conection.post('products', form.value).then(Response=> console.log(Response))
-    await this.router.navigateByUrl('/menu/cliente/mis-encomiendas')
+       console.log(parsePhoneNumber(this.formPackage.get('user_phone').value).formatInternational());
+    // await this.conection.post('products', form.value).then(Response=> console.log(Response))
+    // await this.router.navigateByUrl('/menu/cliente/mis-encomiendas')
   }
 
   async dateTimeChange(event: Event) {
@@ -239,6 +239,13 @@ export class GenerarEncomiendaComponent implements OnInit {
       })
   }
 
+  postFormat(control:AbstractControl){
+    if (RegExp(/[0-9]/g).test(control.value) && control.value.length == 10 ){
+      control.patchValue(format(control.value,'EC','INTERNATIONAL').replace(/ /g,''))  
+    } 
+
+  }
+
    private async instance(){
         // Creando instancia de el formulario de la encomienda
         this.formPackage = this.formBuilder.group({
@@ -247,7 +254,19 @@ export class GenerarEncomiendaComponent implements OnInit {
           timeout: ['', [Validators.required]],
           // ajustar patron regex para validar el input "UserName" Validators.pattern(/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/g)
           user_name: ['', [Validators.required,]],
-          user_phone: ['', [Validators.required,Validators.pattern(/^[0-9]{10}/g)]], //
+          user_phone: ['', [Validators.required,
+            (user_phone:FormControl)=>{
+              if(user_phone.value != '' ){
+                  if (user_phone.value.match(/ /g)) user_phone.patchValue(user_phone.value.replace(/ /g,''))
+                  if (user_phone.value.match(/^\+/) != null) {
+                    return isValidPhoneNumber(user_phone.value)? null : {user_phone:true};
+                  }
+                  if (RegExp(/[0-9]/g).test(user_phone.value)){
+                    return user_phone.value.length == 10 ? null : {user_phone:true}                 
+                  } 
+              }
+            }
+          ]],
           client: ['', [Validators.required]],
           price_route: [0],
           location: this.formBuilder.group({
