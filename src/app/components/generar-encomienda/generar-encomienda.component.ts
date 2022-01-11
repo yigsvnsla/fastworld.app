@@ -70,9 +70,8 @@ export class GenerarEncomiendaComponent implements OnInit {
   }
 
   async onSubmit(form: FormGroup) {
-       console.log(parsePhoneNumber(this.formPackage.get('user_phone').value).formatInternational());
-    // await this.conection.post('products', form.value).then(Response=> console.log(Response))
-    // await this.router.navigateByUrl('/menu/cliente/mis-encomiendas')
+    await this.conection.post('products', form.value).then(Response=> console.log(Response))
+    await this.router.navigateByUrl('/menu/cliente/mis-encomiendas')
   }
 
   async dateTimeChange(event: Event) {
