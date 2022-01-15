@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { LocalStorageService } from './../../services/local-storage.service';
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/interfaces/interfaces';
-import { parseISO, formatDistanceStrict} from 'date-fns'
+import { parseISO, formatDistanceStrict, formatDistanceToNowStrict} from 'date-fns'
 import { es } from 'date-fns/locale'
 @Component({
   selector: 'app-cliente',
@@ -16,8 +16,8 @@ export class MenuPage implements OnInit {
   public user : User
   public listMenu: any[]
 
-  public formatDistanceStrict = (IsoStart , IsoExpire)=>{
-    return IsoStart && IsoExpire? formatDistanceStrict(parseISO(IsoStart), parseISO(IsoExpire) ,{ unit: 'day' ,locale:es}) : ''
+  public formatDistanceStrict = (IsoExpire)=>{
+    return IsoExpire ? formatDistanceToNowStrict(parseISO(IsoExpire),{ unit: 'day' ,locale:es}) : ''
   }
 
   constructor(
