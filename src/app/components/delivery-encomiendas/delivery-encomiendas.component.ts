@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { formatDistanceStrict, formatDistanceToNow, parseISO } from 'date-fns';
+import { formatDistanceStrict, formatDistanceToNow, isToday, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { Socket } from 'ngx-socket-io';
 import { Products } from 'src/app/interfaces/interfaces';
@@ -60,7 +60,12 @@ export class DeliveryEncomiendasComponent implements OnInit {
 
   // Funcion encargada de consultar lista de encomienda a traves de GET y actualizar el DOM
   private async getData(){
-    this.packagesList = await this.conections.get( `products?status_eq=pendiente`)
+    this.packagesList = (await this.conections.get( `products?status_eq=pendiente`))
+      .filter((element)=>{
+        if (isToday(parseISO(element['created_at']))){
+          return element
+        }
+      })
   }
 
   async goTo(){

@@ -62,19 +62,26 @@
 
         <ion-grid >
           <ion-row>
-            <ion-col sizeXs="12" sizeSm="6">
+            <ion-col sizeXs="6" sizeSm="6">
               <ion-item class="ion-no-padding" lines="none">
                 <ion-label>
                   <p>Tipo de Encomienda</p>
                   <ion-card-title>{{item.type}}</ion-card-title>
                 </ion-label>
-                <ion-buttons slot="end">
-                  <ion-button>
-                    <ion-icon slot="icon-only" name="bicycle"></ion-icon>
-                  </ion-button>
-                </ion-buttons>
               </ion-item>
             </ion-col>
+
+            <ion-col sizeXs="6">
+              <p>
+                {{item.created_at | date:'short'}}
+                <br>
+                Tiempo de Retiro: {{this.formatDistanceStrict(item.timeout)}}
+              </p>
+            </ion-col>
+
+ 
+
+
             <ion-col sizeXs="12" sizeSm="6">
               <ion-item class="ion-no-padding" lines="none">
                 <ion-label>
@@ -82,7 +89,7 @@
                   <ion-card-title>{{item.client.name}} {{item.client.lastname}}</ion-card-title>
                 </ion-label>
                 <ion-buttons slot="end">
-                  <ion-button>
+                  <ion-button href="tel:{{item.client.phone}}" >
                     <ion-icon slot="icon-only" name="call"></ion-icon>
                   </ion-button>
                 </ion-buttons>

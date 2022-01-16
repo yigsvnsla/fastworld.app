@@ -235,7 +235,7 @@
       </ion-item>
     </ion-item-group>
 
-    <ion-button color="orange"  class="ion-margin" type="submit" expand="block" fill="outline" shape="round">
+    <ion-button color="orange" [disabled]="!this.formPackage.valid" class="ion-margin" type="submit" expand="block" fill="outline" shape="round">
       <ion-label>Generar Encomienda</ion-label>
       <ion-icon slot="end" name="bag"></ion-icon>
     </ion-button>

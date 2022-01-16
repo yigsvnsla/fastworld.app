@@ -1,11 +1,9 @@
-import { map } from 'rxjs/operators';
 import { ToolsService } from './../../services/tools.service';
 import { ModalController } from '@ionic/angular';
 import { Component, ElementRef, OnInit, ViewChild, HostListener, Input } from '@angular/core';
 import { Ubication } from 'src/app/interfaces/interfaces';
 import { MapGeocoder } from '@angular/google-maps';
-import { Observable } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-ubicacion-modal',
@@ -30,7 +28,7 @@ export class UbicacionModalComponent implements OnInit {
   constructor(
     private ModalController: ModalController,
     private tools: ToolsService,
-    private mapGeocoder: MapGeocoder
+    private mapGeocoder: MapGeocoder,
   ) {
     this.autocompleteItems = []
 
@@ -41,11 +39,9 @@ export class UbicacionModalComponent implements OnInit {
             keyboardShortcuts: false,
             disableDefaultUI: true,
             center: { lat: res.coords.latitude, lng: res.coords.longitude },
-
           };
           this.markerOptions = { draggable: true }
           this.mapGeocode({ location: { lat: res.coords.latitude, lng: res.coords.longitude } })
-
         },
         (err) => {
           switch (err.code) {
@@ -71,9 +67,12 @@ export class UbicacionModalComponent implements OnInit {
                 ]
               })
               break;
+             default:
+         
+              break
           }
           console.error(err);
-
+          this.onExit()
         })
     } catch (error) {
 
