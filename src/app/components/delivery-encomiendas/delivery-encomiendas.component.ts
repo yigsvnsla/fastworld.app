@@ -62,9 +62,9 @@ export class DeliveryEncomiendasComponent implements OnInit {
   private async getData(){
     this.packagesList = (await this.conections.get( `products?status_eq=pendiente`))
       .filter((element)=>{
-        if (isToday(parseISO(element['created_at']))){
+        // if (isToday(parseISO(element['created_at']))){
           return element
-        }
+        // }
       })
   }
 

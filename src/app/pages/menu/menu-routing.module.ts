@@ -9,6 +9,7 @@ import { HistorialComponent } from './../../components/historial/historial.compo
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { MenuPage } from './menu.page';
+import { MyProfileComponent } from 'src/app/components/my-profile/my-profile.component';
 
 
 const routes: Routes = [
@@ -41,11 +42,15 @@ const routes: Routes = [
           component:MisEncomiendasComponent
         },
         {
+          path:'perfil',
+          component:MyProfileComponent
+        },
+        {
           path:'**',
           component:NotFoundComponent
         }
       ]
-      ,canActivate:[LoginGuard]
+      // ,canActivate:[LoginGuard]
     },{
       path:'conductor',
       children:[
@@ -69,6 +74,10 @@ const routes: Routes = [
         {
           path:'encomienda',
           component:DeliveryEncomiendasComponent
+        },
+        {
+          path:'perfil',
+          component:MyProfileComponent
         },
         {
           path:'**',

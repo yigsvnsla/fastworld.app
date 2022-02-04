@@ -1,3 +1,5 @@
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { MyProfileComponent } from './my-profile/my-profile.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { DeliveryEncomiendasComponent } from './delivery-encomiendas/delivery-encomiendas.component';
 import { GenerarEncomiendaComponent } from './generar-encomienda/generar-encomienda.component';
@@ -17,6 +19,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+
 @NgModule({
   declarations: [
     LoginComponent,
@@ -32,6 +36,8 @@ import { NgModule } from '@angular/core';
     DeliveryEncomiendasComponent,
     OffLineModalComponent,
     NotFoundComponent,
+    MyProfileComponent,
+    EditProfileComponent
   ],
   imports: [
     CommonModule,
@@ -39,7 +45,8 @@ import { NgModule } from '@angular/core';
     IonicModule,
     ReactiveFormsModule,
     RouterModule,
-    GoogleMapsModule
+    GoogleMapsModule,
+    ScrollingModule
   ]
 })
 export class ComponentsModule { }

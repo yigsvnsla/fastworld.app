@@ -78,10 +78,32 @@ export class ToolsService {
     modal.present();
     (await load).dismiss()
     return new Promise(async (value) => {
-
-        value((await modal.onDidDismiss()).data)
-
+      value((await modal.onDidDismiss()).data)
     })
+  }
+
+  compareObjets(objet_base:object, objet_compare:object){      
+    for (let [key, val] of Object.entries(objet_base)) {
+      // si esta propiedad existe 
+      if(objet_compare.hasOwnProperty(key)){
+        // si el valor de la llave en el objeto comparador es diferente
+        if (objet_compare[key] !== val) {
+          // si el valor de la llave es de tipo objeto,
+          // aplicar recursividad a la funcion, asi hacemos un sondeo profundo a las propiedades
+          if (typeof objet_compare[key] == 'object'){
+            return this.compareObjets(objet_compare[key],val)              
+          }
+          console.error(`Propiedad ${key}: El valor ${objet_compare[key]} no es equivalente a ${val}`);  
+          return false;
+        }
+      }
+      // si esta propiedad no existe
+      else{
+        console.error(key,`propiedad no existe en el objeto comparador`);          
+        return false;
+      }
+    }
+    return true
   }
 
   async menuControl():Promise<MenuController>{

@@ -84,9 +84,20 @@
             Tiempo de Retiro: {{this.formatDistanceStrict(item.timeout)}}
           </p>
         </ion-card-subtitle>
+        <ion-item>
+          <ion-label>
+            <p>Destinatario</p>
+            <h4>{{item.user_name}}</h4>
+          </ion-label>
+          <ion-buttons slot="end">
+            <ion-button href="tel:{{item.user_phone}}">
+              <ion-icon slot="icon-only" name="call"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
     </ion-card-header>
     <ion-card-content class="ion-no-padding">
-      <ion-grid >
+      <ion-grid class="ion-no-padding">
         <ion-row>
           <ion-col size="6">
             <ion-item>
@@ -155,14 +166,15 @@
                   <ion-icon slot="start" name="person"></ion-icon>
                 </ion-item>
                 </ion-col>
-                <ion-col sizeMd="6" sizeXs="12">            <ion-item href="tel:{{item.client.phone}}">
+                <ion-col sizeMd="6" sizeXs="12">
+                  <ion-item href="tel:{{item.client.phone}}">
                   <ion-label>
                     <p>Telefono</p>
                     <h4>{{item.client.phone}}</h4>
                   </ion-label>
                   <ion-icon slot="start" name="call"></ion-icon>
-                </ion-item>
-              </ion-col>
+                  </ion-item>
+                </ion-col>
               </ion-row>
             </ion-grid>
             <ion-item button [href]="'https://maps.google.com/?q=' + item.location.start.location.lat + ',' + item.location.start.location.lng" target="_blank" rel="noreferrer external">

@@ -10,27 +10,28 @@ import { CookiesService } from '../services/cookies.service';
 })
 export class LoginGuard implements CanActivate {
 
-  constructor(  
-    private cookieService:CookiesService,
-    private router:Router,
-    private localStorage:LocalStorageService
-  ){
+  constructor(
+    private cookieService: CookiesService,
+    private router: Router,
+    private localStorage: LocalStorageService,
+    private CookiesService: CookiesService
+  ) {
 
-    }
-
-  canActivate(  route: ActivatedRouteSnapshot,  state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-
-    let check = async ()=>{
-      return await this.localStorage.check(environment.cookieTag)
-    }
-
-      if(this.cookieService.check(environment.cookieTag) && check){
-        return true
-      }else{
-        this.router.navigateByUrl('auth')
-        return false
-      }
-  
   }
-  
+
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    return new Promise<boolean>(async (resolve, reject) => {
+      this.localStorage.check(environment.cookieTag)
+        .then(check => {
+          if (this.cookieService.check(environment.cookieTag) && check) {
+            resolve(true)
+          } else {
+            this.CookiesService.remove(environment.cookieTag);
+            this.router.navigateByUrl('auth')
+            reject(false)
+          }
+        })
+    })
+  }
+
 }

@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AuthPage } from './auth.page';
+import { AutoloadGuard } from 'src/app/guards/autoload.guard';
 
 const routes: Routes = [
   {
@@ -12,7 +13,8 @@ const routes: Routes = [
     pathMatch:'full'
   },{
     path:'ingresar',
-    component:LoginComponent
+    component:LoginComponent,
+    canActivate:[AutoloadGuard]
   },{
     path:'registrar',
     component: RegisterComponent

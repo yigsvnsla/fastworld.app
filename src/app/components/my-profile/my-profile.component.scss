@@ -1,0 +1,18 @@
+// ion-toolbar.header {
+    // --background: transparent;
+    // --border-color: transparent;
+    // --border-style: none;
+    // --border-width: 0px;
+// }
+// ion-header::after {
+//     background-image: none;
+// }
+
+ion-img.photo-profile{
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    &::part(image){
+        border-radius: 50%;
+    }
+}

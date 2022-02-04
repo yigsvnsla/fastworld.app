@@ -74,7 +74,7 @@
         status: string;
         role: string;
         email: string;
-        birthday?: any;
+        // birthday?: any;
         document: Document;
         memberships: Memberships;
     }

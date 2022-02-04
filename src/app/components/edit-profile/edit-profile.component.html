@@ -1,0 +1,172 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="this.exit()">
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Editar Perfil</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="this.exit()">
+        <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content >
+  <form 
+    *ngIf="this.pageLoad"
+    #form
+    [formGroup]="this.formProfile" 
+    class="ion-text-center">
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col sizeXs="12">
+          <ion-item-group>
+            <ion-item-divider>
+              <ion-label>Información</ion-label>
+            </ion-item-divider>
+            <ion-item>
+              <ion-label position="stacked">Nombre</ion-label>
+              <ion-input formControlName="name" autocomplete="name" type="text" placeholder="Ingresar nombre"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Apellido</ion-label>
+              <ion-input formControlName="lastname" type="text" placeholder="Ingresar apellido"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Telefono</ion-label>
+              <ion-input (ionBlur)="postFormat(this.formProfile.get('phone')) " formControlName="phone" autocomplete="tel" type="tel" placeholder="Numero de Telefono"></ion-input>
+              <ion-icon slot="start" name="call"></ion-icon>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Correo</ion-label>
+              <ion-input formControlName="email" autocomplete="email" type="email" placeholder="example@email.com"></ion-input>
+              <ion-icon slot="start" name="mail"></ion-icon>
+            </ion-item>
+          </ion-item-group>
+        </ion-col>
+        <ng-container formGroupName="document">
+          <ion-col sizeXs="12">
+            <ion-item-divider>
+              <ion-label>Direccion</ion-label>
+            </ion-item-divider>
+            <ion-item>
+              <ion-label position="stacked">Ciudad</ion-label>
+              <ion-input formControlName="city" name="city" placeholder="Ingresar" type="text"></ion-input>
+              <ion-icon slot="start" name="location"></ion-icon>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Mi Direccion</ion-label>
+              <ion-input formControlName="address" name="address" placeholder="Ingresar" type="text"></ion-input>
+              <ion-icon slot="start" name="home"></ion-icon>
+            </ion-item>
+            <ion-item-group>
+              <ion-item-divider>
+                <ion-label>Documentacion</ion-label>
+              </ion-item-divider>
+              <ion-item>
+                <ion-label position="stacked">Cédula</ion-label>
+                <ion-input formControlName="dni" type="tel" placeholder="Identificación"></ion-input>
+                <ion-icon slot="start" name="id-card"></ion-icon>
+              </ion-item>
+              <!-- 
+              <ion-item-divider>
+                <ion-label><p> Por favor ingresar la imagenes en horizontal</p></ion-label>
+              </ion-item-divider> -->
+              <!-- <ion-item button (click)="fileDni.click();">
+                <ion-label position="stacked">Imagen Documento</ion-label>
+                <input formGroupName="image_dni" id="image_dni" #fileDni type="file" accept="image/*" (change)="imgHandler($event)">
+                <h6>{{ this.formRegister.get('document').get("image_dni").value.name || "Seleccione un archivo."}}</h6>
+              </ion-item> -->
+              <!-- ion-item button (click)="fileLicence.click()" *ngIf="this.formRegister.get('role').value == 'conductor'">
+                <ion-label position="stacked">Imagen Licencia</ion-label>
+                <input formGroupName="image_license" id="image_license" #fileLicence type="file" accept="image/*" (change)="imgHandler($event)">
+                <h6>{{ this.formRegister.get('document').get("image_license").value.name || "Seleccione un archivo."}}</h6>
+              </ion-item> 
+            -->
+            </ion-item-group>
+          </ion-col>
+          <ion-col size="12" formGroupName="vehicles" *ngIf="this.formProfile.get('role').value == 'conductor' ">
+            <ion-item-group>
+              <ion-item-divider>
+                <ion-label>Vehiculo</ion-label>
+              </ion-item-divider>
+              <ion-radio-group formControlName="type" #radioGroup>
+                <ion-item>
+                  <ion-label>Bicicleta</ion-label>
+                  <ion-icon slot="start" name="walk"></ion-icon>
+                  <ion-radio value="bicicleta"></ion-radio>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Motocicleta</ion-label>
+                  <ion-icon slot="start" name="bicycle"></ion-icon>
+                  <ion-radio value="motocicleta"></ion-radio>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Automovil</ion-label>
+                  <ion-icon slot="start" name="car"></ion-icon>
+                  <ion-radio value="automovil"></ion-radio>
+                  <ion-icon slot="start" name="shapes"></ion-icon>
+                </ion-item>
+                
+              </ion-radio-group>
+              <ng-container id="infoVehicle" *ngIf=" radioGroup.value != '' && radioGroup.value  != 'bicicleta' ">
+                <ion-item-divider>
+                  <ion-label>Informacion del vehiculo</ion-label>
+                </ion-item-divider>
+                <ion-item>
+                  <ion-label position="stacked">Placa</ion-label>
+                  <ion-input formControlName="enroller" name="enroller" placeholder="Ingresar" type="text"></ion-input>
+                  <ion-icon slot="start" name="card"></ion-icon>
+                </ion-item>
+                <ion-item>
+                  <ion-label position="stacked">Marca</ion-label>
+                  <ion-input formControlName="maker" name="maker" placeholder="Ingresar" type="text"></ion-input>
+                  <ion-icon slot="start" name="speedometer"></ion-icon>
+                </ion-item>
+                <ion-item>
+                  <ion-label position="stacked">Modelo</ion-label>
+                  <ion-input formControlName="model" name="model" placeholder="Ingresar" type="text"></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-label position="stacked">Año</ion-label>
+                  <ion-input formControlName="year" name="year" placeholder="Ingresar" type="tel"></ion-input>
+                  <ion-icon slot="start" name="today"></ion-icon>
+                </ion-item>
+                <ion-item>
+                  <ion-label position="stacked">Color</ion-label>
+                  <ion-input formControlName="color" name="color" placeholder="Ingresar" type="text"></ion-input>
+                  <ion-icon slot="start" name="eyedrop"></ion-icon>
+                </ion-item>
+              </ng-container>
+            </ion-item-group>
+         
+          </ion-col>
+        </ng-container>
+      </ion-row>
+    </ion-grid>
+  <ion-item-divider>
+    <p>
+      Por tu seguridad y la nuestra al actualizar tu informacion de 
+      perfil tu cuenta sera desactivada hasta confirmar los datos ingresados
+      <br><br>
+      una vez sea verificado de nuevo podra seguir usando nuestros servicios 😉👍
+    </p>
+  </ion-item-divider>
+    <ion-button 
+      #btnUpdate  
+      disabled="true" 
+      (click)="onUpdate(this.formProfile)" 
+      color="orange" 
+      type="submit" 
+      class="ion-margin">
+      <ion-label>Actualizar</ion-label>
+      <ion-icon slot="end" name="checkmark"></ion-icon>
+    </ion-button>
+  </form> 
+
+
+</ion-content>

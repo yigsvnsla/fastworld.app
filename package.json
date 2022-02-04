@@ -14,6 +14,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular/cdk": "^13.2.0",
     "@angular/common": "~13.0.3",
     "@angular/core": "~13.0.3",
     "@angular/forms": "~13.0.3",
@@ -31,6 +32,7 @@
     "@capacitor/storage": "^1.2.3",
     "@ionic/angular": "^6.0.0",
     "@ionic/angular-server": "^6.0.0",
+    "country-state-city": "^3.0.1",
     "date-fns": "^2.27.0",
     "libphonenumber-js": "^1.9.44",
     "ngx-cookie-service": "^13.1.0",
