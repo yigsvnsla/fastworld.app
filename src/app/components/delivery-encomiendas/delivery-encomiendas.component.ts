@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { formatDistanceStrict, formatDistanceToNow, isToday, parseISO } from 'date-fns';
+import { formatDistanceStrict, formatDistanceToNow, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { Socket } from 'ngx-socket-io';
 import { Products } from 'src/app/interfaces/interfaces';

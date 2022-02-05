@@ -63,9 +63,10 @@ export class GenerarEncomiendaComponent implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.instance()  
-    console.log( this.formPackage.get('location').valid );
 
+    
+
+    this.instance()  
   }
 
   async onSubmit(form: FormGroup) {
@@ -121,29 +122,20 @@ export class GenerarEncomiendaComponent implements OnInit {
             role: 'success',
             handler: async () => {
               console.log(this.formPackage.value);
-              if ( this.formPackage.get('location').valid ){
-                this.conection
-                  .post('products', this.formPackage.value)
-                  .then(response => {
-                    console.log(response);
-                    this.tools
-                      .showModal({
-                        component: ShareUrlModalComponent,
-                        backdropDismiss: false,
-                        componentProps: {
-                          url:`https://fastworld.app/encomienda/${response['id']}`
-                        },
-                      })
-                  })
-              }else{
-                this.tools.showAlert({
-                  header: 'Alerta ⚠',
-                  cssClass:'alert-warn',
-                  subHeader: 'Falta ingresar los datos de retiro, porfavor ingrese una ubicacion valida en el mapa de retiro',
-                  buttons:['ok']
-                })
-              }
 
+              this.conection
+                .post('products', this.formPackage.value)
+                .then(response => {
+                  console.log(response);
+                  this.tools
+                    .showModal({
+                      component: ShareUrlModalComponent,
+                      backdropDismiss: false,
+                      componentProps: {
+                        url:`https://fastworld.app/encomienda/${response['id']}`
+                      },
+                    })
+                })
             },
           },
         ],
@@ -264,7 +256,7 @@ export class GenerarEncomiendaComponent implements OnInit {
           user_phone: ['', [Validators.required,
             (user_phone:FormControl)=>{
               if(user_phone.value != '' ){
-                  if (user_phone.value.match(/ /g)) user_phone.patchValue(user_phone.value.replace(/ /g,''));
+                  if (user_phone.value.match(/ /g)) user_phone.patchValue(user_phone.value.replace(/ /g,''))
                   if (user_phone.value.match(/^\+/) != null) {
                     return isValidPhoneNumber(user_phone.value)? null : {user_phone:true};
                   }
@@ -292,8 +284,6 @@ export class GenerarEncomiendaComponent implements OnInit {
           .get('client')
           .setValue((await this.localStorage.get(environment.cookieTag)).email)
     
-    
-          
     
   }
 

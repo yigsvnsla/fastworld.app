@@ -125,6 +125,7 @@ export class ConectionsService {
         this.httpClient.post<Auth>(`${environment.api}/clients/auth`, data)
           .toPromise()
           .then(async (res) => {
+            console.log(res)
             if (res.status){
               switch (res.status.toString()) {
                 case '404':
