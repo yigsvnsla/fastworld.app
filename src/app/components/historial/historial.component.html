@@ -53,7 +53,7 @@
         <ion-col size="5">
           <ion-item class="ion-text-right" lines="none">
             <ion-label>
-              <p>{{i.created_at | date:'shortDate' }}</p>
+              <p>{{i.created_at | date:'d/M/yyyy' }}</p>
               <h6>{{i.type}}</h6>
               <h6>{{i.price > 0 ? formatPrice(i.price): 'Transferencia'}}</h6>
             </ion-label>

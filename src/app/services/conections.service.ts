@@ -1,3 +1,4 @@
+import { parseISO } from 'date-fns';
 import { LocalStorageService } from './local-storage.service';
 import { ToolsService } from './tools.service';
 import { HttpClient } from '@angular/common/http';
@@ -125,7 +126,6 @@ export class ConectionsService {
         this.httpClient.post<Auth>(`${environment.api}/clients/auth`, data)
           .toPromise()
           .then(async (res) => {
-            console.log(res)
             if (res.status){
               switch (res.status.toString()) {
                 case '404':
@@ -185,9 +185,14 @@ export class ConectionsService {
             }else{
               
               this.cookie.set(environment.cookieTag, { jwt: res.jwt, email: res.email });
-              this.httpClient.get<User>(`${environment.api}/clients?email_eq=${res.email}`, { headers: await this.headers() })
+              this.httpClient.get<User[]>(`${environment.api}/clients?email_eq=${res.email}`, { headers: await this.headers() })
                 .toPromise()
-                .then((data) => {                  
+                .then((data) => {          
+                  
+                  if ( data[0].memberships != null && parseISO(data[0].memberships.expire)  <= new Date(Date.now())){
+                    data[0].memberships = null
+                  }
+                    
                   this.localStorageService
                       .set(environment.cookieTag, data[0])
                       .then(() => {

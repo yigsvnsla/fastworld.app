@@ -7,7 +7,6 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  
   <ion-fab *ngIf="this.packagesList.length <= 0" (click)="goTo()" vertical="end" horizontal="end" slot="fixed">
     <ion-fab-button color="orange">
       <ion-icon name="add"></ion-icon>
@@ -56,7 +55,6 @@
               <ion-content>
                 <ion-item-group>
                   <ion-item [button]="true" [detail]="false"  (click)="transfer(item.id)">
-                    
                     <ion-label>Traspasar</ion-label>
                     <ion-icon slot="start" name="share-social"></ion-icon>
                   </ion-item>
@@ -82,6 +80,8 @@
             {{item.created_at | date:'short'}}
             <br>
             Tiempo de Retiro: {{this.formatDistanceStrict(item.timeout)}}
+            <br>
+            <ion-label>Estado: <ion-text color="orange">{{item.status | uppercase}}</ion-text></ion-label>
           </p>
         </ion-card-subtitle>
         <ion-item>
@@ -193,9 +193,8 @@
               <ion-icon slot="start" name="walk"></ion-icon>
 
             </ion-item>
-            <ng-container *ngIf="item.location.hasOwnProperty('goal') && item.location.goal != undefined ">
-              <ion-item-divider>
-                <ion-label>Indicaciones de Entrega</ion-label>
+            <ion-item-divider>
+              <ion-label>Indicaciones de Entrega</ion-label>
               </ion-item-divider>
               <ion-grid class="ion-no-padding">
                 <ion-row >
@@ -219,16 +218,16 @@
                   </ion-col>
                 </ion-row>
               </ion-grid>
-              <ion-item button [href]="'https://maps.google.com/?q=' + item.location.goal.location.lat + ',' + item.location.goal.location.lng" target="_blank" rel="noreferrer external">
-                <ion-label class="ion-text-wrap">
-                  <p>Dirección de Entrega</p>
-                  <h4 >{{ item.location.goal.address}}</h4>
-                </ion-label>
-                <ion-icon slot="start" name="map"></ion-icon>
-                <ion-icon slot="end" name="location"></ion-icon>
-
-              </ion-item>
-              <ion-item >
+              <ng-container *ngIf="item.location.hasOwnProperty('goal') && item.location.goal != undefined ">
+                <ion-item button [href]="'https://maps.google.com/?q=' + item.location.goal.location.lat + ',' + item.location.goal.location.lng" target="_blank" rel="noreferrer external">
+                  <ion-label class="ion-text-wrap">
+                    <p>Dirección de Entrega</p>
+                    <h4 >{{ item.location.goal.address}}</h4>
+                  </ion-label>
+                  <ion-icon slot="start" name="map"></ion-icon>
+                  <ion-icon slot="end" name="location"></ion-icon>
+                </ion-item>
+                <ion-item >
                 <ion-label class="ion-text-wrap">
                   <p>Indicaciones de Entrega</p>
                   <h4>{{ item.location.goal.indications ? item.location.goal.indications : 'Sin Indicaciones'}}</h4>

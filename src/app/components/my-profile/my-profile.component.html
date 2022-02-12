@@ -52,7 +52,7 @@
     </ion-row>
   </ion-grid>
 
-  <ion-card>
+  <ion-card *ngIf="this.profile.role == 'cliente' ">
     <ion-card-header>
       <ion-item class="ion-no-padding">
         <ion-label>

@@ -7,9 +7,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomePage implements OnInit {
 
-  constructor() { }
+  constructor(
+  ) {
+
+  }
 
   ngOnInit() {
+
+
+  }
+
+  ionViewDidEnter() {
+    // require('../../../assets/js/popper.min.js')
+    // require('../../../assets/js/bootstrap.min.js')
+    // require('../../../assets/js/count-up.min.js')
+    // require('../../../assets/js/tiny-slider.js')
+    // require('../../../assets/js/glightbox.min.js')
+    // require('../../../assets/js/main.js')
   }
 
 }

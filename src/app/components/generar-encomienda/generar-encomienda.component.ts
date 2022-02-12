@@ -194,13 +194,11 @@ export class GenerarEncomiendaComponent implements OnInit {
                     this.formPackage
                       .get('distance')
                       .setValue(result.routes[0].legs[0].distance.text)
-
                       if (this.memberships == null){
                         this.formPackage
                           .get('price_route') // cambiar el input de strapi para que acepte numeros, y no una cadena de texto
                           .setValue((Math.round(Number(result.routes[0].legs[0].distance.text.replace(/km/, '').replace(/,/, '.').trim())) * environment.formuleConst.kilometraje + environment.formuleConst.arranque).toString())
                       } 
-                        
                   }
                 })
               break;

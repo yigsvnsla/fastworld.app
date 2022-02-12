@@ -1,9 +1,306 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>home</ion-title>
-  </ion-toolbar>
+	<ion-toolbar>
+		<ion-grid>
+			<ion-row>
+				<ion-col class="center" sizeXs="12  " sizeSm="3" sizeMd="3">
+					<ion-img [src]="'../../../assets/svg/banner.svg'"></ion-img>
+				</ion-col>
+				<ion-col class="ion-hide-sm-down center">
+					<ion-row style="width: 100%;" class="ion-text-center">
+						<ion-col class="center">
+							<a>
+								<div class="header-btn">
+									<ion-label>Servicios</ion-label>
+								</div>
+							</a>
+						</ion-col>
+						<ion-col class="center">
+							<div class="header-btn">
+								<ion-label>Precios</ion-label>
+							</div>
+						</ion-col>
+						<ion-col class="center">
+							<div class="header-btn">
+								<ion-label>Quienes Somos</ion-label>
+							</div>
+						</ion-col>
+						<ion-col class="center">
+							<a routerLink="/auth/registrar">
+								<div id="register" class="header-btn">
+									<ion-label>Registrarme</ion-label>
+								</div>
+							</a>
+						</ion-col>
+					</ion-row>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+		<ion-buttons class="ion-margin" slot="end">
+			<ion-button routerLink="/auth" class="header" size="default" expand="full" color="orange" fill="outline"
+				shape="round">
+				<ion-label>Ingresar</ion-label>
+			</ion-button>
+		</ion-buttons>
+		<ion-buttons class="ion-hide-sm-up ion-margin" slot="end">
+			<ion-button
+				(click)=" accordion_group.value != undefined ? accordion_group.value = undefined : accordion_group.value = 'menu' "
+				class="header ion-margin" size="default" expand="full" fill="clear" shape="round">
+				<ion-icon slot="icon-only" name="list"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
 </ion-header>
+<ion-accordion-group #accordion_group>
+	<ion-accordion value="menu">
+		<ion-item-group slot="content">
+			<!-- <ion-item>
+				<ion-card-title>Menu</ion-card-title>
+			</ion-item> -->
+			<ion-item button>
+				<ion-icon slot="start" name="bicycle"></ion-icon>
+				<ion-label>Servicios</ion-label>
+			</ion-item>
+			<ion-item button>
+				<ion-icon slot="start" name="bulb"></ion-icon>
+				<ion-label>Como funciona</ion-label>
+			</ion-item>
+			<ion-item button>
+				<ion-icon slot="start" name="people"></ion-icon>
+				<ion-label>Quienes Somos</ion-label>
+			</ion-item>
+			<ion-item button routerLink="/auth/registrar">
+				<ion-icon slot="start" name="person-add"></ion-icon>
+				<ion-label>Registrarme</ion-label>
+			</ion-item>
+		</ion-item-group>
+	</ion-accordion>
+</ion-accordion-group>
 
-<ion-content>
+<ion-content #content>
+	<ion-grid fixed>
+		<ion-row>
+			<ion-col class="message" sizeXs="12" sizeSm="6">
+				<ion-img class="ion-hide-sm-down" [src]="'../../../assets/svg/banner.svg'"></ion-img>
+				<h1>Mas que un servicio de Encomiendas
+					<h5>Somos tu aliado estrategico para tu negocio</h5>
+					<h5>Queremos crecer y triunfar junto a ti.</h5>
+				</h1>
+				<ion-row>
+					<ion-col size="6">
+						<ion-button routerLink="/auth/registrar" color="orange" expand="block" fill="outline" shape="round">
+							<ion-label>Registrate</ion-label>
+						</ion-button>
+					</ion-col>
+					<ion-col size="6">
+						<ion-button routerLink="/auth/ingresar" color="orange" expand="block" fill="solid" shape="round">
+							<ion-label>Iniciar</ion-label>
+						</ion-button>
+					</ion-col>
+				</ion-row>
+			</ion-col>
+			<ion-col sizeXs="12" class="col-devices center" sizeSm="6">
+				<div class="device device-iphone-x">
+					<div class="device-frame">
+						<img class="device-content" src="../../../assets/Screenshot_3.png">
+					</div>
+					<div class="device-stripe"></div>
+					<div class="device-header"></div>
+					<div class="device-sensors"></div>
+					<div class="device-btns"></div>
+					<div class="device-power"></div>
+				</div>
+				<div class="device device-galaxy-s8 device-blue">
+					<div class="device-frame">
+						<img class="device-content" src="../../../assets/58b49200-c0fc-4b69-af8c-018c91bea5f1.jpg">
+					</div>
+					<div class="device-stripe"></div>
+					<div class="device-header"></div>
+					<div class="device-sensors"></div>
+					<div class="device-btns"></div>
+					<div class="device-power"></div>
+				</div>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
 
+
+	<ion-grid fixed>
+		<ion-row>
+			<ion-col size="12">
+				<ion-card-header>
+					<ion-card-title class="ion-text-center">
+						<h1>Servicios</h1>
+					</ion-card-title>
+				</ion-card-header>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col sizeMd="4" sizeXs="12">
+				<ion-card>
+					<ion-card-header>
+						<ion-card-title class="ion-padding ion-text-center">Encomiendas</ion-card-title>
+					</ion-card-header>
+					<ion-card-content>
+						<ion-img class="img-card" [src]="'../../../assets/svg/undraw_arrived_re_t2bw.svg'"></ion-img>
+					</ion-card-content>
+				</ion-card>
+			</ion-col>
+			<ion-col sizeMd="4" sizeXs="12">
+				<ion-card>
+					<ion-card-header>
+						<ion-card-title class="ion-padding ion-text-center">Cobranzas</ion-card-title>
+					</ion-card-header>
+					<ion-card-content>
+						<ion-img class="img-card" [src]="'../../../assets/svg/undraw_wallet_aym5.svg'"></ion-img>
+					</ion-card-content>
+				</ion-card>
+
+			</ion-col>
+			<ion-col sizeMd="4" sizeXs="12">
+				<ion-card>
+					<ion-card-header>
+						<ion-card-title class="ion-padding ion-text-center">Deliverys</ion-card-title>
+					</ion-card-header>
+					<ion-card-content>
+						<ion-img class="img-card" [src]="'../../../assets/svg/undraw_On_the_way_re_swjt.svg'"></ion-img>
+					</ion-card-content>
+				</ion-card>
+			</ion-col>
+
+		</ion-row>
+	</ion-grid>
+
+	<ion-grid fixed>
+		<ion-row>
+			<ion-col size="12">
+				<ion-card-header>
+					<ion-card-title class="ion-text-center">
+						<h1>Precios</h1>
+					</ion-card-title>
+				</ion-card-header>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col sizeMd="6" sizeXs="12">
+				<ion-card>
+					<ion-card-header>
+						<ion-card-title class="ion-padding ion-text-center">Tarifa Variable</ion-card-title>
+						<ion-card-subtitle style="color: white;" class="ion-text-center">¿ Estas iniciando tu emprendimiento pero
+							usas servicios de entrega no tan frecuente ?</ion-card-subtitle>
+						<p class="ion-text-center">Esta opcion es ideal para clientes naturales o emprendedores que no frecuenten
+							tan seguido servicios de encomiendas, consiste en la distancia de kilometraje por desplazamiento de los
+							motorizados de un punto inicial hasta el sistio de entrega.</p>
+					</ion-card-header>
+					<ion-card-content>
+						<ion-img class="img-card" [src]="'../../../assets/svg/undraw_finance_re_gnv2.svg'"></ion-img>
+					</ion-card-content>
+				</ion-card>
+			</ion-col>
+			<ion-col sizeMd="6" sizeXs="12">
+				<ion-card>
+					<ion-card-header>
+						<ion-card-title class="ion-padding ion-text-center">Tarifa Fija</ion-card-title>
+						<ion-card-subtitle style="color: white;" class="ion-text-center">¿ Tienes un negocio y quisieras ampliar el
+							alcance de tus productos ?</ion-card-subtitle>
+						<p class="ion-text-center">Contamos con un sistema de membresias para los emprendedores, esta le permitira
+							cubrir mayores distancias por la ciudad y beneficios para su negocio y emprendimiento dentro de <b>
+								<ion-text color="orange">Fast</ion-text>
+								<ion-text style="color: white;">world</ion-text>
+							</b>.</p>
+					</ion-card-header>
+					<ion-card-content>
+						<ion-img class="img-card" [src]="'../../../assets/svg/undraw_success_factors_re_ce93.svg'"></ion-img>
+					</ion-card-content>
+				</ion-card>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+	<br>
+	<ion-grid fixed>
+		<ion-row>
+			<ion-col class="center" size="6">
+				<ion-img [src]="'../../../assets/svg/undraw_empty_re_opql.svg'"></ion-img>
+			</ion-col>
+			<ion-col style="flex-direction: column;" class="center" size="6">
+				<ion-card-header class="ion-text-center">
+					<ion-card-title>Mision</ion-card-title>
+					<ion-card-subtitle><i>" Nuestra prioridad es la seguridad de tu envio y brindarte un servicio de calidad "</i>
+					</ion-card-subtitle>
+				</ion-card-header>
+				<ion-card-content>
+					Brindar a nuestro clientes
+					soluciones logísticas necesarias
+					para sus operaciones que les
+					permita enfocarse en sus
+					negocios y ayudándolos a
+					encontrar oportunidades de
+					mejoras en ahorro
+					de costos y tiempo.
+				</ion-card-content>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col style="flex-direction: column;" class="center" size="6">
+				<ion-card-header class="ion-text-center">
+					<ion-card-title>Mision</ion-card-title>
+					<ion-card-subtitle>
+						<i>" Unas de las ventajas de nosotros trabajando ya en conjunto es que nos
+						manejamos con tarifas fijas y sobre todo economicas teniendo un
+						execelente beneficios a nuestro consumidor final. "</i>
+					</ion-card-subtitle>
+				</ion-card-header>
+				<ion-card-content>
+					Nos vemos como un
+					emprendimiento de primer
+					nivel, trabajando en equipo con
+					nuestro clientes, facilitando
+					soluciones logísticas a través
+					de nuestro talento humano
+					 e innovando con
+					herramientas
+					tecnológicas
+				</ion-card-content>
+			</ion-col>
+			<ion-col class="center" size="6">
+				<ion-img [src]="'../../../assets/svg/undraw_Emails_re_cqen.svg'"></ion-img>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+	<ion-footer>
+		<footer class="footer-distributed">
+			<div class="footer-right">
+				<a href="https://www.facebook.com/FastWorldapp/" target="_blank" rel="noopener noreferrer">
+					<ion-icon style="margin-top: 8px;" name="logo-facebook"></ion-icon>
+				</a>
+				<a href="https://ec.linkedin.com/in/darwin-yanez-629019177" target="_blank" rel="noopener noreferrer">
+					<ion-icon style="margin-top: 8px;" name="logo-linkedin"></ion-icon>
+				</a>
+				<a href="https://api.whatsapp.com/send?phone=593981119272&text=Hola,%20vi%20un%20anuncio%20en%20su%20pagina%20web%20y%20quisiera%20conocer%20m%C3%A1s%20sobre%20tus%20productos"
+					target="_blank" rel="noopener noreferrer">
+					<ion-icon style="margin-top: 8px;" name="logo-whatsapp"></ion-icon>
+				</a>
+				<a href="tel:+593981119272" target="_blank" rel="noopener noreferrer">
+					<ion-icon style="margin-top: 8px;" name="call"></ion-icon>
+				</a>
+			</div>
+			<div class="footer-left">
+				<ion-img style="width: 300px;" [src]="'../../../assets/svg/banner.svg'"></ion-img>
+				<p class="footer-links">
+					<a class="link-1" (click)="content.scrollToTop(200)">Home</a>
+					<a href="#">Blog</a>
+					<a href="#">Pricing</a>
+					<a href="#">About</a>
+					<a href="#">Faq</a>
+				</p>
+				<h5>
+					<ion-icon color="orange" name="location"></ion-icon> Duran, Pedro Menéndez Mz 40 Villa 13
+				</h5>
+				<h6>
+					<ion-icon color="orange" name="call"></ion-icon>
+					<ion-text color="orange"> (</ion-text>+593<ion-text color="orange">)</ion-text> 98 111 9272
+				</h6>
+				<p>Fastworld &copy; 2021</p>
+			</div>
+		</footer>
+	</ion-footer>
 </ion-content>

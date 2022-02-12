@@ -43,10 +43,10 @@ export class HistorialComponent implements OnInit {
   async load(role:string){
     switch (role) {
       case 'cliente':
-        this.list = await this.conection.get(`products?client.email_eq=${(await this.localStorage.get(environment.cookieTag)).email}`)
+        this.list = await this.conection.get(`products?client.email_eq=${(await this.localStorage.get(environment.cookieTag)).email}&_sort=id:DESC`)
         break;
       case 'conductor':
-        this.list = await this.conection.get(`products?driver_eq=${(await this.localStorage.get(environment.cookieTag)).email}`)
+        this.list = await this.conection.get(`products?driver_eq=${(await this.localStorage.get(environment.cookieTag)).email}&_sort=id:DESC`)
         break;
       default:
         console.error('no role');

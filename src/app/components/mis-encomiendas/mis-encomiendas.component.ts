@@ -69,10 +69,10 @@ export class MisEncomiendasComponent implements OnInit {
   private async getData(){
     switch (this.role) {
       case 'cliente':
-        this.packagesList = await this.conections.get(`products?client.email_eq=${(await this.localStorage.get(environment.cookieTag)).email}`)
+        this.packagesList = await this.conections.get(`products?client.email_eq=${(await this.localStorage.get(environment.cookieTag)).email}&status=pendiente&status=recibido&_sort=id:DESC`)
         break;
       case 'conductor':
-        this.packagesList = await this.conections.get( `products?driver_eq=${(await this.localStorage.get(environment.cookieTag)).email}&status_eq=recibido`)
+        this.packagesList = await this.conections.get( `products?driver_eq=${(await this.localStorage.get(environment.cookieTag)).email}&status_eq=recibido&_sort=id:DESC`)
         break;
       default:
         console.error('no se encuentra el rol del usuario');
