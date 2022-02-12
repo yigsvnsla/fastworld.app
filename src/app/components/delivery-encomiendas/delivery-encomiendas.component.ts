@@ -20,6 +20,7 @@ export class DeliveryEncomiendasComponent implements OnInit {
   public formatDistanceStrict = (iso) =>{
     return formatDistanceToNow(parseISO(iso), { addSuffix: true , locale:es})
   }
+  user: any;
 
   constructor(
     private conections:ConectionsService,
@@ -32,6 +33,9 @@ export class DeliveryEncomiendasComponent implements OnInit {
   }
 
   async ngOnInit() {
+
+    this.user = await this.localStorage.get(environment.cookieTag);
+    console.log(this.user)
     // Datos necesarios para el correcto funcionamiento del componente, el cual debe consumir la API
     // A traves del metodo GET con su correspondiente identificador, el cual en este caso es el correo.
     // filtramos mediante el rol del usuario desde el localStorage para reutilizar el componente
@@ -60,7 +64,7 @@ export class DeliveryEncomiendasComponent implements OnInit {
 
   // Funcion encargada de consultar lista de encomienda a traves de GET y actualizar el DOM
   private async getData(){
-    this.packagesList = (await this.conections.get( `products?status_eq=pendiente`))
+    this.packagesList = (await this.conections.get( `products?status_eq=pendiente&region.id_eq=${this.user?.region?.id}`))
       .filter((element)=>{
         // if (isToday(parseISO(element['created_at']))){
           return element

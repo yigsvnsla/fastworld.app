@@ -43,6 +43,7 @@ export class LoginComponent implements OnInit {
 
   async submit( form: FormGroup){
     this.conection.auth(form.value)
+    console.log(form.value)
   }
 
 

@@ -6,7 +6,8 @@ import { format, isValidPhoneNumber } from 'libphonenumber-js';
 
 
 
-import { Country, State, City, ICity, ICountry, IState } from 'country-state-city'
+import { Country, State, City } from 'country-state-city'
+import {ICity, ICountry, IState} from 'country-state-city/lib/interface'
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -21,13 +22,18 @@ export class RegisterComponent implements OnInit {
   public city = City
 
   public locationUser: {
-    country: ICountry,
     state?: IState,
     city?: ICity
   }
 
+
+  // Variable para la lista de regiones
+  regions: any;
+  stateList: any;
+  cityList: any;
+
   // public countrys: ICountry[]
-  // public country: ICountry  
+  // public country: ICountry
   // public states : IState[]
   // public state : IState
   constructor(
@@ -37,12 +43,7 @@ export class RegisterComponent implements OnInit {
   ) {
 
     this.locationUser = {
-      country: {
-        currency: '',
-        flag: '',
-        isoCode: '',
-        name: ''
-      },state: {
+      state: {
         isoCode: '',
         name: '',
         countryCode: ''
@@ -60,9 +61,13 @@ export class RegisterComponent implements OnInit {
     console.log(this.formRegister.value)
   }
 
-  ngOnInit() {
+  async ngOnInit() {
 
-
+    //this.regions = await this.conection
+    this.stateList = this.state.getStatesOfCountry("EC").map((element) => {
+      let { name, isoCode } = element;
+      return { name: name.replace(' Province', ''), isoCode };
+    });
 
     this.formRegister = this.formBuilder.group({
       status: "pendiente",
@@ -101,6 +106,7 @@ export class RegisterComponent implements OnInit {
         image_license: [<File>{ name: '' }]
       }),
     })
+
   }
 
   postFormat(control: AbstractControl) {
@@ -120,6 +126,7 @@ export class RegisterComponent implements OnInit {
     if (role == 'conductor') {
       request.append('files.license_driver', license, new Date().getTime().toString());
     }
+    console.log(form.value)
     await this.conection.auth(request);
   }
 
@@ -166,6 +173,12 @@ export class RegisterComponent implements OnInit {
         }),
       })
     }
+  }
+
+  stateChanged(event){
+    this.formRegister.get('document').get('state').setValue(event) ;
+    this.cityList = City.getCitiesOfState("EC", event?.isoCode);
+    console.log(this.formRegister.get('document').get('state').value)
   }
 }
 

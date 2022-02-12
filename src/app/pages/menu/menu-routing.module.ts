@@ -11,87 +11,89 @@ import { Routes, RouterModule } from '@angular/router';
 import { MenuPage } from './menu.page';
 import { MyProfileComponent } from 'src/app/components/my-profile/my-profile.component';
 
-
 const routes: Routes = [
   {
     path: '',
     component: MenuPage,
-    children:[{
-      path:'cliente',
-      component:ClientComponent,
-      children:[
-        {
-          path:'',
-          redirectTo:'home',
-          pathMatch:'full'
-        },
-        {
-          path:'home',
-          component:HomeComponent
-        },
-        {
-          path:'encomienda',
-          component:GenerarEncomiendaComponent
-        },
-        {
-          path:'historial',
-          component:HistorialComponent
-        },
-        {
-          path:'mis-encomiendas',
-          component:MisEncomiendasComponent
-        },
-        {
-          path:'perfil',
-          component:MyProfileComponent
-        },
-        {
-          path:'**',
-          component:NotFoundComponent
-        }
-      ]
-      // ,canActivate:[LoginGuard]
-    },{
-      path:'conductor',
-      children:[
-        {
-          path:'',
-          redirectTo:'home',
-          pathMatch:'full'
-        },
-        {
-          path:'home',
-          component:HomeComponent
-        },
-        {
-          path:'historial',
-          component:HistorialComponent
-        },
-        {
-          path:'mi-mochila',
-          component:MisEncomiendasComponent
-        },
-        {
-          path:'encomienda',
-          component:DeliveryEncomiendasComponent
-        },
-        {
-          path:'perfil',
-          component:MyProfileComponent
-        },
-        {
-          path:'**',
-          component:NotFoundComponent
-        }
-      ],
-      canActivate:[LoginGuard]
-    }],
-    canActivate:[LoginGuard],
+    children: [
+      {
+        path: 'cliente',
+        component: ClientComponent,
+        children: [
+          {
+            path: '',
+            redirectTo: 'home',
+            pathMatch: 'full',
+          },
+          {
+            path: 'home',
+            component: HomeComponent,
+          },
+          {
+            path: 'encomienda',
+            component: GenerarEncomiendaComponent,
+          },
+          {
+            path: 'historial',
+            component: HistorialComponent,
+          },
+          {
+            path: 'mis-encomiendas',
+            component: MisEncomiendasComponent,
+          },
+          {
+            path: 'perfil',
+            component: MyProfileComponent,
+          },
+          {
+            path: '**',
+            component: NotFoundComponent,
+          },
+        ],
+        // ,canActivate:[LoginGuard]
+      },
+      {
+        path: 'conductor',
+        children: [
+          {
+            path: '',
+            redirectTo: 'home',
+            pathMatch: 'full',
+          },
+          {
+            path: 'home',
+            component: HomeComponent,
+          },
+          {
+            path: 'historial',
+            component: HistorialComponent,
+          },
+          {
+            path: 'mi-mochila',
+            component: MisEncomiendasComponent,
+          },
+          {
+            path: 'encomienda',
+            component: DeliveryEncomiendasComponent,
+          },
+          {
+            path: 'perfil',
+            component: MyProfileComponent,
+          },
+          {
+            path: '**',
+            component: NotFoundComponent,
+          },
+        ],
+        canActivate: [LoginGuard],
+      },
+    ],
+    canActivate: [LoginGuard],
   },
   {
-    path:'**',
-    component:NotFoundComponent
-  }
+    path: '**',
+    component: NotFoundComponent,
+  },
 ];
 
 @NgModule({

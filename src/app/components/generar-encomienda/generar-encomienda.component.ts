@@ -32,6 +32,11 @@ export class GenerarEncomiendaComponent implements OnInit {
   public memberships: Memberships | string;
 
   public kilometerRef
+
+  //User data
+  user: any;
+
+
   constructor(
     public tools: ToolsService,
     private formBuilder: FormBuilder,
@@ -58,6 +63,9 @@ export class GenerarEncomiendaComponent implements OnInit {
 
   async ngOnInit() {
 
+    //Getting data of user
+    this.user = await this.localStorage.get(environment.cookieTag);
+
     this.instance()
 
   }
@@ -70,8 +78,26 @@ export class GenerarEncomiendaComponent implements OnInit {
   }
 
   async onSubmit(form: FormGroup) {
-    await this.conection.post('products', form.value).then(Response=> console.log(Response))
-    await this.router.navigateByUrl('/menu/cliente/mis-encomiendas')
+    // Check if province is enable to create a news products
+    const {region} = this.user;
+    if(region?.enable){
+      await this.conection.post('products', {...form.value, region: region.id}).then(Response=> console.log(Response))
+      await this.router.navigateByUrl('/menu/cliente/mis-encomiendas')
+    }else{
+      this.tools.showAlert({
+        backdropDismiss: true,
+        header: 'Alerta ⚠',
+        cssClass: 'alert-warn',
+        subHeader: 'La region donde te encuentras no esta disponible en estos momentos',
+        buttons: [
+          {
+            text: 'ok',
+            role: 'success',
+          },
+        ],
+      })
+    }
+    
   }
 
   async dateTimeChange(event: Event) {

@@ -13,7 +13,7 @@ import { es } from 'date-fns/locale'
 })
 export class MenuPage implements OnInit {
 
-  public user: User
+  public user: any
   public listMenu: any[]
   public generalOptions: any[]
   public roleOptions: any[]
@@ -46,6 +46,12 @@ export class MenuPage implements OnInit {
       phone: '',
       role: '',
       status: '',
+      region:{
+        state: '',
+        city: '',
+        start_price: '',
+        base_price: ''
+      }
     }
   }
 
@@ -54,6 +60,7 @@ export class MenuPage implements OnInit {
       .get(environment.cookieTag)
       .then(response => {
         this.user = response;
+        console.log(this.user)
         switch (this.user.role) {
           case 'cliente':
             this.roleOptions = [
