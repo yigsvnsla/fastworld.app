@@ -1,4 +1,4 @@
-<!-- <ion-header>
+<ion-header>
   <ion-toolbar class="ion-text-center">
     <ion-title>Fastworld</ion-title>
     <ion-buttons slot="start">
@@ -38,9 +38,9 @@
     </ion-grid>
   </div>
 
-   (ngSubmit)="onSubmit(this.formRegister)"  
-  <form 
-    (ngSubmit)="log()" 
+  <!-- (ngSubmit)="onSubmit(this.formRegister)"  -->
+  <form
+    (ngSubmit)="onSubmit(this.formRegister)"
     *ngIf="this.formRegister.get('role').value != '' "
     [formGroup]="this.formRegister" class="ion-text-center">
     <ion-grid fixed>
@@ -52,18 +52,18 @@
             </ion-item-divider>
             <ion-item>
               <ion-label position="stacked">Nombre</ion-label>
-              <ion-input 
-                type="text" 
-                autocomplete="name" 
-                formControlName="name" 
+              <ion-input
+                type="text"
+                autocomplete="name"
+                formControlName="name"
                 placeholder="Ingresar nombre">
               </ion-input>
             </ion-item>
             <ion-item>
               <ion-label position="stacked">Apellido</ion-label>
-              <ion-input 
-                type="text" 
-                formControlName="lastname" 
+              <ion-input
+                type="text"
+                formControlName="lastname"
                 placeholder="Ingresar apellido"></ion-input>
             </ion-item>
             <ion-item>
@@ -74,19 +74,19 @@
             </ion-item>
             <ion-item>
               <ion-label position="stacked">Correo</ion-label>
-              <ion-input 
-                formControlName="email" 
-                autocomplete="email" 
-                type="email" 
+              <ion-input
+                formControlName="email"
+                autocomplete="email"
+                type="email"
                 placeholder="example@email.com">
               </ion-input>
               <ion-icon slot="start" name="mail"></ion-icon>
             </ion-item>
             <ion-item>
               <ion-label position="stacked">Contraseña</ion-label>
-              <ion-input 
-                formControlName="pwd" 
-                autocomplete="current-password" 
+              <ion-input
+                formControlName="pwd"
+                autocomplete="current-password"
                 type="password"
                 placeholder="Ingresar contraseña"></ion-input>
               <ion-icon slot="start" name="key"></ion-icon>
@@ -98,28 +98,28 @@
             <ion-item-divider>
               <ion-label>Direccion</ion-label>
             </ion-item-divider>
-             country 
-            <ion-item 
-              id='country' 
-              button 
-              detail="true" 
+            <!-- country -->
+            <!-- <ion-item
+              id='country'
+              button
+              detail="true"
               detailIcon="caret-down">
               <ion-icon slot="start" name="globe"></ion-icon>
               <ion-label>Pais</ion-label>
-              <ion-label 
-                #countryLabel 
+              <ion-label
+                #countryLabel
                 slot="end">{{this.formRegister.get('document').get('country').value != null ? this.formRegister.get('document').get('country').value.flag + ' ' + this.formRegister.get('document').get('country').value.name : 'Seleccionar'}}
               </ion-label>
-              <ion-popover 
-                style="--height:200px" 
-                dismiss-on-select="true" 
-                alignment="end" 
+               <ion-popover
+                style="--height:200px"
+                dismiss-on-select="true"
+                alignment="end"
                 trigger="country">
                 <ng-template>
                   <ion-item-group>
                     <ng-container *ngFor="let _country of this.country.getAllCountries()">
-                      <ion-item 
-                        button 
+                      <ion-item
+                        button
                         (click)="this.formRegister.get('document').get('country').setValue(_country)">
                         <ion-label>{{_country.flag}} {{_country.name}}</ion-label>
                       </ion-item>
@@ -127,28 +127,24 @@
                   </ion-item-group>
                 </ng-template>
               </ion-popover>
-            </ion-item>
-             state 
-            <ion-item 
-              id='state' 
-              button 
-              detail="true"
-              detailIcon="caret-down"
-              [disabled]="this.formRegister.get('document').get('country').value == null " >
+            </ion-item> -->
+            <!-- state -->
+            <ion-item
+              id='state' button detail="true" detailIcon="caret-down">
               <ion-label>Estado</ion-label>
               <ion-label slot="end">{{this.formRegister.get('document').get('state').value != null ? this.formRegister.get('document').get('state').value.name : 'Seleccionar'}}</ion-label>
               <ion-icon slot="start" name="map"></ion-icon>
-              <ion-popover 
-                style="--height:200px" 
-                dismiss-on-select="true" 
-                alignment="end" 
+              <ion-popover
+                style="--height:200px"
+                dismiss-on-select="true"
+                alignment="end"
                 trigger="state">
                 <ng-template>
                   <ion-item-group>
-                    <ion-item 
-                      button 
-                      (click)="this.formRegister.get('document').get('state').setValue(_state) ;"
-                      *ngFor="let _state of this.state.getStatesOfCountry(this.formRegister.get('document').get('country').value.isoCode)">
+                    <ion-item
+                      button
+                      (click)="this.stateChanged(_state)"
+                      *ngFor="let _state of this.stateList">
                       <ion-label>{{_state.name}}</ion-label>
                       <ion-icon slot="start" name="map"></ion-icon>
                     </ion-item>
@@ -156,26 +152,26 @@
                 </ng-template>
               </ion-popover>
             </ion-item>
-             city 
-            <ion-item 
-              button id='city' 
-              detail="true" 
+            <!-- city -->
+            <ion-item
+              button id='city'
+              detail="true"
               detailIcon="caret-down"
               [disabled]="this.formRegister.get('document').get('state').value == null">
               <ion-label>Ciudad</ion-label>
               <ion-label slot="end">{{this.formRegister.get('document').get('city').value != null ? this.formRegister.get('document').get('city').value.name : 'Seleccionar'}}</ion-label>
               <ion-icon slot="start" name="location"></ion-icon>
-              <ion-popover 
-                style="--height:200px" 
-                dismiss-on-select="true" 
-                alignment="end" 
+              <ion-popover
+                style="--height:200px"
+                dismiss-on-select="true"
+                alignment="end"
                 trigger="city">
                 <ng-template>
                   <ion-item-group>
-                    <ion-item 
-                      button  
-                      (click)="this.formRegister.get('document').get('city').setValue(_city) " 
-                      *ngFor="let _city of this.city.getCitiesOfState(this.formRegister.get('document').get('state').value.countryCode,this.formRegister.get('document').get('state').value.isoCode)">
+                    <ion-item
+                      button
+                      (click)="this.formRegister.get('document').get('city').setValue(_city) "
+                      *ngFor="let _city of cityList">
                       <ion-label>{{_city.name}}</ion-label>
                       <ion-icon slot="start" name="location"></ion-icon>
                     </ion-item>
@@ -183,7 +179,7 @@
                 </ng-template>
               </ion-popover>
             </ion-item>
-            <ion-item-group>
+            <!--<ion-item-group>
               <ion-item-divider>
                 <ion-label>Documentación de la Empresa</ion-label>
               </ion-item-divider>
@@ -195,7 +191,7 @@
                 <ion-label>Awesome Label</ion-label>
               </ion-item>
 
-            </ion-item-group>
+            </ion-item-group>-->  
             <ion-item-group>
               <ion-item-divider>
                 <ion-label>Documentacion</ion-label>
@@ -222,190 +218,6 @@
                   (change)="imgHandler($event)">
                 <h6>{{ this.formRegister.get('document').get("image_license").value.name || "Seleccione un archivo."}}
                 </h6>
-              </ion-item>
-            </ion-item-group>
-          </ion-col>
-          <ion-col size="12" formGroupName="vehicles" *ngIf="this.formRegister.get('role').value == 'conductor' ">
-            <ion-item-group>
-              <ion-item-divider>
-                <ion-label>Vehiculo</ion-label>
-              </ion-item-divider>
-              <ion-radio-group formControlName="type" #radioGroup>
-                <ion-item>
-                  <ion-label>Bicicleta</ion-label>
-                  <ion-icon slot="start" name="walk"></ion-icon>
-                  <ion-radio value="bicicleta"></ion-radio>
-                </ion-item>
-                <ion-item>
-                  <ion-label>Motocicleta</ion-label>
-                  <ion-icon slot="start" name="bicycle"></ion-icon>
-                  <ion-radio value="motocicleta"></ion-radio>
-                </ion-item>
-                <ion-item>
-                  <ion-label>Automovil</ion-label>
-                  <ion-icon slot="start" name="car"></ion-icon>
-                  <ion-radio value="automovil"></ion-radio>
-                </ion-item>
-              </ion-radio-group>
-              <ng-container id="infoVehicle" *ngIf=" radioGroup.value != '' && radioGroup.value  != 'bicicleta' ">
-                <ion-item-divider>
-                  <ion-label>Informacion del vehiculo</ion-label>
-                </ion-item-divider>
-                <ion-item>
-                  <ion-label position="stacked">Placa</ion-label>
-                  <ion-input formControlName="enroller" name="enroller" placeholder="Ingresar" type="text"></ion-input>
-                  <ion-icon slot="start" name="card"></ion-icon>
-                </ion-item>
-                <ion-item>
-                  <ion-label position="stacked">Marca</ion-label>
-                  <ion-input formControlName="maker" name="maker" placeholder="Ingresar" type="text"></ion-input>
-                  <ion-icon slot="start" name="speedometer"></ion-icon>
-                </ion-item>
-                <ion-item>
-                  <ion-label position="stacked">Modelo</ion-label>
-                  <ion-input formControlName="model" name="model" placeholder="Ingresar" type="text"></ion-input>
-                  <ion-icon slot="start" name="shapes"></ion-icon>
-                </ion-item>
-                <ion-item>
-                  <ion-label position="stacked">Año</ion-label>
-                  <ion-input formControlName="year" name="year" placeholder="Ingresar" type="tel"></ion-input>
-                  <ion-icon slot="start" name="today"></ion-icon>
-                </ion-item>
-                <ion-item>
-                  <ion-label position="stacked">Color</ion-label>
-                  <ion-input formControlName="color" name="color" placeholder="Ingresar" type="text"></ion-input>
-                  <ion-icon slot="start" name="eyedrop"></ion-icon>
-                </ion-item>
-              </ng-container>
-            </ion-item-group>
-          </ion-col>
-        </ng-container>
-      </ion-row>
-    </ion-grid>
-    <ion-button type="submit" class="ion-margin">
-      <ion-label>Registrar</ion-label>
-      <ion-icon slot="start" name="checkmark"></ion-icon>
-    </ion-button>
-  </form>
-
-
-</ion-content> -->
-
-<ion-header>
-  <ion-toolbar class="ion-text-center">
-    <ion-title>Fastworld</ion-title>
-    <ion-buttons slot="start">
-      <ion-button (click)="onExit()">
-        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-<ion-content>
-  <ion-grid
-    fixed
-    class="ion-text-center"
-    *ngIf="this.formRegister.get('role').value == '' "
-    style="display: flex; height: 100%; align-items: center;justify-content: center;"
-    >
-    <ion-row class="ion-align-self-center">
-      <ion-col size="6">
-        <ion-card button (click)="setRole('cliente')">
-          <ion-card-header>
-            <ion-card-subtitle>Registrate como</ion-card-subtitle>
-            <ion-card-title>Cliente</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-img src="../../../../../assets/svg/undraw_Confirmation_re_b6q5.svg"></ion-img>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-      <ion-col size="6">
-        <ion-card button (click)="setRole('conductor')">
-          <ion-card-header>
-            <ion-card-subtitle>Registrate como</ion-card-subtitle>
-            <ion-card-title>Repartidor</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-img src="../../../../../assets/svg/undraw_Delivery_address_re_cjca.svg"></ion-img>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-  <form
-    (ngSubmit)="onSubmit(this.formRegister)"
-    *ngIf="this.formRegister.get('role').value != '' "
-    [formGroup]="this.formRegister" class="ion-text-center"
-    >
-    <ion-grid fixed>
-      <ion-row>
-        <ion-col sizeXs="12">
-          <ion-item-group>
-            <ion-item-divider>
-              <ion-label>Información</ion-label>
-            </ion-item-divider>
-            <ion-item>
-              <ion-label position="stacked">Nombre</ion-label>
-              <ion-input formControlName="name" autocomplete="name" type="text" placeholder="Ingresar nombre"></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-label position="stacked">Apellido</ion-label>
-              <ion-input formControlName="lastname" type="text" placeholder="Ingresar apellido"></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-label position="stacked">Telefono</ion-label>
-              <ion-input (ionBlur)="postFormat(this.formRegister.get('phone')) " formControlName="phone" autocomplete="tel" type="tel" placeholder="Numero de Telefono"></ion-input>
-              <ion-icon slot="start" name="call"></ion-icon>
-            </ion-item>
-            <ion-item>
-              <ion-label position="stacked">Correo</ion-label>
-              <ion-input formControlName="email" autocomplete="email" type="email" placeholder="example@email.com"></ion-input>
-              <ion-icon slot="start" name="mail"></ion-icon>
-            </ion-item>
-            <ion-item>
-              <ion-label position="stacked">Contraseña</ion-label>
-              <ion-input formControlName="pwd" autocomplete="current-password" type="password" placeholder="Ingresar contraseña"></ion-input>
-              <ion-icon slot="start" name="key"></ion-icon>
-            </ion-item>
-          </ion-item-group>
-        </ion-col>
-        <ng-container formGroupName="document">
-          <ion-col sizeXs="12">
-            <ion-item-divider>
-              <ion-label>Direccion</ion-label>
-            </ion-item-divider>
-            <ion-item>
-              <ion-label position="stacked">Ciudad</ion-label>
-              <ion-input formControlName="city" name="city" placeholder="Ingresar" type="text"></ion-input>
-              <ion-icon slot="start" name="location"></ion-icon>
-            </ion-item>
-            <ion-item>
-              <ion-label position="stacked">Mi Direccion</ion-label>
-              <ion-input formControlName="address" name="address" placeholder="Ingresar" type="text"></ion-input>
-              <ion-icon slot="start" name="home"></ion-icon>
-            </ion-item>
-            <ion-item-group>
-              <ion-item-divider>
-                <ion-label>Documentacion</ion-label>
-              </ion-item-divider>
-              <ion-item>
-                <ion-label position="stacked">Cédula</ion-label>
-                <ion-input formControlName="dni" type="tel" placeholder="Identificación"></ion-input>
-                <ion-icon slot="start" name="id-card"></ion-icon>
-              </ion-item>
-              <ion-item-divider>
-                <ion-label><p> Por favor ingresar la imagenes en horizontal</p></ion-label>
-              </ion-item-divider>
-              <ion-item button (click)="fileDni.click();">
-                <ion-label position="stacked">Imagen Documento</ion-label>
-                <input formGroupName="image_dni" id="image_dni" #fileDni type="file" accept="image/*" (change)="imgHandler($event)">
-                <h6>{{ this.formRegister.get('document').get("image_dni").value.name || "Seleccione un archivo."}}</h6>
-              </ion-item>
-              <ion-item button (click)="fileLicence.click()" *ngIf="this.formRegister.get('role').value == 'conductor'">
-                <ion-label position="stacked">Imagen Licencia</ion-label>
-                <input formGroupName="image_license" id="image_license" #fileLicence type="file" accept="image/*" (change)="imgHandler($event)">
-                <h6>{{ this.formRegister.get('document').get("image_license").value.name || "Seleccione un archivo."}}</h6>
               </ion-item>
             </ion-item-group>
           </ion-col>

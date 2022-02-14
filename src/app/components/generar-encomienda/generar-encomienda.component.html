@@ -160,7 +160,7 @@
           </ion-item>
         </ion-card-header>
       </ion-card>
-      <ion-card *ngIf="this.formPackage.get('location').get('start').valid">
+      <ion-card *ngIf="formPackage.get('location').get('start').valid == true">
         <ion-card-header>
           <ion-card-subtitle>Ubicacion de Entrega</ion-card-subtitle>
           <ion-card-title>¿A donde vamos?</ion-card-title>
@@ -181,7 +181,7 @@
           </ion-button>
         </ion-card-header>
       </ion-card>
-      <ng-container  >
+      <ng-container>
         <ion-item-divider>
           <ion-label>Costo de Ruta </ion-label>
         </ion-item-divider>

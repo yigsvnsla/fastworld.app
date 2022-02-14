@@ -32,6 +32,11 @@ export class GenerarEncomiendaComponent implements OnInit {
   public memberships: Memberships | string;
 
   public kilometerRef
+
+  //User data
+  user: any;
+
+
   constructor(
     public tools: ToolsService,
     private formBuilder: FormBuilder,
@@ -57,21 +62,54 @@ export class GenerarEncomiendaComponent implements OnInit {
   }
 
   async ngOnInit() {
-
-    this.instance()
-
+    
+    await this.instance()
+    this.user = await this.localStorage.get(environment.cookieTag);
+    
+    console.log(this.user?.region?.enable)
+    if(this.user?.region?.enable != true){
+      this.tools.showAlert({
+        backdropDismiss: true,
+        header: 'Alerta ⚠',
+        cssClass: 'alert-warn',
+        subHeader: 'La region donde te encuentras no esta disponible en estos momentos',
+        buttons: [
+          {
+            text: 'ok',
+            role: 'success',
+          },
+        ],
+      })
+    }
   }
 
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
 
-    
-
-    this.instance()  
+    await this.instance()  
   }
 
   async onSubmit(form: FormGroup) {
-    await this.conection.post('products', form.value).then(Response=> console.log(Response))
-    await this.router.navigateByUrl('/menu/cliente/mis-encomiendas')
+    // Check if province is enable to create a news products
+    const {region} = this.user;
+    console.log(region?.enable)
+    if(region?.enable){
+      await this.conection.post('products', {...form.value, region: region.id}).then(Response=> console.log(Response))
+      await this.router.navigateByUrl('/menu/cliente/mis-encomiendas')
+    }else{
+      this.tools.showAlert({
+        backdropDismiss: true,
+        header: 'Alerta ⚠',
+        cssClass: 'alert-warn',
+        subHeader: 'La region donde te encuentras no esta disponible en estos momentos',
+        buttons: [
+          {
+            text: 'ok',
+            role: 'success',
+          },
+        ],
+      })
+    }
+    
   }
 
   async dateTimeChange(event: Event) {
@@ -208,6 +246,7 @@ export class GenerarEncomiendaComponent implements OnInit {
                   address: data.address,
                   location: data.location
                 })
+                console.log(this.formPackage.get('location').get('start').valid)
               break;
             default:
                 console.error('origin not found');
@@ -261,7 +300,7 @@ export class GenerarEncomiendaComponent implements OnInit {
                   if (RegExp(/[0-9]/g).test(user_phone.value)){
                     return user_phone.value.length == 10 ? null : {user_phone:true}                 
                   } 
-              }
+              } 
             }
           ]],
           client: ['', [Validators.required]],
@@ -281,8 +320,7 @@ export class GenerarEncomiendaComponent implements OnInit {
         this.formPackage
           .get('client')
           .setValue((await this.localStorage.get(environment.cookieTag)).email)
-    
-    
+
   }
 
 }

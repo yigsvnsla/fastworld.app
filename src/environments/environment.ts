@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  api:'https://api.fastworld.app',
+  api:'https://dev.fastworld.app',
   cookieTag:'userFastworld',
   formuleConst:{
     arranque : 1.5,
