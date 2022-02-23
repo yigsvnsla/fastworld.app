@@ -4,8 +4,9 @@ import { environment } from 'src/environments/environment';
 import { LocalStorageService } from './../../services/local-storage.service';
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/interfaces/interfaces';
-import { parseISO, formatDistanceToNowStrict } from 'date-fns'
+import { parseISO, formatDistanceToNowStrict, intervalToDuration } from 'date-fns'
 import { es } from 'date-fns/locale'
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-cliente',
   templateUrl: './menu.page.html',
@@ -25,7 +26,8 @@ export class MenuPage implements OnInit {
   constructor(
     private localStorage: LocalStorageService,
     private conections: ConectionsService,
-    public tools: ToolsService
+    public tools: ToolsService,
+    private router: Router
   ) {
 
 
@@ -53,66 +55,94 @@ export class MenuPage implements OnInit {
         base_price: ''
       }
     }
+
+    console.log();
+    
+
+  
+
+
   }
 
-  ionViewDidEnter() {
-    this.localStorage
-      .get(environment.cookieTag)
-      .then(response => {
-        this.user = response;
-        console.log(this.user)
-        switch (this.user.role) {
-          case 'cliente':
-            this.roleOptions = [
-              {
-                title: 'Nueva Encomienda',
-                url: 'encomienda',
-                icon: 'cube',
-              },
-              {
-                title: 'Mis Encomiendas',
-                url: 'mis-encomiendas',
-                icon: 'arrow-redo',
-              },
+  async ionViewDidEnter() {
 
-              {
-                title: 'Historial',
-                url: 'historial',
-                icon: 'folder',
-              },
-            ]
-            break;
-          case 'conductor':
-            this.roleOptions = [
-              {
-                title: 'Encomiendas',
-                url: 'encomienda',
-                icon: 'cube',
-              },
-              {
-                title: 'Mi Mochila',
-                url: 'mi-mochila',
-                icon: 'arrow-redo',
-              },
+    if(!(await this.localStorage.check(environment.cookieTag))){
+      this.router.navigateByUrl('/auth')
+    }else{
+      this.conections.get(`clients?id_eq=${(await this.localStorage.get(environment.cookieTag)).id}`)
+      .then(res => {
 
-              {
-                title: 'Historial',
-                url: 'historial',
-                icon: 'folder',
-              },
-            ]
-            break;
-          default:
-            console.error('no se consigue el rol');
-            break;
-        }
-        this.generalOptions = [{
-          title: 'Mi Perfil',
-          url: 'perfil',
-          icon: 'person',
-        },]
-        this.listMenu = Array.prototype.concat(this.roleOptions,this.generalOptions)
+        this.localStorage.update(environment.cookieTag,res[0])
+        this.localStorage
+        .get(environment.cookieTag)
+        .then(response => {
+          this.user = response;
+          if (this.user.role == 'cliente') {
+            if (intervalToDuration({start: new Date(Date.now()), end: parseISO(this.user.memberships.expire)}).days < 3 || intervalToDuration({start: new Date(Date.now()), end: parseISO(this.user.memberships.expire)}).days == 0){
+              this.tools.showAlert({
+                header:'Alerta ⚠',
+                subHeader: `su membrecia vence en ${intervalToDuration({start: new Date(Date.now()),end: parseISO(this.user.memberships.expire)}).days} dias,una vez expirada solo podra enviar encomiendas por costo de ruta`,
+                buttons:['ok']
+              })
+            }
+          }
+
+          switch (this.user.role) {
+            case 'cliente':
+              this.roleOptions = [
+                {
+                  title: 'Nueva Encomienda',
+                  url: 'encomienda',
+                  icon: 'cube',
+                },
+                {
+                  title: 'Mis Encomiendas',
+                  url: 'mis-encomiendas',
+                  icon: 'arrow-redo',
+                },
+  
+                {
+                  title: 'Historial',
+                  url: 'historial',
+                  icon: 'folder',
+                },
+              ]
+              break;
+            case 'conductor':
+              this.roleOptions = [
+                {
+                  title: 'Encomiendas',
+                  url: 'encomienda',
+                  icon: 'cube',
+                },
+                {
+                  title: 'Mi Mochila',
+                  url: 'mi-mochila',
+                  icon: 'arrow-redo',
+                },
+  
+                {
+                  title: 'Historial',
+                  url: 'historial',
+                  icon: 'folder',
+                },
+              ]
+              break;
+            default:
+              console.error('no se consigue el rol');
+              break;
+          }
+          this.generalOptions = [{
+            title: 'Mi Perfil',
+            url: 'perfil',
+            icon: 'person',
+          },]
+          this.listMenu = Array.prototype.concat(this.roleOptions,this.generalOptions)
+        })
       })
+    }
+
+
   }
 
   async onLogOut() {

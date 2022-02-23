@@ -43,7 +43,8 @@ export class GenerarEncomiendaComponent implements OnInit {
     private localStorage: LocalStorageService,
     private mapDirectionsService: MapDirectionsService,
     private conection: ConectionsService,
-    private router:Router
+    private router:Router,
+    private location:Location
   ) {
 
     this.categoryList = [
@@ -79,6 +80,9 @@ export class GenerarEncomiendaComponent implements OnInit {
             role: 'success',
           },
         ],
+      })
+      .then(()=>{
+        this.location.back()
       })
     }
   }
