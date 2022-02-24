@@ -57,9 +57,9 @@ export class MenuPage implements OnInit {
     }
 
     console.log();
-    
 
-  
+
+
 
 
   }
@@ -70,14 +70,13 @@ export class MenuPage implements OnInit {
       this.router.navigateByUrl('/auth')
     }else{
       this.conections.get(`clients?id_eq=${(await this.localStorage.get(environment.cookieTag)).id}`)
-      .then(res => {
-
-        this.localStorage.update(environment.cookieTag,res[0])
+      .then(async res => {
+        await this.localStorage.update(environment.cookieTag,res[0])
         this.localStorage
         .get(environment.cookieTag)
         .then(response => {
           this.user = response;
-          if (this.user.role == 'cliente') {
+          if (this.user.role == 'cliente' && this.user.memberships != null) {
             if (intervalToDuration({start: new Date(Date.now()), end: parseISO(this.user.memberships.expire)}).days < 3 || intervalToDuration({start: new Date(Date.now()), end: parseISO(this.user.memberships.expire)}).days == 0){
               this.tools.showAlert({
                 header:'Alerta ⚠',
@@ -100,7 +99,7 @@ export class MenuPage implements OnInit {
                   url: 'mis-encomiendas',
                   icon: 'arrow-redo',
                 },
-  
+
                 {
                   title: 'Historial',
                   url: 'historial',
@@ -120,7 +119,7 @@ export class MenuPage implements OnInit {
                   url: 'mi-mochila',
                   icon: 'arrow-redo',
                 },
-  
+
                 {
                   title: 'Historial',
                   url: 'historial',
