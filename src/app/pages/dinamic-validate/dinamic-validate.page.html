@@ -1,11 +1,17 @@
 <ion-content>
-  <div class="body">
+  <div class="body" *ngIf="this.isLoad">
     <ion-card *ngIf="template">
       <ion-card-header class="ion-text-center ion-padding ion-margin">
-        <ion-card-subtitle>Fast World</ion-card-subtitle>
+        <ion-card-subtitle><ion-text color="orange">Fats</ion-text>World</ion-card-subtitle>
         <ion-card-title>Usted a Solicitado una Encomienda</ion-card-title>
+
       </ion-card-header>
+
       <ion-card-content class="ion-no-padding">
+        <ion-label class="ion-text-center">
+          <h3><ion-text color="orange">Remitente</ion-text></h3>
+          <h1>{{this.package.client.name || 'nombre'}} {{this.package.client.lastname || 'apellido'}}</h1>
+        </ion-label>
         <ion-grid fixed>
           <ion-row>
             <ion-col size="6">
@@ -37,7 +43,7 @@
       </ion-card-content>
       <ion-card-header class="ion-text-center ion-padding ion-margin">
         <ion-card-subtitle>Para confirmar la entrega es necesario que nos envie su ubicacion</ion-card-subtitle>
-        <ion-button style="--background:var(--custom-color-orange)" class="ion-margin" (click)="onClick()" expand="block" shape="round">
+        <ion-button color="orange" class="ion-margin" (click)="onClick()" expand="block" shape="round">
           <ion-label>Enviar mi Ubicación</ion-label>
           <ion-icon slot="start" name="location"></ion-icon>
         </ion-button>

@@ -69,7 +69,7 @@ export class MisEncomiendasComponent implements OnInit {
   private async getData(){
     switch (this.role) {
       case 'cliente':
-        this.packagesList = await this.conections.get(`products?client.email_eq=${(await this.localStorage.get(environment.cookieTag)).email}&status=pendiente&status=recibido&status_eq=aceptado&_sort=id:DESC`)
+        this.packagesList = await this.conections.get(`products?client.email_eq=${(await this.localStorage.get(environment.cookieTag)).email}&status=pendiente&status=recibido&status=aceptado&_sort=id:DESC`)
         break;
       case 'conductor':
         this.packagesList = await this.conections.get( `products?driver_eq=${(await this.localStorage.get(environment.cookieTag)).email}&status_eq=recibido&status_eq=aceptado&_sort=id:DESC`)
@@ -209,7 +209,7 @@ export class MisEncomiendasComponent implements OnInit {
     })
   }
 
-  recived(index:number){
+  recived(id:number){
     this.tools.showAlert({
       header:'Entregado ✔',
       cssClass:'alert-success',
@@ -230,12 +230,10 @@ export class MisEncomiendasComponent implements OnInit {
           text: 'Reportar',
           role: 'success',
           handler: async (val) => await this.conections
-          .put(`products/${index}`, {status:'recibido', message:val.text})
+          .put(`products/${id}`, {status:'recibido', message:val.text})
           .then( response => {
             if(response.id){
-              this.packagesList = [...this.packagesList.filter( element => {
-                return response.id!= element['id'];
-              })]
+              this.packagesList[this.packagesList.findIndex(i => i.id == id)] = response
             }
           })
         }]
