@@ -50,18 +50,29 @@ export class DinamicValidatePage implements OnInit {
     this.conections
       .guest({ token: this.activeRoute.snapshot.paramMap.get('token') })
       .then( async response => {
-        this.conections.get(`regions?id=${response['client'].region}`)
-          .then(res=>{
-            response.client.region = res[0]
-            this.package = {
-              product:response['product'], 
-              client:response['client'],
-              name: response.product['user_name'], 
-              phone: response.product['user_phone'], 
-            }
-            this.isLoad = true
+        console.log(response);
+        
+        if(response.status == 500){
+          this.tools.showAlert({
+            header:'Al parecer tu ticket ya caduco 🕔',
+            cssClass:'alert-danger',
+            subHeader:'las tickets de confirmacion tienen una duracion en promedio de 2 horas de vida, comuniquese con su proveedor para adquirir una nueva validacion',
+            backdropDismiss:false
           })
-
+        }else{
+          this.conections.get(`regions?id=${response['client'].region}`)
+            .then(res=>{
+              response.client.region = res[0]
+              this.package = {
+                product:response['product'], 
+                client:response['client'],
+                name: response.product['user_name'], 
+                phone: response.product['user_phone'], 
+              }
+              this.isLoad = true
+            })
+        }
+          
       });
 
   }

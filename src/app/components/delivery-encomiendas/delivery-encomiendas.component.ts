@@ -64,7 +64,7 @@ export class DeliveryEncomiendasComponent implements OnInit {
 
   // Funcion encargada de consultar lista de encomienda a traves de GET y actualizar el DOM
   private async getData(){
-    this.packagesList = (await this.conections.get( `products?status_eq=pendiente&region.id_eq=${this.user?.region?.id}`))
+    this.packagesList = (await this.conections.get(`products?status_eq=pendiente&region.id_eq=${this.user?.region?.id}`))
       .filter((element)=>{
         // if (isToday(parseISO(element['created_at']))){
           return element
