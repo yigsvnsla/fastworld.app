@@ -41,16 +41,29 @@
         <ion-item-divider>
           <ion-label>Encomienda #{{i.id}}</ion-label>
         </ion-item-divider>
-        <ion-col size="7" >
+        <ion-col size="8" >
           <ion-item class="ion-text-nowrap" lines="none" >
             <ion-label>
-              <p>{{i.status |uppercase}}</p>
+              <ng-container [ngSwitch]="i.status">
+                <ion-text *ngSwitchCase="'invalido'" color="medium"><p>{{i.status | titlecase}}</p></ion-text>
+                <ion-text *ngSwitchCase="'pendiente'" color="ligth"><p>{{i.status | titlecase}}</p></ion-text>
+                <ion-text *ngSwitchCase="'recibido'" color="primary"><p>{{i.status | titlecase}}</p></ion-text>
+                <ion-text *ngSwitchCase="'entregado'" color="success"><p>{{i.status | titlecase}}</p></ion-text>
+                <ion-text *ngSwitchCase="'reportado'" color="danger"><p>{{i.status | titlecase}}</p></ion-text>
+                <ion-text *ngSwitchCase="'aceptado'" color="success"><p>{{i.status | titlecase}}</p></ion-text>
+              </ng-container>
+            <ion-label class="ion-margin">
+                <ion-text color="orange">
+                  <p>Cliente</p>
+                </ion-text>
+                <h1>{{i.user_name | titlecase }}</h1>
+              </ion-label>
               <h6>{{i.location.start.address || 'Sin Ubicacion'}}</h6>
               <h6>{{i.location.hasOwnProperty('goal')? i.location.goal.address : "Sin Ubicacion"}}</h6>
             </ion-label>
           </ion-item>
         </ion-col>
-        <ion-col size="5">
+        <ion-col size="4">
           <ion-item class="ion-text-right" lines="none">
             <ion-label>
               <p>{{i.created_at | date:'d/M/yyyy' }}</p>

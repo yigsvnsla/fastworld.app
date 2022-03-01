@@ -80,26 +80,26 @@ export class ConectionsService {
   }
 
   async put(path: string, data) {
+    const {email} = await this.cookie.get(environment.cookieTag);
     return new Promise<any>((resolve, reject) => {
       this.toolsService.showLoading()
-        .then(async loading => {
-          this.httpClient.put<any>(`${environment.api}/${path}`, data, { headers: await this.headers() })
-            .toPromise()
-            .then(res => {
-              resolve(res)
-            })
-            .catch(error => {
-              reject(error)
-              console.error('conectionService', error)
-            })
-            .finally(() => {
-              loading.dismiss()
-            })
+        .then(async loading=>{
+          this.httpClient.put<any>(`${environment.api}/${path}`, {put: {...data}, byUser: email}, {headers: await this.headers()})
+          .toPromise()
+          .then(res=>{
+            resolve(res)
+          })
+          .catch(error=>{
+            reject(error)
+            console.error('conectionService',error)
+          })
+          .finally(()=>{
+            loading.dismiss()
+          })
         })
 
     })
   }
-
   async delete(path: string) {
     return new Promise<any>((resolve, reject) => {
       this.toolsService.showLoading()

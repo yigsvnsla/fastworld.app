@@ -1,3 +1,5 @@
+import { environment } from 'src/environments/environment';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { ConectionsService } from 'src/app/services/conections.service';
 import { Component, OnInit } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
@@ -10,7 +12,8 @@ import { SwUpdate } from '@angular/service-worker';
 export class AppComponent implements OnInit {
   constructor(
     private conections: ConectionsService,
-    private sw: SwUpdate
+    private sw: SwUpdate,
+    private localStorage: LocalStorageService
   ) { }
 
   ngOnInit(): void {
@@ -21,7 +24,8 @@ export class AppComponent implements OnInit {
     }
 
     this.sw.versionUpdates
-      .subscribe(data=>{
+      .subscribe(async data=>{
+        await this.localStorage.remove(environment.cookieTag)
         console.log("update");
         location.reload();
       })

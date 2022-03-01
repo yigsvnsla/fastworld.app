@@ -18,6 +18,7 @@ export class DinamicValidatePage implements OnInit {
   public position: Ubication;
 
   public package: any
+  public isLoad: boolean
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -27,6 +28,7 @@ export class DinamicValidatePage implements OnInit {
     public mapDirectionsService: MapDirectionsService
   ) {
 
+    this.isLoad = false
     this.package = {
       name: '',
       phone: ''
@@ -47,16 +49,36 @@ export class DinamicValidatePage implements OnInit {
 
     this.conections
       .guest({ token: this.activeRoute.snapshot.paramMap.get('token') })
-      .then(response => {
-        const { product, client} = response
-        this.package = {name: product['user_name'], phone: product['user_phone'], product, client}
-        console.log(response)
+      .then( async response => {
+        console.log(response);
+        
+        if(response.status == 500){
+          this.tools.showAlert({
+            header:'Al parecer tu ticket ya caduco 🕔',
+            cssClass:'alert-danger',
+            subHeader:'las tickets de confirmacion tienen una duracion en promedio de 2 horas de vida, comuniquese con su proveedor para adquirir una nueva validacion',
+            backdropDismiss:false
+          })
+        }else{
+          this.conections.get(`regions?id=${response['client'].region}`)
+            .then(res=>{
+              response.client.region = res[0]
+              this.package = {
+                product:response['product'], 
+                client:response['client'],
+                name: response.product['user_name'], 
+                phone: response.product['user_phone'], 
+              }
+              this.isLoad = true
+            })
+        }
+          
       });
 
   }
 
   async onClick() {
-    this.template = false
+    
     this.currentPosition()
       .then(result => {
         this.position.location = result.geometry.location.toJSON()
@@ -80,9 +102,10 @@ export class DinamicValidatePage implements OnInit {
                     .guest({ 
                       token: this.activeRoute.snapshot.paramMap.get('token'), 
                       location: this.position, 
-                      price_route: (Math.round(Number(result.routes[0].legs[0].distance.text.replace(/km/, '').replace(/,/, '.').trim())) * environment.formuleConst.kilometraje + environment.formuleConst.arranque).toString(),
+                      price_route: (Math.round(Number(result.routes[0].legs[0].distance.text.replace(/km/, '').replace(/,/, '.').trim())) * this.package.client.region.price_start + this.package.client.region.price_base).toString(),
                       distance: result.routes[0].legs[0].distance.text 
                   })
+                  this.template = false
                 }
 
                 if ( this.package.client.memberships !== null){                  
@@ -92,6 +115,7 @@ export class DinamicValidatePage implements OnInit {
                       location: this.position, 
                       distance: result.routes[0].legs[0].distance.text 
                     })
+                    this.template = false
                 }
               }
             })

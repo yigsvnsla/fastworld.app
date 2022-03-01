@@ -57,12 +57,12 @@
       <ion-item class="ion-no-padding">
         <ion-label>
           <ion-card-subtitle>Membrecia </ion-card-subtitle>
-          <ion-card-title>{{this.profile.memberships.type}}</ion-card-title>
+          <ion-card-title>{{ this.profile.memberships != null ? this.profile.memberships.type : 'Sin Membrecia'}}</ion-card-title>
         </ion-label>
         <ion-icon slot="end" name="id-card"></ion-icon>
       </ion-item>
     </ion-card-header>
-    <ion-card-content>
+    <ion-card-content *ngIf="this.profile.memberships != null ">
       <ion-grid fixed class="ion-no-padding">
         <ion-row>
           <ion-col size="6">

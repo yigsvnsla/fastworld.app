@@ -7,7 +7,7 @@ import { Storage } from '@capacitor/storage';
 export class LocalStorageService {
 
   constructor(
-    
+
   ) { }
     public async check(id:string){
     return (await this.getKeys()).keys.includes(id)
@@ -21,13 +21,16 @@ export class LocalStorageService {
     }
       //To get the item back, use get(name):
     public async get(key: string) {
-      return JSON.parse((await Storage.get({ key: key })).value);
+      let data = await Storage.get({ key: key });
+      return JSON.parse(data.value);
     }
       // to update element insert
     public async update(key:string,value:{}){
       if (await this.get(key) != null) {
         await Storage.set({  key,  value:JSON.stringify(value)  });
-      }// else { this element not exist }
+      }else{
+        await this.set(key, value);
+      }
     }
       //To remove an item:
     public async remove(key: string) {

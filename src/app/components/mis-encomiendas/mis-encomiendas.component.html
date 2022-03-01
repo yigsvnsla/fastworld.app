@@ -58,6 +58,10 @@
                     <ion-label>Traspasar</ion-label>
                     <ion-icon slot="start" name="share-social"></ion-icon>
                   </ion-item>
+                  <ion-item [button]="true" [detail]="false"  (click)="recived(item.id)">
+                    <ion-label>Recibido</ion-label>
+                    <ion-icon slot="start" name="share-social"></ion-icon>
+                  </ion-item>
                   <ion-item [button]="true" [detail]="false"  (click)="delivered(item.id)" >
                     <ion-label>Entregar</ion-label>
                     <ion-icon slot="start" name="checkmark"></ion-icon>
@@ -81,8 +85,18 @@
             <br>
             Tiempo de Retiro: {{this.formatDistanceStrict(item.timeout)}}
             <br>
-            <ion-label>Estado: <ion-text color="orange">{{item.status | uppercase}}</ion-text></ion-label>
           </p>
+          <ion-label>
+            Estado : 
+            <ng-container [ngSwitch]="item.status">
+              <ion-text *ngSwitchCase="'invalido'" color="medium">{{item.status | titlecase}}</ion-text>
+              <ion-text *ngSwitchCase="'pendiente'" color="ligth">{{item.status | titlecase}}</ion-text>
+              <ion-text *ngSwitchCase="'recibido'" color="primary">{{item.status | titlecase}}</ion-text>
+              <ion-text *ngSwitchCase="'entregado'" color="success">{{item.status | titlecase}}</ion-text>
+              <ion-text *ngSwitchCase="'reportado'" color="danger">{{item.status | titlecase}}</ion-text>
+              <ion-text *ngSwitchCase="'aceptado'" color="success">{{item.status | titlecase}}</ion-text>
+            </ng-container>
+          </ion-label>
         </ion-card-subtitle>
         <ion-item>
           <ion-label>

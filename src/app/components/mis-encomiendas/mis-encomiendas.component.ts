@@ -69,10 +69,10 @@ export class MisEncomiendasComponent implements OnInit {
   private async getData(){
     switch (this.role) {
       case 'cliente':
-        this.packagesList = await this.conections.get(`products?client.email_eq=${(await this.localStorage.get(environment.cookieTag)).email}&status=pendiente&status=recibido&_sort=id:DESC`)
+        this.packagesList = await this.conections.get(`products?client.email_eq=${(await this.localStorage.get(environment.cookieTag)).email}&status=pendiente&status=recibido&status=aceptado&_sort=id:DESC`)
         break;
       case 'conductor':
-        this.packagesList = await this.conections.get( `products?driver_eq=${(await this.localStorage.get(environment.cookieTag)).email}&status_eq=recibido&_sort=id:DESC`)
+        this.packagesList = await this.conections.get( `products?driver_eq=${(await this.localStorage.get(environment.cookieTag)).email}&status_eq=recibido&status_eq=aceptado&_sort=id:DESC`)
         break;
       default:
         console.error('no se encuentra el rol del usuario');
@@ -203,6 +203,37 @@ export class MisEncomiendasComponent implements OnInit {
               this.packagesList = [...this.packagesList.filter( element => {
                 return response.id!= element['id'];
               })]
+            }
+          })
+        }]
+    })
+  }
+
+  recived(id:number){
+    this.tools.showAlert({
+      header:'Entregado ✔',
+      cssClass:'alert-success',
+      subHeader:'ya tienes el pedido en tus manos?, que comience el viaje😉',
+      inputs:[
+        {
+          name: 'text',
+          id: 'text',
+          type: 'textarea',
+          placeholder: 'Describe lo sucedido aqui.'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        }, {
+          text: 'Reportar',
+          role: 'success',
+          handler: async (val) => await this.conections
+          .put(`products/${id}`, {status:'recibido', message:val.text})
+          .then( response => {
+            if(response.id){
+              this.packagesList[this.packagesList.findIndex(i => i.id == id)] = response
             }
           })
         }]
