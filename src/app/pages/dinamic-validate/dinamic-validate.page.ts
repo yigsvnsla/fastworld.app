@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { ToolsService } from 'src/app/services/tools.service';
 import { ConectionsService } from 'src/app/services/conections.service';
 import { Component, OnInit } from '@angular/core';
@@ -25,7 +26,8 @@ export class DinamicValidatePage implements OnInit {
     private conections: ConectionsService,
     private mapGeocoder: MapGeocoder,
     public tools: ToolsService,
-    public mapDirectionsService: MapDirectionsService
+    public mapDirectionsService: MapDirectionsService,
+    public httpClient:HttpClient
   ) {
 
     this.isLoad = false
@@ -104,8 +106,9 @@ export class DinamicValidatePage implements OnInit {
                       location: this.position, 
                       price_route: (Math.round(Number(result.routes[0].legs[0].distance.text.replace(/km/, '').replace(/,/, '.').trim())) * this.package.client.region.price_start + this.package.client.region.price_base).toString(),
                       distance: result.routes[0].legs[0].distance.text 
-                  })
+                    })
                   this.template = false
+                 
                 }
 
                 if ( this.package.client.memberships !== null){                  
@@ -122,6 +125,8 @@ export class DinamicValidatePage implements OnInit {
         
       })
   }
+
+
 
   private currentPosition() {
     return new Promise<google.maps.GeocoderResult>((resolve, reject) => {

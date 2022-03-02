@@ -10,6 +10,7 @@
       <ion-card-content class="ion-no-padding">
         <ion-label class="ion-text-center">
           <h3><ion-text color="orange">Remitente</ion-text></h3>
+          <ion-text color="ligth"><h6>ticket {{this.package.product.id}}</h6></ion-text>
           <h1>{{this.package.client.name || 'nombre'}} {{this.package.client.lastname || 'apellido'}}</h1>
         </ion-label>
         <ion-grid fixed>

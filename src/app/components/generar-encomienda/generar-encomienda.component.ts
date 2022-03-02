@@ -164,10 +164,12 @@ export class GenerarEncomiendaComponent implements OnInit {
             role: 'success',
             handler: async () => {
               console.log(this.formPackage.value);
-
-              this.conection
-                .post('products', this.formPackage.value)
-                .then(response => {
+              // Check if province is enable to create a news products
+              const {region} = this.user;
+              console.log(region?.enable)
+              if(region?.enable){
+                await this.conection.post('products', {...this.formPackage.value, region: region.id})
+                  .then(response => {
                   console.log(response);
                   this.tools
                     .showModal({
@@ -178,6 +180,20 @@ export class GenerarEncomiendaComponent implements OnInit {
                       },
                     })
                 })
+              }else{
+                this.tools.showAlert({
+                  backdropDismiss: true,
+                  header: 'Alerta ⚠',
+                  cssClass: 'alert-warn',
+                  subHeader: 'La region donde te encuentras no esta disponible en estos momentos',
+                  buttons: [
+                    {
+                      text: 'ok',
+                      role: 'success',
+                    },
+                  ],
+                })
+              }
             },
           },
         ],
