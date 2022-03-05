@@ -90,9 +90,13 @@ export class MenuPage implements OnInit {
             case 'cliente':
               this.roleOptions = [
                 {
-                  title: 'Nueva Encomienda',
+                  title: 'Encomienda',
                   url: 'encomienda',
                   icon: 'cube',
+                },{
+                  title: 'Favores',
+                  url: 'favores',
+                  icon: 'walk'
                 },
                 {
                   title: 'Mis Encomiendas',
