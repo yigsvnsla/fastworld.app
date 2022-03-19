@@ -1,3 +1,5 @@
+import { IonInput, IonItem } from '@ionic/angular';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ToolsService } from 'src/app/services/tools.service';
 import { ConectionsService } from 'src/app/services/conections.service';
@@ -6,6 +8,7 @@ import { MapDirectionsService, MapGeocoder, MapGeocoderResponse } from '@angular
 import { ActivatedRoute } from '@angular/router';
 import { Products, Ubication, User } from 'src/app/interfaces/interfaces';
 import { environment } from 'src/environments/environment';
+import { format, isValidPhoneNumber } from 'libphonenumber-js';
 
 @Component({
   selector: 'app-dinamic-validate',
@@ -20,22 +23,15 @@ export class DinamicValidatePage implements OnInit {
 
   public package: any
   public isLoad: boolean
-
+  public form : FormGroup
   constructor(
     private activeRoute: ActivatedRoute,
     private conections: ConectionsService,
     private mapGeocoder: MapGeocoder,
     public tools: ToolsService,
     public mapDirectionsService: MapDirectionsService,
-    public httpClient:HttpClient
   ) {
-
     this.isLoad = false
-    this.package = {
-      name: '',
-      phone: ''
-    }
-
   }
 
   addDesc(event) {
@@ -43,6 +39,11 @@ export class DinamicValidatePage implements OnInit {
   }
 
   ngOnInit() {
+
+    this.package = {
+      name: '',
+      phone: ''
+    }
 
     this.position = {
       address: '',
@@ -80,7 +81,6 @@ export class DinamicValidatePage implements OnInit {
   }
 
   async onClick() {
-    
     this.currentPosition()
       .then(result => {
         this.position.location = result.geometry.location.toJSON()
@@ -105,28 +105,82 @@ export class DinamicValidatePage implements OnInit {
                       token: this.activeRoute.snapshot.paramMap.get('token'), 
                       location: this.position, 
                       price_route: (Math.round(Number(result.routes[0].legs[0].distance.text.replace(/km/, '').replace(/,/, '.').trim())) * this.package.client.region.price_start + this.package.client.region.price_base).toString(),
-                      distance: result.routes[0].legs[0].distance.text 
+                      distance: result.routes[0].legs[0].distance.text,
+                      user_phone: this.package.phone,
+                      user_name:this.package.name
                     })
                   this.template = false
-                 
                 }
-
                 if ( this.package.client.memberships !== null){                  
                   await this.conections
                     .guest({ 
                       token: this.activeRoute.snapshot.paramMap.get('token'), 
                       location: this.position, 
-                      distance: result.routes[0].legs[0].distance.text 
+                      distance: result.routes[0].legs[0].distance.text,
+                      user_phone: this.package.phone,
+                      user_name:this.package.name
                     })
                     this.template = false
                 }
               }
             })
-        
       })
   }
 
+  changeFormatName(itemName: IonItem,nameInput:IonInput){
+    if (nameInput.value == null) itemName.color = 'danger'
+    if (nameInput.value == '') itemName.color = 'danger'
+    if (nameInput.value != ''  && (nameInput.value as string).match(/([a-zA-z])/g)) {
+      itemName.color = 'success'
+      this.package.name = nameInput.value;
+    }else{
+      return itemName.color = 'danger'
+    }
+  }
 
+  changeFormatPhone(itemPhone: IonItem,phoneInput:IonInput){    
+    if (phoneInput.value == null) itemPhone.color = 'danger'
+    if (phoneInput.value == '') itemPhone.color = 'danger';
+    if (phoneInput.value != '' && phoneInput.value != null) {
+      if((phoneInput.value as string).match(/([0-9])/g)){
+        if ((phoneInput.value as string).match(/ /g)){
+          this.package.phone = (phoneInput.value as string).replace(/ /g, '')
+          itemPhone.color = ''  
+        }   
+        if ((phoneInput.value as string).match(/^\+/) != null){
+          if (isValidPhoneNumber((phoneInput.value as string))){
+           itemPhone.color = 'success'  
+            this.package.phone = phoneInput.value
+          }else{
+            itemPhone.color = 'danger'
+          }
+      
+        }  
+        if (RegExp(/[0-9]/g).test((phoneInput.value as string)) && (phoneInput.value as string).length == 10 ) {
+          this.package.phone = phoneInput.value
+          itemPhone.color = 'success'
+        }else{
+          itemPhone.color = 'danger';
+
+        }
+         
+      }
+    }
+  }
+
+  postFormatPhone(phone:string|number, input :IonInput) {
+    if (RegExp(/[0-9]/g).test(phone.toString()) && phone.toString().length == 10) {
+      this.package.phone =  format(phone.toString(), 'EC', 'INTERNATIONAL').replace(/ /g, '') 
+    }
+  }
+
+  validation(){
+    if ((this.package.phone != null && this.package.phone != '') && (this.package.name != null && this.package.name != '' ) ) {
+      if (isValidPhoneNumber((this.package.phone  as string)) && (this.package.name != ''  &&  this.package.name.match(/([a-zA-z])/g)  ))   return true
+      else return false 
+    }
+    else return false
+  }
 
   private currentPosition() {
     return new Promise<google.maps.GeocoderResult>((resolve, reject) => {

@@ -1,3 +1,6 @@
+import { FavoresModalMapComponent } from './favores-modal-map/favores-modal-map.component';
+import { FavoresModalFormComponent } from './favores-modal-form/favores-modal-form.component';
+import { FavoresComponent } from './favores/favores.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { MyProfileComponent } from './my-profile/my-profile.component';
 import { NotFoundComponent } from './not-found/not-found.component';
@@ -37,7 +40,10 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     OffLineModalComponent,
     NotFoundComponent,
     MyProfileComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    FavoresComponent,
+    FavoresModalFormComponent,
+    FavoresModalMapComponent,
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,56 @@
+ion-img.favores{
+    height: 25vh;
+    min-height: 165px;
+}
+
+
+@media only screen and (min-width:576px) {
+    div.body{
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+
+        &  ion-card{
+            height: 100%;
+        }
+    }
+
+
+}
+
+.pruebas{
+    display: flex;
+    flex-direction: row;
+}
+
+// @media only screen and (min-width:540px) {
+//     ion-img{
+//         width: 60vw;
+//         height: 60vh;
+//     }
+// }
+
+// @media only screen and (min-width:960px) {
+//     ion-img{
+//         width: 45vw;
+//         height: 45vh
+//     }
+// }
+
+// form{
+//     height: 100%;
+// }
+
+ion-item-group{
+    &.listEmpty{
+        height: 48px;
+    }
+
+    &.listLoad{
+        height: 250px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
+}

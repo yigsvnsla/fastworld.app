@@ -36,15 +36,12 @@
 			</ion-row>
 		</ion-grid>
 		<ion-buttons class="ion-margin" slot="end">
-			<ion-button routerLink="/auth" class="header" size="default" expand="full" color="orange" fill="outline"
-				shape="round">
+			<ion-button routerLink="/auth" class="header" size="default" expand="full" color="orange" fill="outline" shape="round">
 				<ion-label>Ingresar</ion-label>
 			</ion-button>
 		</ion-buttons>
 		<ion-buttons class="ion-hide-sm-up ion-margin" slot="end">
-			<ion-button
-				(click)=" accordion_group.value != undefined ? accordion_group.value = undefined : accordion_group.value = 'menu' "
-				class="header ion-margin" size="default" expand="full" fill="clear" shape="round">
+			<ion-button	(click)=" accordion_group.value != undefined ? accordion_group.value = undefined : accordion_group.value = 'menu' "	class="header ion-margin" size="default" expand="full" fill="clear" shape="round">
 				<ion-icon slot="icon-only" name="list"></ion-icon>
 			</ion-button>
 		</ion-buttons>

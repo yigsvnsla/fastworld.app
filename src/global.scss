@@ -96,3 +96,9 @@ ion-modal.ubication-modal {
     --width: 100%;
     --height: 100%;
   }
+
+// modal full screen
+ion-modal.modal-fullscreen {
+    --height:100% !important;
+    --width: 100% !important;
+}

@@ -41,11 +41,9 @@ export class UbicacionModalComponent implements OnInit {
             keyboardShortcuts: false,
             disableDefaultUI: true,
             center: { lat: res.coords.latitude, lng: res.coords.longitude },
-
           };
           this.markerOptions = { draggable: true }
           this.mapGeocode({ location: { lat: res.coords.latitude, lng: res.coords.longitude } })
-
         },
         (err) => {
           switch (err.code) {
@@ -134,7 +132,6 @@ export class UbicacionModalComponent implements OnInit {
 
   firstSelect() {
     if (this.autocompleteItems.length == 1) this.selectAddress(this.autocompleteItems[0])
-
   }
 
   selectAddress(result: google.maps.GeocoderResult) {
@@ -164,11 +161,9 @@ export class UbicacionModalComponent implements OnInit {
         if (status == google.maps.GeocoderStatus.ERROR) {
           console.error('error map geocoder');
         }
-      },
-        (error) => {
-          console.error(error);
-
-        });
+      },(error) => {
+        console.error(error);
+      });
   }
 
   onExit(value?) {
@@ -184,5 +179,6 @@ export class UbicacionModalComponent implements OnInit {
     this.mapHeight = this.contentRef.nativeElement.offsetHeight;
 
   }
+  
 
 }

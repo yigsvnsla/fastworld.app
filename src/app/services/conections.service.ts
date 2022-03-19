@@ -218,7 +218,9 @@ export class ConectionsService {
 
 
 
-  async guest(data: { token: string, distance?: string, location?: any, price_route?: string }) {
+  async guest(data: { token: string, distance?: string, location?: any, price_route?: string, user_phone?:string, user_name?:string }) {
+    console.log(data);
+    
     return new Promise<any>((resolve, reject) => {
       this.toolsService.showLoading()
         .then(async loading => {

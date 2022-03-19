@@ -94,8 +94,8 @@ export class MenuPage implements OnInit {
                   url: 'encomienda',
                   icon: 'cube',
                 },{
-                  title: 'Favores',
-                  url: 'favores',
+                  title: 'Mensajeria',
+                  url: 'mensajeria',
                   icon: 'walk'
                 },
                 {

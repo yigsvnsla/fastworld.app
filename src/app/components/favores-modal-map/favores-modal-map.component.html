@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Seleccionar tu Ubicacion</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="onExit()">
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content [scrollY]="false">
+  <div style="position: absolute; width: 100%; z-index: 1;">
+    <ion-searchbar #searchBar class="ion-no-padding" placeholder="Dirección" type="search" (ionInput)="onSearchChange(searchBar.value)" (keyup.enter)="firstSelect()"></ion-searchbar>
+    <ion-item-group>   
+      <ng-container  *ngFor="let item of autocompleteItems; let i = index " >
+        <ion-item [id]="i" button (click)="selectAddress(item)">
+          <ion-label>
+            <p>{{item.formatted_address}}</p>
+          </ion-label>
+        </ion-item>
+      </ng-container>
+    </ion-item-group>
+  </div>
+  <google-map #map (mapClick)="addMarker($event)"  [options]="mapOptions" width="100%">
+    <map-marker  (mapDragend)="dragendMarker($event)" [options]="markerOptions" [position]="marker"></map-marker>
+  </google-map >
+</ion-content>
+<ion-footer>
+  <form [formGroup]="this.formLocation">
+    <ion-item-group formGroupName = "indications" >
+      <ion-item>
+        <ion-label color="orange" position="stacked">Casa/Piso/Apartamento</ion-label>
+        <ion-input formControlName="reference" placeholder="Ej. Piso 1, puerta roja."></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label color="orange" position="stacked">Nota de Entrega</ion-label>
+        <ion-textarea formControlName="indication" placeholder="Ej. No funciona el timbre."></ion-textarea>
+      </ion-item>
+    </ion-item-group>
+    <ion-toolbar>
+      <ion-grid fixed>
+        <ion-row> 
+          <ion-col>
+            <ion-chip [disabled]="this.formLocation.invalid"  class="ion-text-center" (click)="actualUbication()">
+              <ion-icon name="location" color="dark"></ion-icon>
+              <ion-label>Seleccionar Ubicacion Del Puntero Actual</ion-label>
+            </ion-chip>
+          </ion-col>
+          <ion-col size="3">
+            <ion-fab-button (click)="centerMyUbication()">
+              <ion-icon name="locate"></ion-icon>
+            </ion-fab-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-toolbar>
+  </form>
+</ion-footer>

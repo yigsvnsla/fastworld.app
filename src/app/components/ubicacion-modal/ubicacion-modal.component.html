@@ -12,26 +12,15 @@
 <ion-content > 
   <div style="height: 100%; width: auto; position: relative;">
     <div style="position: absolute; width: 100%; z-index: 1;">
-      <ion-searchbar 
-        #searchBar
-        class="ion-no-padding" 
-        placeholder="Dirección" 
-        type="search" 
-        (ionInput)="onSearchChange(searchBar.value)" 
-        (keyup.enter)="firstSelect()"
-      ></ion-searchbar>
+      <ion-searchbar #searchBar class="ion-no-padding" placeholder="Dirección" type="search" (ionInput)="onSearchChange(searchBar.value)" (keyup.enter)="firstSelect()"></ion-searchbar>
       <ion-item-group>   
         <ng-container  *ngFor="let item of autocompleteItems; let i = index " >
-          <ion-item 
-            [id]="i"
-            button 
-            (click)="selectAddress(item)">
+          <ion-item [id]="i" button (click)="selectAddress(item)">
             <ion-label>
               <p>{{item.formatted_address}}</p>
             </ion-label>
           </ion-item>
         </ng-container>
- 
       </ion-item-group>
     </div>
     <div #content (window:resize)="onResize($event)" style="height: 100%; width: 100%;">
@@ -42,6 +31,7 @@
   </div>
 </ion-content>
 <ion-footer>
+  
   <ion-toolbar>
     <ion-grid fixed>
       <ion-row>

@@ -1,3 +1,4 @@
+import { FavoresComponent } from '../../components/favores/favores.component';
 import { NotFoundComponent } from './../../components/not-found/not-found.component';
 import { LoginGuard } from './../../guards/login.guard';
 import { DeliveryEncomiendasComponent } from './../../components/delivery-encomiendas/delivery-encomiendas.component';
@@ -40,6 +41,10 @@ const routes: Routes = [
           {
             path: 'mis-encomiendas',
             component: MisEncomiendasComponent,
+          },
+          {
+            path:'mensajeria',
+            component:FavoresComponent
           },
           {
             path: 'perfil',

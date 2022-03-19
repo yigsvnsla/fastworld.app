@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Agregar Producto</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="onExit()">
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-text-center">
+  <form [formGroup]="this.formProduct" (ngSubmit)="add()">
+  
+  <ion-item-group>
+    <ion-item-divider>
+      <ion-label>Informacion del Producto</ion-label>
+    </ion-item-divider>
+  
+    <ion-item>
+      <ion-label position="stacked"> Nombre del Producto</ion-label>
+      <ion-input formControlName="name" type="text" placeholder="Nombre producto"></ion-input>
+    </ion-item>
+    <ion-grid class="ion-no-padding">
+      <ion-row formGroupName="unit">
+        <ion-col size="8">
+          <ion-item>
+            <ion-label position="stacked" >Unidades de medida</ion-label>
+            <ion-select #selectMeasure formControlName="measure" value="cant">
+              <ion-select-option value="cant">Cantidad</ion-select-option>
+              <ion-select-option value="price">Precio</ion-select-option>
+              <ion-select-option value="lbs">Libra</ion-select-option>
+              <ion-select-option value="kg">Kilogramo</ion-select-option>
+              <ion-select-option value="lts">Litros</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+        <ion-col size="4">
+          <ion-item *ngIf="selectMeasure.value != 'price' " class="ion-text-center">
+            <ion-label position="stacked">Cantidad</ion-label>
+            <ion-input  formControlName="value" type="number" step="1"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="selectMeasure.value == 'price' " class="ion-text-center">
+            <ion-label position="stacked">Precio</ion-label>
+            <ion-input placeholder="0.00$" (ionFocus)="this.eventPriceFocus($event)" (ionBlur)="this.eventPriceBlur($event)" [value]="this.formattedAmount" type="tel"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-item>
+      <ion-label position="stacked"> Descripcion del Producto</ion-label>
+      <ion-textarea formControlName="description" placeholder="Descripcion del producto" ></ion-textarea>
+    </ion-item>
+  </ion-item-group>
+
+  <ion-button [disabled]="this.formProduct.invalid" type="submit" shape="round">
+    add
+  </ion-button>
+
+</form>
+
+
+
+</ion-content>

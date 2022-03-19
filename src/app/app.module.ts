@@ -1,6 +1,5 @@
-import { LocalStorageService } from './services/local-storage.service';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { RouteReuseStrategy, RouterModule } from '@angular/router';
-import { ConectionsService } from './services/conections.service';
 import { ComponentsModule } from './components/components.module';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -27,6 +26,7 @@ import { NgModule } from '@angular/core';
     ComponentsModule,
     HttpClientModule,
     GoogleMapsModule,
+    ScrollingModule,
     SocketIoModule.forRoot({ url: 'https://api.fastworld.app', options: {autoConnect: false}}),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
