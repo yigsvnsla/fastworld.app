@@ -1,10 +1,5 @@
 <ion-split-pane contentId="menu-cliente" >
-  <ion-menu 
-    contentId="menu-cliente"
-    menuId="menu-cliente"
-    side="start"
-    type="overlay"
-    >
+  <ion-menu contentId="menu-cliente" menuId="menu-cliente" side="start" type="overlay">
     <ion-header>
       <ion-toolbar>
         <ion-title>Fastworld Cliente</ion-title>
@@ -35,7 +30,7 @@
               <ion-item>
                 <ion-label>
                   <p>Expiración</p>
-                  <h4>{{formatDistanceStrict(this.user.memberships.expire ) || ''}}</h4>
+                  <h4>{{formatDistanceStrict(this.user.memberships.expire) == '0 días' ? 'Hoy' : formatDistanceStrict(this.user.memberships.expire)}}</h4>
                 </ion-label>
               </ion-item>
             </ion-col>
@@ -43,17 +38,8 @@
         </ion-grid>
       </ion-item-group>
       <ion-item-group> 
-        <ion-menu-toggle
-          *ngFor="let item of listMenu"
-          auto-hide="false" 
-          >
-          <ion-item
-            detail="true"
-            [routerLink]="[ '/menu/' + this.user.role + '/' + item.url ]"
-            routerDirection="root"
-            routerLinkActive='active-link'
-            [routerLinkActiveOptions]="{exact: true}"
-            >
+        <ion-menu-toggle *ngFor="let item of listMenu" auto-hide="false">
+          <ion-item detail="true" [routerLink]="[ '/menu/' + this.user.role + '/' + item.url ]" routerDirection="root" routerLinkActive='active-link' [routerLinkActiveOptions]="{exact: true}">
             <ion-label>{{item.title}}</ion-label>
             <ion-icon slot="start" [name]="item.icon"></ion-icon>
           </ion-item>

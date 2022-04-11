@@ -25,7 +25,9 @@ export class HistorialComponent implements OnInit {
   }
 
   async ngOnInit( ) {
-    this.load((await this.localStorage.get(environment.cookieTag)).role)
+    await this.load((await this.localStorage.get(environment.cookieTag)).role)
+    console.log(this.list);
+    
   }
 
   async openModal(item:Products){

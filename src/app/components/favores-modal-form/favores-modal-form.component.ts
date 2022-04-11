@@ -1,6 +1,6 @@
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { formatCurrency } from '@angular/common';
 
 @Component({
@@ -9,6 +9,8 @@ import { formatCurrency } from '@angular/common';
   styleUrls: ['./favores-modal-form.component.scss'],
 })
 export class FavoresModalFormComponent implements OnInit {
+
+  @Input() Item : any
 
   public formProduct : FormGroup
   public formattedAmount  : string = ''
@@ -20,12 +22,12 @@ export class FavoresModalFormComponent implements OnInit {
 
   ngOnInit() {
     this.formProduct = this.formBuilder.group({
-      name:['', [Validators.required]],
+      name:[this.Item != undefined? this.Item.name : '', [Validators.required ]],
       unit:this.formBuilder.group({
-        measure:['cant'],
-        value:[1,[Validators.required]]
+        measure:[ this.Item != undefined? this.Item.unit.measure : 'cant' ],
+        value:[ this.Item != undefined? this.Item.unit.value : 1 ,[Validators.required]]
       }),
-      description:['',[Validators.required]]
+      description:[this.Item != undefined? this.Item.description : '',[Validators.required]]
     })
   }
 

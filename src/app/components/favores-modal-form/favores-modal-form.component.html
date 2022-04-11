@@ -16,9 +16,9 @@
       <ion-label>Informacion del Producto</ion-label>
     </ion-item-divider>
   
-    <ion-item>
+    <ion-item [disabled]="this.Item != undefined? true: false">
       <ion-label position="stacked"> Nombre del Producto</ion-label>
-      <ion-input formControlName="name" type="text" placeholder="Nombre producto"></ion-input>
+      <ion-input #inputName  formControlName="name" type="text" placeholder="Nombre producto"></ion-input>
     </ion-item>
     <ion-grid class="ion-no-padding">
       <ion-row formGroupName="unit">

@@ -2,9 +2,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToolsService } from '../../services/tools.service';
 import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FavoresModalFormComponent } from '../favores-modal-form/favores-modal-form.component';
-import { getLocaleDirection, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { FavoresModalMapComponent } from '../favores-modal-map/favores-modal-map.component';
-import { IonInput } from '@ionic/angular';
+import { IonItemSliding } from '@ionic/angular';
 
 @Component({
   selector: 'app-favores',
@@ -15,10 +15,6 @@ export class FavoresComponent implements OnInit {
 
   public listProducts:any[]
   
-
-
- // fix list scroll <item-group>
-
   public superMarkets : any[] = [
   'Mi comisariato',
   'Almacenes Tia',
@@ -56,71 +52,24 @@ export class FavoresComponent implements OnInit {
     })
     
   }
-
-  ionViewDidEnter() {
-
-  }
-
-  @ViewChild('inputTypePurchase') inputTypePurchase: HTMLIonInputElement
-  @ViewChild('formCompras') formCompras : ElementRef
-
-  public scrollHeigth : number = 0
-
-  ngAfterViewChecked() {
-
-    
-    
-    if(this.formPurchase.get('type').value != ''){
-      console.log(this.scrollHeigth)
-      // setTimeout(() => {
-        // console.log(this.inputTypePurchase);
-        // console.log(this.formCompras.nativeElement);
-        // console.log(this.formCompras);
-        // }, 100);
-        
-        
-    }
-    
-    
-  }
   
-  setType(event:Event){
-    
-    this.scrollHeigth = this.formCompras.nativeElement.offsetHeight;
-    console.log(this.formCompras)
-
-    if ((event as CustomEvent).detail.value != 'otros'){
-      this.formPurchase.get('typePurchase').setValue((event as CustomEvent).detail.value )
-    }else{
-      
-      this.formPurchase.get('typePurchase').reset()
-      this.formPurchase.get('place').reset()
-
-
-    }
-    window.focus()
-  }
 
   async genList(){
-
-    console.log(this.formPurchase.value);
-
-
-    // if (this.listProducts.length < 8) {
-    //   await this.tools.showAlert({
-    //     header:'🚫 Alerta',
-    //     cssClass: 'alert-danger',
-    //     subHeader: 'Tu lista no esta lo suficientemente completa 😐',
-    //     message:`Para generar una orden de compra, debe ser un minimo de 8 productos actualmente hay ${this.listProducts.length} en la lista`,
-    //     buttons:['ok']
-    //   })
-    // }else{
-    //   await this.getLocaleDirection()
-    //   .then(ubication=>{
-    //     console.log({ubication,...this.listProducts});
+    if (this.listProducts.length < 8) {
+      await this.tools.showAlert({
+        header:'🚫 Alerta',
+        cssClass: 'alert-danger',
+        subHeader: 'Tu lista no esta lo suficientemente completa 😐',
+        message:`Para generar una orden de compra, debe ser un minimo de 8 productos actualmente hay ${this.listProducts.length} en la lista`,
+        buttons:['ok']
+      })
+    }else{
+      await this.getLocaleDirection()
+      .then(ubication=>{
+        console.log({ubication,...this.listProducts});
         
-    //   })
-    // }
+      })
+    }
   }
 
   async getLocaleDirection(){
@@ -174,22 +123,43 @@ export class FavoresComponent implements OnInit {
     })
   }
 
-  async addProduct(){
-    this.tools.showModal({
-      component:FavoresModalFormComponent,
-      cssClass:'modal-fullscreen'
-    })
-      .then(e=>{
-        if ( e != null){
-          this.listProducts.push(e)
+  async deleteItem(index){
+    await this.tools.showAlert({
+      header:'🚫 Alerta',
+      cssClass: 'alert-danger',
+      subHeader: `Esta a apunto de eliminar ${this.listProducts[index].name} de la lista 😐`,
+      buttons:[{
+        text:'Cancelar'
+      },{
+        text:'Eliminar',
+        handler: ()=>{
+          this.listProducts.splice(index)
         }
-        console.log(this.listProducts);
-        
-      })
+      }]
+    })
   }
 
-  intanceFormPurshace(){
-
+  async addProduct(index? : number){
+    this.tools.showModal({
+      component:FavoresModalFormComponent,
+      cssClass:'modal-fullscreen',
+      componentProps:{
+        Item: this.listProducts[index]
+      }
+    })
+      .then(item=>{        
+        if ( item != null ){
+          if (this.listProducts.find(i => i.name == item.name) != undefined ) {
+            if(this.tools.compareObjets(this.listProducts[this.listProducts.findIndex(i => i.name == (this.listProducts.find(i => i.name == item.name)).name )],item)){
+              this.listProducts[this.listProducts.findIndex(i => i.name == (this.listProducts.find(i => i.name == item.name)).name )] = item
+            }else{
+              console.error('este elemento no fue modificado');
+            }
+          }else{
+            this.listProducts.push(item)            
+          }
+        }        
+      })
   }
 
 }

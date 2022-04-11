@@ -55,97 +55,86 @@ export class MenuPage implements OnInit {
         base_price: ''
       }
     }
-
-    console.log();
-
-
-
-
-
   }
 
   async ionViewDidEnter() {
-
     if(!(await this.localStorage.check(environment.cookieTag))){
       this.router.navigateByUrl('/auth')
     }else{
       this.conections.get(`clients?id_eq=${(await this.localStorage.get(environment.cookieTag)).id}`)
-      .then(async res => {
-        await this.localStorage.update(environment.cookieTag,res[0])
-        this.localStorage
-        .get(environment.cookieTag)
-        .then(response => {
-          this.user = response;
-          if (this.user.role == 'cliente' && this.user.memberships != null) {
-            if (intervalToDuration({start: new Date(Date.now()), end: parseISO(this.user.memberships.expire)}).days < 3 || intervalToDuration({start: new Date(Date.now()), end: parseISO(this.user.memberships.expire)}).days == 0){
-              this.tools.showAlert({
-                header:'Alerta ⚠',
-                subHeader: `su membrecia vence en ${intervalToDuration({start: new Date(Date.now()),end: parseISO(this.user.memberships.expire)}).days} dias,una vez expirada solo podra enviar encomiendas por costo de ruta`,
-                buttons:['ok']
-              })
-            }
-          }
+        .then(async res => {
+          await this.localStorage.update(environment.cookieTag,res[0])
+          this.localStorage
+            .get(environment.cookieTag)
+            .then(response => {
+              this.user = response;
+              if (this.user.role == 'cliente' && this.user.memberships != null) {
+                if ((intervalToDuration({start: new Date(Date.now()), end: parseISO(this.user.memberships.expire)}).days >= 1) && (intervalToDuration({start: new Date(Date.now()), end: parseISO(this.user.memberships.expire)}).days < 3 ) ) {
+                  this.tools.showAlert({
+                    header:'Alerta ⚠',
+                    subHeader: `su membrecia vence en ${intervalToDuration({start: new Date(Date.now()),end: parseISO(this.user.memberships.expire)}).days} dias,una vez expirada solo podra enviar encomiendas por costo de ruta`,
+                    buttons:['ok']
+                  })
+                }
+              }
+              switch (this.user.role) {
+                case 'cliente':
+                  this.roleOptions = [
+                    {
+                      title: 'Encomienda',
+                      url: 'encomienda',
+                      icon: 'cube',
+                    },{
+                      title: 'Mensajeria',
+                      url: 'mensajeria',
+                      icon: 'walk'
+                    },
+                    {
+                      title: 'Mis Encomiendas',
+                      url: 'mis-encomiendas',
+                      icon: 'arrow-redo',
+                    },
 
-          switch (this.user.role) {
-            case 'cliente':
-              this.roleOptions = [
-                {
-                  title: 'Encomienda',
-                  url: 'encomienda',
-                  icon: 'cube',
-                },{
-                  title: 'Mensajeria',
-                  url: 'mensajeria',
-                  icon: 'walk'
-                },
-                {
-                  title: 'Mis Encomiendas',
-                  url: 'mis-encomiendas',
-                  icon: 'arrow-redo',
-                },
+                    {
+                      title: 'Historial',
+                      url: 'historial',
+                      icon: 'folder',
+                    },
+                  ]
+                  break;
+                case 'conductor':
+                  this.roleOptions = [
+                    {
+                      title: 'Encomiendas',
+                      url: 'encomienda',
+                      icon: 'cube',
+                    },
+                    {
+                      title: 'Mi Mochila',
+                      url: 'mi-mochila',
+                      icon: 'arrow-redo',
+                    },
 
-                {
-                  title: 'Historial',
-                  url: 'historial',
-                  icon: 'folder',
-                },
-              ]
-              break;
-            case 'conductor':
-              this.roleOptions = [
-                {
-                  title: 'Encomiendas',
-                  url: 'encomienda',
-                  icon: 'cube',
-                },
-                {
-                  title: 'Mi Mochila',
-                  url: 'mi-mochila',
-                  icon: 'arrow-redo',
-                },
-
-                {
-                  title: 'Historial',
-                  url: 'historial',
-                  icon: 'folder',
-                },
-              ]
-              break;
-            default:
-              console.error('no se consigue el rol');
-              break;
-          }
-          this.generalOptions = [{
-            title: 'Mi Perfil',
-            url: 'perfil',
-            icon: 'person',
-          },]
-          this.listMenu = Array.prototype.concat(this.roleOptions,this.generalOptions)
+                    {
+                      title: 'Historial',
+                      url: 'historial',
+                      icon: 'folder',
+                    },
+                  ]
+                  break;
+                default:
+                  console.error('no se consigue el rol');
+                  break;
+              }
+              this.generalOptions = [{
+                title: 'Mi Perfil',
+                url: 'perfil',
+                icon: 'person'
+              }]
+              this.listMenu = Array.prototype.concat(this.roleOptions,this.generalOptions)
+            })
         })
-      })
     }
-
-
   }
 
   async onLogOut() {
