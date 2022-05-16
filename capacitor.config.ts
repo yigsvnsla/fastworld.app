@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'fastworld.app',
+  appId: 'app.fastworld.driver',
+  appName: 'Fastworld',
   webDir: 'www',
   bundledWebRuntime: false
 };

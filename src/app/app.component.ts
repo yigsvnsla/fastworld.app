@@ -3,6 +3,11 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { ConectionsService } from 'src/app/services/conections.service';
 import { Component, OnInit } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
+import { registerPlugin } from '@capacitor/core';
+import { BackgroundGeolocationPlugin } from '@capacitor-community/background-geolocation';
+const BackgroundGeolocation = registerPlugin<BackgroundGeolocationPlugin>(
+  'BackgroundGeolocation'
+);
 
 @Component({
   selector: 'app-root',
@@ -14,23 +19,34 @@ export class AppComponent implements OnInit {
     private conections: ConectionsService,
     private sw: SwUpdate,
     private localStorage: LocalStorageService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
+    BackgroundGeolocation.addWatcher(
+      {
+        backgroundMessage: 'Darwin  ',
+        backgroundTitle: 'Moreno',
+        requestPermissions: true,
+        stale: false,
+        distanceFilter: 5,
+      },
+      (location, error) => {
+        console.log('whatcher agregado con exito');
+        console.log(location);
+      }
+    );
+
     this.conections.isOnline();
-    if(!this.sw.isEnabled){
-      console.log("Service worker not enable on this moment")
-      return;
-    }
 
-    this.sw.versionUpdates
-      .subscribe(async data=>{
-        await this.localStorage.remove(environment.cookieTag)
-        console.log("update");
+    if (this.sw.isEnabled) {
+      this.sw.versionUpdates.subscribe(async (data) => {
+        await this.localStorage.remove(environment.cookieTag);
+        console.log('update');
         location.reload();
-      })
-
-      
+      });
+    } else {
+      console.log('Service worker not enable on this moment');
+    }
     // this.sw.available.subscribe(data=>{
     //   console.log("update");
     //   location.reload();

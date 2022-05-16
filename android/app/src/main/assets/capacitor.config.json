@@ -1,0 +1,6 @@
+{
+	"appId": "app.fastworld.driver",
+	"appName": "Fastworld",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
