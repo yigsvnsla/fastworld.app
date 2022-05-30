@@ -3,10 +3,11 @@ import { ConectionsService } from './../../services/conections.service';
 import { environment } from 'src/environments/environment';
 import { LocalStorageService } from './../../services/local-storage.service';
 import { Component, OnInit } from '@angular/core';
-import { User } from 'src/app/interfaces/interfaces';
 import { parseISO, formatDistanceToNowStrict, intervalToDuration } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { Router } from '@angular/router';
+
+
 @Component({
   selector: 'app-cliente',
   templateUrl: './menu.page.html',
@@ -57,18 +58,13 @@ export class MenuPage implements OnInit {
     }
 
     console.log();
-
-
-
-
-
   }
 
   async ionViewDidEnter() {
-
     if(!(await this.localStorage.check(environment.cookieTag))){
       this.router.navigateByUrl('/auth')
     }else{
+      this.conections.startService(await this.localStorage.get(environment.cookieTag));
       this.conections.get(`clients?id_eq=${(await this.localStorage.get(environment.cookieTag)).id}`)
       .then(async res => {
         await this.localStorage.update(environment.cookieTag,res[0])

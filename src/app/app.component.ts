@@ -3,11 +3,11 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { ConectionsService } from 'src/app/services/conections.service';
 import { Component, OnInit } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
-import { registerPlugin } from '@capacitor/core';
+/* import { registerPlugin } from '@capacitor/core';
 import { BackgroundGeolocationPlugin } from '@capacitor-community/background-geolocation';
 const BackgroundGeolocation = registerPlugin<BackgroundGeolocationPlugin>(
   'BackgroundGeolocation'
-);
+); */
 
 @Component({
   selector: 'app-root',
@@ -22,19 +22,19 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    BackgroundGeolocation.addWatcher(
+    /* BackgroundGeolocation.addWatcher(
       {
-        backgroundMessage: 'Darwin  ',
-        backgroundTitle: 'Moreno',
+        backgroundMessage: 'Ubicacion activada',
+        backgroundTitle: 'Fastworld GPS',
         requestPermissions: true,
         stale: false,
-        distanceFilter: 5,
+        distanceFilter: 50,
       },
       (location, error) => {
         console.log('whatcher agregado con exito');
         console.log(location);
       }
-    );
+    ); */
 
     this.conections.isOnline();
 

@@ -1,13 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">fastworld.app</string>
-    <string name="title_activity_main">fastworld.app</string>
-    <string name="package_name">io.ionic.starter</string>
-    <string name="custom_url_scheme">io.ionic.starter</string>
-    <string name="capacitor_background_geolocation_notification_channel_name">
-          Background Tracking
-      </string>
-    <string name="capacitor_background_geolocation_notification_icon">
-          drawable/ic_tracking
-      </string>
+    <string name="app_name">Fastworld</string>
+    <string name="title_activity_main">Fastworld</string>
+    <string name="package_name">app.fastworld.driver</string>
+    <string name="custom_url_scheme">app.fastworld.driver</string>
 </resources>
