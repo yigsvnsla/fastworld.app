@@ -53,6 +53,9 @@ export class FavoresComponent implements OnInit {
     
   }
   
+  slidingOpen(sliding){
+    sliding.open()
+  }
 
   async genList(){
     if (this.listProducts.length < 8) {

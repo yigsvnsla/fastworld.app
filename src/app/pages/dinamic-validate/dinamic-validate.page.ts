@@ -61,6 +61,8 @@ export class DinamicValidatePage implements OnInit {
             backdropDismiss:false
           })
         }else{
+          console.log(response);
+          
           this.conections.get(`regions?id=${response['client'].region}`)
             .then(res=>{
               response.client.region = res[0]
@@ -71,6 +73,7 @@ export class DinamicValidatePage implements OnInit {
                 phone: response.product['user_phone'], 
               }
               this.isLoad = true
+              
             })
         }
       });

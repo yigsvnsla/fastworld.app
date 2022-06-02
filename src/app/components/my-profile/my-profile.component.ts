@@ -1,3 +1,5 @@
+import { ConectionsService } from 'src/app/services/conections.service';
+import { exportExcelToDateOptions, XlsxService } from './../../services/xlsx.service';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/interfaces/interfaces';
 import { EditProfileComponent } from './../edit-profile/edit-profile.component';
@@ -16,7 +18,9 @@ export class MyProfileComponent implements OnInit {
 
   constructor(
     private tools:ToolsService,
-    private localStorage:LocalStorageService
+    private localStorage:LocalStorageService,
+    private xlsxService:XlsxService,
+    private conectionsService:ConectionsService
   ){ 
     this.profile = {
       document:null,
@@ -44,6 +48,16 @@ export class MyProfileComponent implements OnInit {
 
   changePassword(){
 
+  }
+
+  exportExcel(){
+    this.conectionsService
+      .get('clients?email=cliente@fastworld.app')
+      .then(client=>{
+        console.log(client);
+        
+        this.xlsxService.exportExcelToDate({data:client[0].products,filename:''})
+      })
   }
 
   editProfile(){

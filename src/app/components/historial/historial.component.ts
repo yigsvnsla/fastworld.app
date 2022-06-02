@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { Products } from 'src/app/interfaces/interfaces';
 import { HistorialModalComponent } from '../historial-modal/historial-modal.component';
 import { formatCurrency } from '@angular/common';
+import { IonSlide } from '@ionic/angular';
 
 @Component({
   selector: 'app-historial',
@@ -28,6 +29,10 @@ export class HistorialComponent implements OnInit {
     await this.load((await this.localStorage.get(environment.cookieTag)).role)
     console.log(this.list);
     
+  }
+
+  slidingOpen(sliding){
+    sliding.open()
   }
 
   async openModal(item:Products){

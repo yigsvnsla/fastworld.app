@@ -4,6 +4,7 @@ import { ComponentsModule } from './components/components.module';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { GoogleMapsModule } from '@angular/google-maps';
@@ -18,6 +19,7 @@ import { NgModule } from '@angular/core';
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
+    BrowserAnimationsModule,
     IonicModule.forRoot(), 
     BrowserModule,
     AppRoutingModule,
@@ -27,6 +29,7 @@ import { NgModule } from '@angular/core';
     HttpClientModule,
     GoogleMapsModule,
     ScrollingModule,
+ 
     SocketIoModule.forRoot({ url: 'https://api.fastworld.app', options: {autoConnect: false}}),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
@@ -39,7 +42,7 @@ import { NgModule } from '@angular/core';
     { provide: RouteReuseStrategy, 
       useClass: IonicRouteStrategy 
     },
-    CookieService,CurrencyPipe
+    CookieService,CurrencyPipe,
   ],
   bootstrap: [AppComponent],
 })

@@ -1,3 +1,4 @@
+import { RegionListComponent } from './register/region-list/region-list.component';
 import { FavoresModalMapComponent } from './favores-modal-map/favores-modal-map.component';
 import { FavoresModalFormComponent } from './favores-modal-form/favores-modal-form.component';
 import { FavoresComponent } from './favores/favores.component';
@@ -23,9 +24,11 @@ import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { SocketIoModule } from 'ngx-socket-io';
 
 @NgModule({
   declarations: [
+    RegionListComponent,
     LoginComponent,
     RegisterComponent,
     HomeComponent,
@@ -52,7 +55,8 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     ReactiveFormsModule,
     RouterModule,
     GoogleMapsModule,
-    ScrollingModule
+    ScrollingModule,
+    SocketIoModule,
   ]
 })
 export class ComponentsModule { }
