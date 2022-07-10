@@ -20,7 +20,9 @@ export class ToolsService {
   async showPopover(options:PopoverOptions){
     const pop = await this.popover.create(options)
     pop.present()
+
     return new Promise<HTMLIonPopoverElement>(async (resolve, reject) => {
+      
       return resolve(pop)
     })
   }
@@ -76,7 +78,8 @@ export class ToolsService {
     let load = this.showLoading()
     let modal: HTMLIonModalElement = await this.modalController.create(options);
     modal.present();
-    (await load).dismiss()
+    (await load).dismiss()  
+    
     return new Promise(async (value) => {
       value((await modal.onDidDismiss()).data)
     })

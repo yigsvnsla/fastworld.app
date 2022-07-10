@@ -38,7 +38,7 @@ export class DinamicValidatePage implements OnInit {
     this.position.indications = event.detail.value
   }
 
-  ngOnInit() {
+  async ngOnInit() {
 
     this.package = {
       name: '',
@@ -52,9 +52,7 @@ export class DinamicValidatePage implements OnInit {
 
     this.conections
       .guest({ token: this.activeRoute.snapshot.paramMap.get('token') })
-      .then( async response => {
-        console.log(response);
-        
+      .then( async response => {        
         if(response.status == 500){
           this.tools.showAlert({
             header:'Al parecer tu ticket ya caduco 🕔',
@@ -63,6 +61,8 @@ export class DinamicValidatePage implements OnInit {
             backdropDismiss:false
           })
         }else{
+          console.log(response);
+          
           this.conections.get(`regions?id=${response['client'].region}`)
             .then(res=>{
               response.client.region = res[0]
@@ -73,11 +73,12 @@ export class DinamicValidatePage implements OnInit {
                 phone: response.product['user_phone'], 
               }
               this.isLoad = true
+              
             })
         }
-          
       });
 
+    await this.currentPosition()
   }
 
   async onClick() {
@@ -188,7 +189,7 @@ export class DinamicValidatePage implements OnInit {
         .then(loading => {
           navigator.geolocation.getCurrentPosition(
             async res => resolve(await this.geoDecode({ location: { lat: res.coords['latitude'], lng: res.coords['longitude'] } }).finally(() => loading.dismiss())),
-            err => reject(err)
+            async err => reject(err)
           );
         })
     })

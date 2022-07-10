@@ -111,7 +111,7 @@
         <ion-card-header>
           <ion-item>
             <ion-label position="stacked">Indicaciones de Retiro</ion-label>
-            <ion-textarea [autoGrow]="true" (ionChange)="addDesc($event,'start')" placeholder="(Opcional) Indicaciones..."></ion-textarea>
+            <ion-textarea [autoGrow]="true" (ionChange)="addDesc($event,'start')" placeholder="(Opcional) Indicaciones de Entrega (Dirección, Etapa, mz, Villa, etc) "></ion-textarea>
           </ion-item>
         </ion-card-header>
       </ion-card>
@@ -144,7 +144,7 @@
             </ion-item>
             <ion-item>
               <ion-label position="stacked">Indicaciones de Retiro</ion-label>
-              <ion-textarea [autoGrow]="true" (ionChange)="addDesc($event,'goal')" placeholder="(Opcional) Indicaciones..."></ion-textarea>
+              <ion-textarea [autoGrow]="true" (ionChange)="addDesc($event,'goal')" placeholder="(Opcional) Indicaciones de Entrega (Dirección, Etapa, mz, Villa, etc) "></ion-textarea>
             </ion-item>
             <ion-grid style="padding: 0;" fixed>
               <ion-row>
@@ -156,14 +156,8 @@
                 </ion-col>
               </ion-row>
               <ion-row>
-                <ion-col size="6">
-                  <ion-button (click)="genTicket('form')" color="orange" expand="block"  shape="round">
-                    <ion-icon slot="start" name="newspaper"></ion-icon>
-                    <ion-label style="overflow: unset;">Formulario </ion-label>
-                  </ion-button>
-                </ion-col>
-                <ion-col size="6">
-                  <ion-button [disabled]="(this.formPackage.get('user_name').invalid || this.formPackage.get('user_phone').invalid)" color="orange" (click)="genTicket('ticket')" expand="block"  shape="round">
+                <ion-col size="12">
+                  <ion-button  #btnSubmit color="orange" (click)="genTicket()" expand="block"  shape="round">
                     <ion-icon slot="start" name="checkmark-circle"></ion-icon>
                     <ion-label style="overflow: unset;">Confirmación </ion-label>
                   </ion-button>
@@ -175,7 +169,7 @@
       </div>
 
       
-      <ng-container>
+ 
         <ion-item-divider>
           <ion-label>Costo de Ruta </ion-label>
         </ion-item-divider>
@@ -201,7 +195,7 @@
             </ion-col>
           </ion-row>
         </ion-grid>
-      </ng-container>
+  
       <ion-item-divider>
         <ion-label>Recuerde</ion-label>
       </ion-item-divider>
@@ -229,7 +223,7 @@
       </ion-item>
     </ion-item-group>
 
-    <ion-button color="orange"  class="ion-margin" type="submit" expand="block" fill="outline" shape="round">
+    <ion-button [disabled]="!this.formPackage.valid" color="orange"  class="ion-margin" type="submit" expand="block" fill="outline" shape="round">
       <ion-label>Generar Encomienda</ion-label>
       <ion-icon slot="end" name="bag"></ion-icon>
     </ion-button>

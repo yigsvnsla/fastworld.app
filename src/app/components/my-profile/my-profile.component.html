@@ -7,6 +7,24 @@
     </ion-buttons>
     <ion-title>Mi Perfil</ion-title>
     <ion-buttons slot="end">
+      <ion-button id="data-options">
+        <ion-icon slot="icon-only" name="arrow-down-circle"></ion-icon>
+      </ion-button>
+      <ion-popover [dismissOnSelect]="true" trigger="data-options">
+        <ng-template>
+          <ion-content>
+            <ion-item-group>
+              <ion-item-divider>
+                <ion-label>Opciones</ion-label>
+              </ion-item-divider>
+              <ion-item button (click)="this.exportExcel()">
+                <ion-label>Exportar excel</ion-label>
+                <ion-icon slot="end" name="pencil"></ion-icon>
+              </ion-item>
+            </ion-item-group>
+          </ion-content>
+        </ng-template>
+      </ion-popover>
       <ion-button id="profile-options">
         <ion-icon slot="icon-only" name="cog"></ion-icon>
       </ion-button>

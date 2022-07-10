@@ -20,9 +20,11 @@ export class LoginGuard implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    
     return new Promise<boolean>(async (resolve, reject) => {
       this.localStorage.check(environment.cookieTag)
         .then(check => {
+          console.log('dasdsdasdas')
           if (this.cookieService.check(environment.cookieTag) && check) {
             resolve(true)
           } else {

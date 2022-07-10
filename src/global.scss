@@ -75,7 +75,13 @@ ion-label{
     }
 }
 
+//PopOver Customs
 
+ion-popover{
+	&.regions{
+        --height:200px
+    }
+}
 
 //custom Colors
 

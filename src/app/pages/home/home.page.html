@@ -84,12 +84,12 @@
 				</h1>
 				<ion-row>
 					<ion-col size="6">
-						<ion-button routerLink="/auth/registrar" color="orange" expand="block" fill="outline" shape="round">
+						<ion-button routerLink="/auth/registrar" routerDirection="root" color="orange" expand="block" fill="outline" shape="round">
 							<ion-label>Registrate</ion-label>
 						</ion-button>
 					</ion-col>
 					<ion-col size="6">
-						<ion-button routerLink="/auth/ingresar" color="orange" expand="block" fill="solid" shape="round">
+						<ion-button routerLink="/auth/ingresar" router-direction="root"  color="orange" expand="block" fill="solid" shape="round">
 							<ion-label>Iniciar</ion-label>
 						</ion-button>
 					</ion-col>
@@ -182,8 +182,9 @@
 				<ion-card>
 					<ion-card-header>
 						<ion-card-title class="ion-padding ion-text-center">Tarifa Variable</ion-card-title>
-						<ion-card-subtitle style="color: white;" class="ion-text-center">¿ Estas iniciando tu emprendimiento pero
-							usas servicios de entrega no tan frecuente ?</ion-card-subtitle>
+						<ion-card-subtitle style="color: white;" class="ion-text-center">
+							¿ Estas iniciando tu emprendimiento pero usas servicios de entrega no tan frecuente ?
+						</ion-card-subtitle>
 						<p class="ion-text-center">Esta opcion es ideal para clientes naturales o emprendedores que no frecuenten
 							tan seguido servicios de encomiendas, consiste en la distancia de kilometraje por desplazamiento de los
 							motorizados de un punto inicial hasta el sistio de entrega.</p>

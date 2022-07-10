@@ -3,12 +3,15 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { ConectionsService } from 'src/app/services/conections.service';
 import { Component, OnInit } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
+import { LocationStrategy } from '@angular/common';
+import { NavigationStart, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
+
 /* import { registerPlugin } from '@capacitor/core';
 import { BackgroundGeolocationPlugin } from '@capacitor-community/background-geolocation';
 const BackgroundGeolocation = registerPlugin<BackgroundGeolocationPlugin>(
   'BackgroundGeolocation'
 ); */
-
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -18,8 +21,11 @@ export class AppComponent implements OnInit {
   constructor(
     private conections: ConectionsService,
     private sw: SwUpdate,
-    private localStorage: LocalStorageService
-  ) {}
+    private localStorage: LocalStorageService,
+    private router: Router
+  ) {
+
+  }
 
   ngOnInit(): void {
     /* BackgroundGeolocation.addWatcher(

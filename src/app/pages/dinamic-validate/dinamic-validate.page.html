@@ -39,7 +39,7 @@
               <ion-col size="12">
                 <ion-item >
                   <ion-label position="stacked">Informacion Adicional</ion-label>
-                  <ion-textarea (ionFocus)="itemPhone.color = '' ; itemName.color = ''"  [value]="this.position.indications" (ionChange)="addDesc($event)" placeholder="Indicaciones de Entrega "></ion-textarea>
+                  <ion-textarea (ionFocus)="itemPhone.color = '' ; itemName.color = ''"  [value]="this.position.indications" (ionChange)="addDesc($event)" placeholder="Indicaciones de Entrega (Dirección, Etapa, mz, Villa, etc) "></ion-textarea>
                 </ion-item>
               </ion-col>
             </ion-row>
@@ -47,7 +47,7 @@
         
       </ion-card-content>
       <ion-card-header class="ion-text-center ion-padding ">
-        <ion-card-subtitle>Para confirmar la entrega es necesario que nos envie su ubicacion</ion-card-subtitle>
+        <ion-card-subtitle>Para confirmar la entrega de su encomienda, es necesario llenar su información</ion-card-subtitle>
         <ion-button [disabled]=" !validation() " color="orange" class="ion-margin" (click)="onClick()" expand="block" shape="round">
           <ion-label>Enviar mi Ubicación</ion-label>
           <ion-icon slot="start" name="location"></ion-icon>

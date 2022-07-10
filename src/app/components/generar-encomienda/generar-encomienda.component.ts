@@ -15,7 +15,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonDatetime } from '@ionic/angular';
+import { IonDatetime, IonButton } from '@ionic/angular';
 import { formatCurrency, Location } from '@angular/common';
 import { Memberships } from 'src/app/interfaces/interfaces';
 import { MapDirectionsService } from '@angular/google-maps';
@@ -32,6 +32,7 @@ import {
 })
 export class GenerarEncomiendaComponent implements OnInit {
   @ViewChild('dateTime') dateTime: IonDatetime;
+  @ViewChild('btnSubmit') btnSubmit:IonButton
 
   public add = add;
 
@@ -141,13 +142,13 @@ export class GenerarEncomiendaComponent implements OnInit {
     }
   }
 
-  genTicket( origin : 'ticket' | 'form') {
+  genTicket( ) {
     if(this.user.region.enable){
       this.tools.showAlert({
         backdropDismiss: false,
           header: 'Alerta ⚠',
           cssClass: 'alert-warn',
-          subHeader: `A continuacion va a generar un ${ origin == 'ticket' ? 'ticket' : 'formulario'}`,
+          subHeader: `A continuacion va a generar un 'ticket' `,
           message: 'Solo use esta opcion en caso de no saber la ubicacion o informacion de su cliente',
           buttons: [{
             text: 'Cancelar',
@@ -156,11 +157,12 @@ export class GenerarEncomiendaComponent implements OnInit {
             text: 'Continuar',
             role: 'success',
             handler: async () => {
-              if ( origin == 'form'){
+              if ( (this.formPackage.get('user_name').value == '') && (this.formPackage.get('user_phone').value == '')) {
                 this.formPackage.get('user_name').reset();
-                this.formPackage.get('user_phone').reset()
+                this.formPackage.get('user_phone').reset();
               }
-              if(this.formPackage.valid){
+              
+              if(this.formPackage.valid){                
                 await this.conection.post('products', {...this.formPackage.value, region: this.user.region.id, ticket:true})
                   .then(response => {
                     this.tools
@@ -326,5 +328,29 @@ export class GenerarEncomiendaComponent implements OnInit {
     this.formPackage
       .get('client')
       .setValue((await this.localStorage.get(environment.cookieTag)).email);
+
+    this.formPackage.valueChanges.subscribe( form =>{
+      if (this.btnSubmit != undefined) {
+        if ((form as Object)['location'].hasOwnProperty('goal')){
+          if((this.formPackage.get('user_name').status == 'INVALID') || (this.formPackage.get('user_phone').status == 'INVALID')){          
+            this.btnSubmit.disabled = true
+          }else {
+            this.btnSubmit.disabled = false
+          }                 
+        }else{
+          if((this.formPackage.get('user_name').status == 'VALID') && (this.formPackage.get('user_phone').status == 'VALID')){          
+            this.btnSubmit.disabled = false
+          }else {          
+            if((this.formPackage.get('user_name').status == 'INVALID') && (this.formPackage.get('user_phone').status == 'INVALID')){          
+              this.btnSubmit.disabled = false
+            }            
+            else{
+              this.btnSubmit.disabled = true              
+            }
+          }    
+        }
+      }  
+    })
+      
   }
 }
