@@ -143,11 +143,21 @@ export class MisEncomiendasComponent implements OnInit {
   }
 
   delivered(index:number){
+    const handle = (text:string)=>{
+      return parseFloat( text.includes(',')? text.replace(',','.').trim() : text.trim() )
+    }
+
     this.tools.showAlert({
       header:'Entregado ✔',
       subHeader:'Confirma la entrega de la encomienda 📦',
       cssClass: 'alert-success',
       inputs:[
+        {
+          name: 'payment_recibed',
+          id: 'text_payment',
+          type: 'text',
+          placeholder: 'Ingresa la valor recibido'
+        },
         {
           name: 'text',
           id: 'text',
@@ -162,8 +172,13 @@ export class MisEncomiendasComponent implements OnInit {
           cssClass: 'secondary',
         }, {
           text: 'Confirmar',
-          handler: async (val) => await this.conections
-            .put(`products/${index}`, {status:'entregado', message:val.text})
+          handler: async (Inputs)=>{            
+            await this.conections
+            .put(`products/${index}`, {
+              status:'entregado', 
+              message:Inputs.text, 
+              payment_recibed:handle(Inputs.payment_recibed),
+            })
             .then( response => {
               if(response.id){
                 this.packagesList = [...this.packagesList.filter( element => {
@@ -171,6 +186,7 @@ export class MisEncomiendasComponent implements OnInit {
                 })]
               }
             })
+          }
         }
       ]
     })
@@ -210,27 +226,22 @@ export class MisEncomiendasComponent implements OnInit {
   }
 
   recived(id:number){
+
+
+
     this.tools.showAlert({
-      header:'Entregado ✔',
+      header:'Recibido ✔',
       cssClass:'alert-success',
       subHeader:'ya tienes el pedido en tus manos?, que comience el viaje😉',
-      inputs:[
-        {
-          name: 'text',
-          id: 'text',
-          type: 'textarea',
-          placeholder: 'Describe lo sucedido aqui.'
-        },
-      ],
       buttons: [
         {
           text: 'Cancel',
           role: 'cancel',
         }, {
-          text: 'Reportar',
+          text: 'Recibir',
           role: 'success',
           handler: async (val) => await this.conections
-          .put(`products/${id}`, {status:'recibido', message:val.text})
+          .put(`products/${id}`, {status:'recibido',})
           .then( response => {
             if(response.id){
               this.packagesList[this.packagesList.findIndex(i => i.id == id)] = response

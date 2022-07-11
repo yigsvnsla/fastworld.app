@@ -24,11 +24,7 @@
             </ion-label>
           </ion-item>
           <ion-item-group slot="content">
-            <ion-item 
-              button 
-              *ngFor="let item of categoryList"
-              (click)=" category.value = item; groupCategory.value = undefined; this.formPackage.get('type').setValue(item)" 
-              >
+            <ion-item button *ngFor="let item of categoryList" >
               <ion-label>{{ item }}</ion-label>
               <ion-icon slot="start" name="add"></ion-icon>
             </ion-item>
@@ -75,7 +71,7 @@
                   <p>Dentro de </p>
                   <h4>{{ selectTime.value != ''? selectTime.value + ' Minutos ' : 'Seleccionar'}}</h4>
                 </ion-label>
-              </ion-item>
+               </ion-item>
               <ion-item-group slot="content">
                 <ion-item button (click)="selectTime.value = item; groupSelectTime.value = undefined; this.formPackage.get('timeout').setValue(add(this.timeNow,{minutes: item }).toISOString())" *ngFor="let item of timeOutList">
                   <ion-label>{{ item }} Minutos</ion-label>
