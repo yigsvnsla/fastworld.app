@@ -26,7 +26,8 @@ export class ConectionsService {
     private cookie: CookiesService,
     private toolsService: ToolsService,
     private localStorageService: LocalStorageService,
-    private router: Router
+    private router: Router,
+    private socket: Socket
   ) {}
 
   headers = async (content?: any) => {
@@ -238,6 +239,9 @@ export class ConectionsService {
   }
 
   async logOut() {
+    this.socket.emit('quit', {
+      email: (await this.localStorageService.get(environment.cookieTag)).email,
+    });
     // this.socket.emit('quit', { email: (await this.localStorageService.get(environment.cookieTag)).email });
     await this.localStorageService.remove(environment.cookieTag);
     this.cookie.remove(environment.cookieTag);
@@ -245,16 +249,9 @@ export class ConectionsService {
     this.router.navigateByUrl('auth');
   }
 
-  async guest(data: {
-    token: string;
-    distance?: string;
-    location?: any;
-    price_route?: string;
-    user_phone?: string;
-    user_name?: string;
-  }) {
-    console.log(data);
 
+
+  async guest(data: { token: string, distance?: string, location?: any, price_route?: string, user_phone?:string, user_name?:string }) {
     return new Promise<any>((resolve, reject) => {
       this.toolsService.showLoading().then(async (loading) => {
         this.httpClient
