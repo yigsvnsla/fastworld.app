@@ -55,7 +55,7 @@ const routes: Routes = [
             component: NotFoundComponent,
           },
         ],
-        // ,canActivate:[LoginGuard]
+        canActivate:[LoginGuard]
       },
       {
         path: 'conductor',

@@ -1,7 +1,7 @@
 import { parseISO } from 'date-fns';
 import { LocalStorageService } from './local-storage.service';
 import { ToolsService } from './tools.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { CookiesService } from './cookies.service';
@@ -22,7 +22,6 @@ const BackgroundGeolocation = registerPlugin<BackgroundGeolocationPlugin>(
 })
 export class ConectionsService {
   constructor(
-    private socket: Socket,
     private httpClient: HttpClient,
     private cookie: CookiesService,
     private toolsService: ToolsService,
@@ -81,6 +80,21 @@ export class ConectionsService {
           });
       });
     });
+  }
+
+  rawPost(path:string, data:any, _interface?:any){
+    return this.httpClient.post<typeof _interface>(`https://api.fastworld.app/api${path}`,{data},{
+      headers: new HttpHeaders({
+        "Content-Type":"application/json"
+      })
+    })
+  }
+  rawGet(path:string, _interface?:any){
+    return this.httpClient.get<typeof _interface>(`https://api.fastworld.app/api${path}`,{
+      headers: new HttpHeaders({
+        "Content-Type":"application/json"
+      })
+    })
   }
 
   async put(path: string, data) {
@@ -224,12 +238,10 @@ export class ConectionsService {
   }
 
   async logOut() {
-    this.socket.emit('quit', {
-      email: (await this.localStorageService.get(environment.cookieTag)).email,
-    });
+    // this.socket.emit('quit', { email: (await this.localStorageService.get(environment.cookieTag)).email });
     await this.localStorageService.remove(environment.cookieTag);
     this.cookie.remove(environment.cookieTag);
-    this.socket.disconnect();
+    // this.socket.disconnect();
     this.router.navigateByUrl('auth');
   }
 

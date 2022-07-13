@@ -8,8 +8,7 @@
 </ion-header>
   <ion-content>
     <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-      <ion-refresher-content>
-      </ion-refresher-content>
+      <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
     
     <div class="arrEmpty" *ngIf="list.length <= 0">
@@ -39,7 +38,7 @@
       <ion-list>
       <ion-row  *ngFor="let i of list" button (click)="openModal(i)">
         <ion-item-divider>
-          <ion-label>Encomienda #{{i.id}}</ion-label>
+          <ion-label>Encomienda <ion-text color="orange">#{{i.id}}</ion-text></ion-label>
         </ion-item-divider>
         <ion-col size="8" >
           <ion-item class="ion-text-nowrap" lines="none" >

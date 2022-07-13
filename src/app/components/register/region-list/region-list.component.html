@@ -1,0 +1,10 @@
+<ion-item-group *ngIf="this.regions$ | async as regions; else loading">
+  <ion-item (click)="onSelect(region)" button *ngFor="let region of regions.data">
+    <ion-label>{{region.attributes.city.name}},{{region.attributes.province.name}}</ion-label>
+  </ion-item>
+</ion-item-group>
+<ng-template #loading>
+  <div  id="popover-load">
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
+</ng-template>

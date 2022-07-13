@@ -33,7 +33,7 @@
                       <ion-input required formControlName="password" type="password"></ion-input>
                     </ion-item>
                     <h3>¿Olvidaste tu contraseña? <br> <a (click)="rescuePass()" >Recuperar</a></h3>
-                    <h3>¿Aun no tienes membrecia? <a [routerLink]="['../registrar']" >Registrate aqui</a></h3>
+                    <h3>¿Aun no tienes membrecia? <a [routerLink]="['../registrar']" routerDirection="root">Registrate aqui</a></h3>
 
                     <ion-button color="orange" shape="round" class="ion-margin" block type="submit" [disabled]="this.formLogin.invalid">
                       <ion-label>Ingresar</ion-label>

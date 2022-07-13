@@ -18,8 +18,10 @@ export class AppComponent implements OnInit {
   constructor(
     private conections: ConectionsService,
     private sw: SwUpdate,
-    private localStorage: LocalStorageService
-  ) {}
+    private localStorage: LocalStorageService,
+  ) { 
+    
+  }
 
   ngOnInit(): void {
     /* BackgroundGeolocation.addWatcher(

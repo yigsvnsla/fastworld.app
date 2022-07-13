@@ -4,37 +4,61 @@
     <ion-buttons tabindex="0" slot="start">
       <ion-menu-button menu="menu-cliente"></ion-menu-button>
     </ion-buttons>
-    <ion-buttons slot="start">
+    <ion-buttons *ngIf="this.formPurchase.get('type').value != '' " slot="start">
       <ion-button (click)=" this.formPurchase.get('type').setValue('') ">
-        <ion-icon slot="start" name="chevron-back"></ion-icon>
+        <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons *ngIf="this.formPurchase.get('type').value != '' " slot="end">
+      <ion-button (click)=" addProduct()">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content >
-  <div class="body" *ngIf="this.formPurchase.get('type').value == ''" >
+<ion-item-divider>
+  <ion-label>Lista de Compras</ion-label>
+</ion-item-divider>
+<ion-content>
+  <div class="body" [hidden]="this.formPurchase.get('type').value != ''">
     <ion-grid fixed>
       <ion-row>
-        <ion-col sizeSm="6" sizeXs="12">
-          <ion-card button (click)="this.formPurchase.get('type').setValue('compras') ">
+        <ion-col sizeXs="12">
+          <!-- <ion-card button (click)="this.formPurchase.get('type').setValue('compras') "> -->
+          <ion-card button href="https://wa.me/593981119272?text=Hola que tal necesito hacer unas compras" target="_blank" rel="noreferrer external">
             <ion-card-header class="ion-text-center">
-              <ion-card-subtitle>¿Nesecitas abastecerte?</ion-card-subtitle>
-              <ion-card-title>Compras</ion-card-title>
+              <!-- <ion-card-subtitle>¿Nesecitas abastecerte?</ion-card-subtitle> -->
+              <ion-card-title color="orange">Compras</ion-card-title>
+              <!-- <h4>Super Mercado - Medicinas</h4> -->
+              <ion-card-subtitle>Super Mercado - Medicinas</ion-card-subtitle>
             </ion-card-header>
             <ion-card-content>
-              <ion-img class="favores" [src]="'../../assets/svg/undraw_online_groceries_a02y.svg'"></ion-img>
+              <!-- <ion-img class="favores" [src]="'../../assets/svg/undraw_online_groceries_a02y.svg'"></ion-img> -->
             </ion-card-content>
           </ion-card>
         </ion-col>
-        <ion-col sizeSm="6" sizeXs="12">
-          <ion-card button (click)="this.formPurchase.get('type').setValue('pagos')">
+        <ion-col sizeXs="12">
+          <!-- <ion-card button (click)="this.formPurchase.get('type').setValue('pagos')"> -->
+          <ion-card button href="https://wa.me/593981119272?text=Hola que tal necesito realizar unos depositos" target="_blank" rel="noreferrer external">
             <ion-card-header class="ion-text-center">
-              <ion-card-subtitle>¿Sin disponibilidad para tus transacciones?</ion-card-subtitle>
-              <ion-card-title>Pagos y Depósitos</ion-card-title>
+              <ion-card-title color="orange">Pagos y Depósitos</ion-card-title>
+              <ion-card-subtitle>Pagos de targetas de credito, Pagos de Servicios basicos, Depositos generales</ion-card-subtitle>
             </ion-card-header>
             <ion-card-content>
-              <ion-img class="favores" [src]="'../../assets/svg/undraw_receipt_re_fre3.svg'"></ion-img>
+              <!-- <ion-img class="favores" [src]="'../../../assets/svg/undraw_wallet_aym5.svg'"></ion-img> -->
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col sizeXs="12">
+          <!-- <ion-card button (click)="this.formPurchase.get('type').setValue('pagos')"> -->
+          <ion-card button href="https://wa.me/593981119272?text=Hola que tal necesito realizar unos tramites" target="_blank" rel="noreferrer external">
+            <ion-card-header class="ion-text-center">
+              <ion-card-title color="orange">Tramites</ion-card-title>
+              <ion-card-subtitle>Permisos Municipales, Certificados Barcarios, Tramites Notariales, Permisos de Bomberos</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <!-- <ion-img class="favores" [src]="'../../assets/svg/undraw_receipt_re_fre3.svg'"></ion-img> -->
             </ion-card-content>
           </ion-card>
         </ion-col>
@@ -42,111 +66,67 @@
     </ion-grid>
   </div>
 
-  <ng-container *ngIf="this.formPurchase.get('type').value != ''">
-
-    <div [ngSwitch]="this.formPurchase.get('type').value" style="height: 100%;">
-      <div #divCompras *ngSwitchCase="'compras'" style="height: 100%;">
-        <form #formCompras [formGroup]="this.formPurchase" >
-          <ion-item-group>
-          <ion-item>
-            <ion-label>Tipo de Compra</ion-label>
-            <ion-select #selectType (ionChange)="setType($event)" interface="alert" placeholder="Seleccionar">
-              <ion-select-option value="viveres">Viveres</ion-select-option>
-              <ion-select-option value="medicina">Medicina</ion-select-option>
-              <ion-select-option value="otros">Otros</ion-select-option>
-            </ion-select>
-          </ion-item>
-          
-          <section *ngIf="selectType.value == 'otros' ">
-            <ion-item >
-              <ion-icon slot="start" name="pencil"></ion-icon>
-              <ion-label position="stacked">Especificar Compra</ion-label>
-              <ion-input #inputTypePurchase formControlName="typePurchase" type="text" placeholder="Especificar"></ion-input>
-            </ion-item>
-            <ion-item >
-              <ion-icon slot="start" name="business"></ion-icon>
-              <ion-label position="stacked">Nombre del Establecimiento</ion-label>
-              <ion-input formControlName="place" type="text" placeholder="Ingresar nombre"></ion-input>
-            </ion-item>  
-          </section>
-        
-          <ion-item *ngIf="selectType.value == 'viveres'">
-            <ion-label position="floating">Lista de Super mercados</ion-label>
-            <ion-select formControlName="place" placeholder="Seleccionar">
-              <ion-select-option  [value]="_superMarket" *ngFor="let _superMarket of this.superMarkets ">{{_superMarket}}</ion-select-option>
-            </ion-select>
-          </ion-item>
-          
-          <ion-item *ngIf="selectType.value == 'medicina' ">
-            <ion-label position="floating">Lista de Farmacias</ion-label>
-            <ion-select formControlName="place" value="peperoni" placeholder="Seleccionar">
-              <ion-select-option [value]="_pharmacy" *ngFor="let _pharmacy of this.pharmacys  ">{{_pharmacy}}</ion-select-option>
-            </ion-select>
-          </ion-item>
-        </ion-item-group>
-      
-        <ion-item-divider>
-          <ion-label slot="start">Lista de Compras</ion-label>
-          <ion-label style="margin-right: 16px;" slot="end">Productos: {{listProducts.length}}</ion-label>
-        </ion-item-divider>
-        
-        <!-- <div class="ion-text-center" style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-content: center;" *ngIf="listProducts.length == 0 ">
-          <ion-img class="ion-margin" style="height: 20vh;" [src]="'../../../assets/svg/undraw_empty_re_opql.svg'"></ion-img>
-          <ion-card-title class="ion-margin">Lista de compras vacia</ion-card-title>
-          <ion-card-subtitle>Para generar una orden de compra, debe ser un minimo de 8 productos..</ion-card-subtitle>
-        </div> -->
-      </form>
-
-      
-      <div [ngStyle]="{height : 'calc( 100% - ' + formCompras.offsetHeight + 'px'  +' )' }">
-  
-        <ion-item>
-          <ion-label>{{formCompras.offsetHeight}}</ion-label>
-        </ion-item>
-      </div>
-        
-          
-          
-          <!-- <ion-item-group *ngIf="listProducts.length > 0 " class="pruebas">
-            <ng-container *ngFor="let item of listProducts ">
-              <ion-item >
-                <ion-icon slot="start" name="pricetags"></ion-icon>
-                <ion-label>
-                  <ng-container [ngSwitch]="item.unit.measure">
-                    <p *ngSwitchCase="'cant'" >Cantidad: {{item.unit.value}}</p>
-                    <p *ngSwitchCase="'price'" >Precio: {{item.unit.value | currency}}</p>
-                    <p *ngSwitchCase="'lbs'" >Peso: {{item.unit.value}} {{item.unit.measure}}</p>
-                    <p *ngSwitchCase="'kg'" >Peso: {{item.unit.value}} {{item.unit.measure}}</p>
-                    <p *ngSwitchCase="'lts'" >Litros: {{item.unit.value}} {{item.unit.measure}}</p>
-                  </ng-container>
-                  <h4>{{item.name}}</h4>
-                  <br>
-                  <p style="white-space:normal">Descripcion: {{item.description}}</p>
-                </ion-label>
-              </ion-item>
-            </ng-container>
-          </ion-item-group> -->
-     
-
-
-      <ion-fab vertical="bottom" horizontal="end"  slot="fixed">
-        <ion-fab-button #addBtn (click)="addProduct()" color="orange">
-          <ion-icon name="add"></ion-icon>
-        </ion-fab-button>
-      </ion-fab>
-
-      
-      
+  <ng-container *ngIf="this.formPurchase.get('type').value == 'compras'">
+    <div class="arrEmpty" *ngIf="listProducts.length <= 0">
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col style="display: flex; justify-content: center;  align-items: center;" size="12">
+            <ion-img [src]="'../../../../../assets/svg/undraw_empty_re_opql.svg'"></ion-img>
+          </ion-col>
+          <ion-col size="12">
+            <ion-card>
+              <ion-card-header class="ion-text-center">
+                <ion-card-subtitle>Pulsa el boton de agregar para agendar</ion-card-subtitle>
+                <ion-card-title>No tienes Encomiendas</ion-card-title>
+              </ion-card-header>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </div>
-  </div>
-</ng-container>
-
+    <ion-item-group *ngIf="listProducts.length > 0 ">
+      <ng-container *ngFor="let item of listProducts; let i = index">
+        <ion-item-sliding #sliding [id]="i">
+          <ion-item>
+            <ion-icon slot="start" name="pricetags"></ion-icon>
+            <ion-label>
+              <ng-container [ngSwitch]="item.unit.measure">
+                <p *ngSwitchCase="'cant'">Cantidad: {{item.unit.value}}</p>
+                <p *ngSwitchCase="'price'">Precio: {{item.unit.value | currency}}</p>
+                <p *ngSwitchCase="'lbs'">Peso: {{item.unit.value}} {{item.unit.measure}}</p>
+                <p *ngSwitchCase="'kg'">Peso: {{item.unit.value}} {{item.unit.measure}}</p>
+                <p *ngSwitchCase="'lts'">Litros: {{item.unit.value}} {{item.unit.measure}}</p>
+              </ng-container>
+              <h4>{{item.name}}</h4>
+              <br>
+              <p style="white-space:normal">Descripcion: {{item.description}}</p>
+            </ion-label>
+            <ion-buttons slot="end">
+              <ion-button (click)="slidingOpen(sliding)">
+                <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option (click)="deleteItem(i); sliding.close()" color="danger">
+              <ion-icon slot="icon-only" name="trash"></ion-icon>
+            </ion-item-option>
+            <ion-item-option (click)="addProduct(i); sliding.close()">
+              <ion-icon slot="icon-only" name="pencil"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ng-container>
+    </ion-item-group>
+  </ng-container>
 </ion-content>
-    <ion-footer >
-      <ion-toolbar class="ion-text-center">
-        <ion-button (click)="genList()" color="orange" shape="round">
-          <ion-label>Enviar Lista</ion-label>
-          <ion-icon slot="start" name="newspaper"></ion-icon>
-        </ion-button>
-      </ion-toolbar>
-    </ion-footer>
+
+
+<ion-footer [hidden]="this.formPurchase.get('type').value == ''">
+  <ion-toolbar class="ion-text-center">
+    <ion-button (click)="genList()" color="orange" shape="round">
+      <ion-label>Enviar Lista</ion-label>
+      <ion-icon slot="start" name="newspaper"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>
