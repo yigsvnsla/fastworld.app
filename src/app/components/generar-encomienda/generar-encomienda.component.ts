@@ -161,8 +161,8 @@ export class GenerarEncomiendaComponent implements OnInit {
                 this.formPackage.get('user_name').reset();
                 this.formPackage.get('user_phone').reset();
               }
-              
-              if(this.formPackage.valid){                
+
+              if(this.formPackage.valid){
                 await this.conection.post('products', {...this.formPackage.value, region: this.user.region.id, ticket:true})
                   .then(response => {
                     this.tools
@@ -234,10 +234,18 @@ export class GenerarEncomiendaComponent implements OnInit {
                   if (status == google.maps.DirectionsStatus.OK) {
                     this.kilometerRef = result.routes[0].legs[0].distance.text;
                     this.formPackage.get('distance').setValue(result.routes[0].legs[0].distance.text)
-                    if (this.memberships == null){
-                      this.formPackage
-                        .get('price_route')
-                        .setValue( (Math.round(Number(result.routes[0].legs[0].distance.text.replace(/km/, '').replace(/,/, '.').trim())) / 6  ).toString())
+                    if (this.memberships == null) {
+
+                      let km = Number(result.routes[0].legs[0].distance.text.replace(/km/, '').replace(/,/, '.').trim());
+                      let multiplicador = Math.ceil(km / 6);
+                      let base = this.user.region.price_base;
+                      let start = this.user.region.price_start;
+                      let tarifa = (multiplicador * start) + base;
+                      this.formPackage.get('price_route').setValue(tarifa.toString())
+
+                      /*  this.formPackage
+                         .get('price_route')
+                         .setValue((Math.round(Number(result.routes[0].legs[0].distance.text.replace(/km/, '').replace(/,/, '.').trim())) * this.user.region.price_start + this.user.region.price_base).toString()) */
                     }
                   }
                 });
@@ -332,25 +340,25 @@ export class GenerarEncomiendaComponent implements OnInit {
     this.formPackage.valueChanges.subscribe( form =>{
       if (this.btnSubmit != undefined) {
         if ((form as Object)['location'].hasOwnProperty('goal')){
-          if((this.formPackage.get('user_name').status == 'INVALID') || (this.formPackage.get('user_phone').status == 'INVALID')){          
+          if((this.formPackage.get('user_name').status == 'INVALID') || (this.formPackage.get('user_phone').status == 'INVALID')){
             this.btnSubmit.disabled = true
           }else {
             this.btnSubmit.disabled = false
-          }                 
+          }
         }else{
-          if((this.formPackage.get('user_name').status == 'VALID') && (this.formPackage.get('user_phone').status == 'VALID')){          
+          if((this.formPackage.get('user_name').status == 'VALID') && (this.formPackage.get('user_phone').status == 'VALID')){
             this.btnSubmit.disabled = false
-          }else {          
-            if((this.formPackage.get('user_name').status == 'INVALID') && (this.formPackage.get('user_phone').status == 'INVALID')){          
+          }else {
+            if((this.formPackage.get('user_name').status == 'INVALID') && (this.formPackage.get('user_phone').status == 'INVALID')){
               this.btnSubmit.disabled = false
-            }            
-            else{
-              this.btnSubmit.disabled = true              
             }
-          }    
+            else{
+              this.btnSubmit.disabled = true
+            }
+          }
         }
-      }  
+      }
     })
-      
+
   }
 }
