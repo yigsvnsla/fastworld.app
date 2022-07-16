@@ -237,7 +237,7 @@ export class GenerarEncomiendaComponent implements OnInit {
                     if (this.memberships == null){
                       this.formPackage
                         .get('price_route')
-                        .setValue((Math.round(Number(result.routes[0].legs[0].distance.text.replace(/km/, '').replace(/,/, '.').trim())) * this.user.region.price_start + this.user.region.price_base).toString())
+                        .setValue( (Math.round(Number(result.routes[0].legs[0].distance.text.replace(/km/, '').replace(/,/, '.').trim())) / 6  ).toString())
                     }
                   }
                 });
