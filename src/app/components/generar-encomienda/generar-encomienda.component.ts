@@ -236,8 +236,8 @@ export class GenerarEncomiendaComponent implements OnInit {
                     this.formPackage.get('distance').setValue(result.routes[0].legs[0].distance.text)
                     if (this.memberships == null) {
 
-                      let km = (Math.ceil(Number(result.routes[0].legs[0].distance.text.replace(/km/, '').replace(/,/, '.').trim())));
-                      let multiplicador = km / 6;
+                      let km = Number(result.routes[0].legs[0].distance.text.replace(/km/, '').replace(/,/, '.').trim());
+                      let multiplicador = Math.ceil( km / 6);
                       let base = this.user.region.price_base;
                       let start = this.user.region.price_start;
                       let tarifa = (multiplicador * start) + base;
