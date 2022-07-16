@@ -5,7 +5,7 @@ import { environment } from './../../../environments/environment';
 import { LocalStorageService } from './../../services/local-storage.service';
 import { ConectionsService } from './../../services/conections.service';
 import { Products } from './../../interfaces/interfaces';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { es } from 'date-fns/locale';
 import { formatCurrency } from '@angular/common';
@@ -155,7 +155,7 @@ export class MisEncomiendasComponent implements OnInit {
         {
           name: 'payment_recibed',
           id: 'text_payment',
-          type: 'text',
+          type: 'number',
           placeholder: 'Ingresa la valor recibido'
         },
         {
@@ -173,19 +173,33 @@ export class MisEncomiendasComponent implements OnInit {
         }, {
           text: 'Confirmar',
           handler: async (Inputs)=>{            
-            await this.conections
-            .put(`products/${index}`, {
-              status:'entregado', 
-              message:Inputs.text, 
-              payment_recibed:handle(Inputs.payment_recibed),
-            })
-            .then( response => {
-              if(response.id){
-                this.packagesList = [...this.packagesList.filter( element => {
-                  return response.id!= element['id'];
-                })]
-              }
-            })
+            if (Inputs.payment_recibed == "" || Inputs.text == "" ){
+              this.tools.showAlert({
+                header:'Alerta 🚫',
+                cssClass:'alert-danger',
+                subHeader:'Al parecer faltan datos, porfavor intentar nuevamente',
+                buttons:[{
+                  text:'ok',
+                  handler:()=>{
+                    this.delivered(index)
+                  }
+                }]
+              })
+            }else{
+              await this.conections
+                .put(`products/${index}`, {
+                  status:'entregado', 
+                  message:Inputs.text, 
+                  payment_recibed:handle(Inputs.payment_recibed),
+                })
+                .then( response => {
+                  if(response.id){
+                    this.packagesList = [...this.packagesList.filter( element => {
+                      return response.id!= element['id'];
+                    })]
+                  }
+                })
+            }
           }
         }
       ]
@@ -226,9 +240,6 @@ export class MisEncomiendasComponent implements OnInit {
   }
 
   recived(id:number){
-
-
-
     this.tools.showAlert({
       header:'Recibido ✔',
       cssClass:'alert-success',
