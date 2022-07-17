@@ -234,10 +234,17 @@ export class GenerarEncomiendaComponent implements OnInit {
                   if (status == google.maps.DirectionsStatus.OK) {
                     this.kilometerRef = result.routes[0].legs[0].distance.text;
                     this.formPackage.get('distance').setValue(result.routes[0].legs[0].distance.text)
-                    if (this.memberships == null){
-                      this.formPackage
-                        .get('price_route')
-                        .setValue( (Math.round(Number(result.routes[0].legs[0].distance.text.replace(/km/, '').replace(/,/, '.').trim())) / 6  ).toString())
+                    if (this.memberships == null) {
+                      let km = Number(result.routes[0].legs[0].distance.text.replace(/km/, '').replace(/,/, '.').trim());
+                      let multiplicador = Math.ceil(km / 6);
+                      let base = this.user.region.price_base;
+                      let start = this.user.region.price_start;
+                      let tarifa = (multiplicador * start) + base;
+                      this.formPackage.get('price_route').setValue(tarifa.toString())
+
+                      /*  this.formPackage
+                         .get('price_route')
+                         .setValue((Math.round(Number(result.routes[0].legs[0].distance.text.replace(/km/, '').replace(/,/, '.').trim())) * this.user.region.price_start + this.user.region.price_base).toString()) */
                     }
                   }
                 });
