@@ -17,7 +17,11 @@
       </ion-item-divider>
       <ion-accordion-group  #groupCategory expand="compact">
         <ion-accordion #category value="" toggle-icon="arrow-down-circle">
-          <ion-item slot="header">
+           <ion-item 
+                        button 
+                                      *ngFor="let item of categoryList"
+                                                    (click)=" category.value = item; groupCategory.value = undefined; this.formPackage.get('type').setValue(item)" 
+                                                                  >
             <ion-label>
               <p>Categoria</p>
               <h4>{{ category.value != ''? category.value : 'Seleccionar'}}</h4>
