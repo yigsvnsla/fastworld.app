@@ -55,20 +55,20 @@ export class XlsxService {
         text: 'Cancelar'
       }, {
         text: 'Exportar',
-        handler: (val) => {     
-          
-          
+        handler: (val) => {
+          if (val.date_init == val.date_finish) {
+            this.exportToExcel(exportExcelToDateOptions.data.filter(element => format(parse(element['date'], 'M/d/yy - h:mm a', new Date(Date.now())), 'yyyy-MM-dd') == val.date_init), exportExcelToDateOptions.filename)
+          } else {
+            this.exportToExcel(exportExcelToDateOptions.data.filter((element) => {
+              if (isWithinInterval(parse(element['date'], 'M/d/yy - h:mm a', new Date(Date.now())), {
+                start: parse(val.date_init, 'yyyy-MM-dd', new Date(Date.now())),
+                end: parse(val.date_finish, 'yyyy-MM-dd', new Date(Date.now()))
+              })) {
+                return element
+              }
+            }), exportExcelToDateOptions.filename)
+          }
 
-          
-          this.exportToExcel(
-            exportExcelToDateOptions.data.filter((item)=>{
-              if (isWithinInterval(
-                parseISO(item['created_at']),{
-                  start: parse(val.date_init, 'yyyy-MM-dd', new Date(Date.now())),
-                  end: parse(val.date_finish, 'yyyy-MM-dd', new Date(Date.now()))
-                }
-              )){ return item }
-            }),(exportExcelToDateOptions.filename += `(${val.date_init} ${val.date_finish})`))
         }
       }]
     })

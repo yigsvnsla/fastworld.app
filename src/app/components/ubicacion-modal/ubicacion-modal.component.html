@@ -23,6 +23,7 @@
         </ng-container>
       </ion-item-group>
     </div>
+    
     <div #content (window:resize)="onResize($event)" style="height: 100%; width: 100%;">
       <google-map #map (mapClick)="addMarker($event)"  [options]="mapOptions" width="100%" [height]="this.mapHeight">
         <map-marker  (mapDragend)="dragendMarker($event)" [options]="markerOptions" [position]="marker"></map-marker>

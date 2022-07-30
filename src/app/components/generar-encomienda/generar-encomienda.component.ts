@@ -58,14 +58,7 @@ export class GenerarEncomiendaComponent implements OnInit {
     private location:Location
   ) {
     this.categoryList = [
-      'Alimentos',
-      'Correspondencia',
-      'Llaves',
-      'Libros',
-      'Licor',
-      'Otros',
-      'Ropa',
-      'Tecnología',
+      'Alimentos', 'correspondencia', 'mensajería', 'trámites', 'botellas de vidrio', 'ropa', 'tecnología', 'madera', 'frágil', 'otros'
     ];
     this.timeOutList = [30, 45, 60];
     this.timeNow = new Date(Date.now());
